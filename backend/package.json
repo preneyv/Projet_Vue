@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.11.17"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend projet vue",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Hippolyte, Aurélien, Valère",
+  "license": "ISC",
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
+  }
+}
