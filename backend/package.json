@@ -1,18 +1,24 @@
 {
-  "dependencies": {
-    "express": "^4.17.1",
-    "mongoose": "^5.11.17"
-  },
-  "name": "backend",
+  "name": "backend_test",
   "version": "1.0.0",
-  "description": "backend projet vue",
+  "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Hippolyte, Aurélien, Valère",
+  "author": "",
   "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.18",
+    "body-parser": "^1.19.0",
+    "password-hash": "^1.2.2"
+  },
   "devDependencies": {
-    "env-cmd": "^10.1.0"
+    "body-parser": "^1.19.0",
+    "env-cmd": "^10.1.0",
+    "password-hash": "^1.2.2"
   }
 }

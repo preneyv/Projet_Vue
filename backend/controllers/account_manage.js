@@ -1,76 +1,104 @@
-import * as AccountModel from '../models/Schemas/user_schema.js'
+import User from '../models/Schemas/user_schema.js'
+import moment from 'moment'
+import passwordHash from "password-hash";
 
-function signUp(req, res){
 
-    const {email, password} = req.body;
-    if(!email || !password){
+/**
+ * Gère l'enregistrement d'un nouvel utilisateur dans la BDD
+ * @param reqBody
+ * @returns {any}
+ */
+function signup(req, res){
+
+    
+    const {name, email, password} = req.body;
+    if(!name || !email || !password ){
         return res.status(400).json({
-            text : "Mot de passe ou Email invalide"
+            text : "name, Mot de passe ou Email invalide"
         })
     }
 
     const user = {
+        name,
         email,
-        password
+        password: passwordHash.generate(password),
     }
 
 
-    if(checkUserExist(email)){
-        return res.status(400).json({
-            text:"L'utilisateur existe déjà"
-        })
-    }else{
+    User.findOne({
+        email
+    }).then((user)=>{
+
+        if(user){
+            return res.status(400).json({
+                text: "L'utilisateur existe déjà"
+            });
+        }
+
+
+    }).catch((error)=>{
         return res.status(500).json({
-            text:"Une erreur s'est produit. Veuillez réessayer ultérieurement"
-        })
+            error
+        }) ;
+    });
+
+    const userData = new User(user);
+    userData.save()
+    .then(()=>{
+        return res.status(200).json({
+            text: "Inscription réussie - Bienvenue"
+        });
+    }).catch((error)=>{
+        return res.status(500).json({
+            error
+        }) ;
+    });
+        
+}
+
+/**
+ * Gère la connexion d'un utilisateur
+ * @param req
+ * @param res
+ */
+function signin(req,res){
+
+    console.log(req.body)
+    const {email, password} = req.body
+
+    if (!email || !password) {
+        //Le cas où l'email ou bien le password ne serait pas soumit ou nul
+        return res.status(400).json({
+            text: "Veuillez renseigner un email et un mot de passe"
+        });
     }
 
-    if(addUserToBDD(user)){
+    // On check si l'utilisateur existe en base
+    User.findOne({ email })
+    .then((user)=>{
+        if (!user)
+            return res.status(400).json({
+                text: "L'utilisateur n'existe pas"
+            });
+
+        if (!user.authenticate(password))
+            return res.status(400).json({
+                text: "Mot de passe incorrect"
+            });
 
         return res.status(200).json({
-            text:"Merci pour votre inscription"
-        })
-    }else{
+            text: "Authentification réussi",
+            utilisateur : user
+        });
+    }).catch((error)=>{
+        console.log(error)
         return res.status(500).json({
-            text:"Une erreur s'est produit. Veuillez réessayer ultérieurement"
-        })
-    }
-
-
-}
-
-/**
- * Vérifie si le compte existe ou non
- * @param email Email du nouvel utilisateur
- * @returns {boolean|any}
- */
-function checkUserExist(email){
-
-    try{
-        const findUser = AccountModel.findOne({
-            email
-        })
-        if (findUser) return true
-
-    }catch (error){
-        return JSON.parse({res:'error'})
-    }
-}
-
-/**
- * Ajoute le nouvel utilisateur à la bdd
- * @param user
- * @returns {boolean|any}
- */
-function addUserToBDD(user){
-    try{
-
-        const userData = new AccountModel(user);
-        const userObject = userData.save();
-        return true
-
-    }catch(error){
-        return JSON.parse({res:'error'})
-    }
+            error
+        });
+    });
+        
 
 }
+
+export {signin as login}
+export {signup as logup}

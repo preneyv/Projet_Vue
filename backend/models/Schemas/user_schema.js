@@ -1,11 +1,17 @@
-import * as db_mongo from 'mongoose'
+import mongoose from 'mongoose'
+import passwordHash from "password-hash";
 
-const userSchema = new db_mongo.Schema({
+const userSchema = new mongoose.Schema({
     nom:String,
     email:String,
     password:String,
-    date_signin:Date,
+    date_signup:{type:Date, default:Date.now}
 
 })
 
-module.exports = db_mongo.model('User', userSchema)
+userSchema.methods = {
+    authenticate: function(password) {
+        return passwordHash.verify(password, this.password);
+    },
+}
+export default mongoose.model('User', userSchema);
