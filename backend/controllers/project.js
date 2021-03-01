@@ -1,16 +1,14 @@
-const Project = require("../models/Project")
+import Project from "../models/Project.js"
 
-
-exports.getAll = async (req, res) =>
-{
+export async function getAll(req, res) {
     try {
-        const projects = await Project.find()
+        const projects = await Project.find({})
         res.json(projects)
     } catch (e) {
         res.json({ message: `Error: ${e}` })
     }
 }
-exports.getOne = async (req, res) => {
+export async function getOne(req, res) {
     const { id } = req.body
     try {
         const project = await Project.findOne({ _id: id })
@@ -19,7 +17,7 @@ exports.getOne = async (req, res) => {
         res.json({ message: `Error: ${e}` })
     }
 }
-exports.insertOne = async (req, res) => {
+export async function insertOne(req, res) {
     const {
         title,
         author,

@@ -1,9 +1,10 @@
 // Node modules
-require("dotenv").config()
-const express = require("express")
-const morgan = require("morgan")
-const helmet = require("helmet")
-const mongoose = require("mongoose")
+import dotenv from "dotenv"
+dotenv.config()
+import express, { json } from "express"
+import morgan from "morgan"
+import helmet from "helmet"
+import mongoose from "mongoose"
 const app = express()
 
 // Connect to MongoDB
@@ -18,9 +19,9 @@ const db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error:"))
 
 // Imports Routes
-const indexRoutes = require("../routes/index")
-const userRoutes = require("../routes/user")
-const projectRoutes = require("../routes/project")
+import indexRoutes from "../routes/index.js"
+import userRoutes from "../routes/user.js"
+import projectRoutes from "../routes/project.js"
 
 // Port Listening
 const port = process.env.PORT || 8000
@@ -28,7 +29,7 @@ const port = process.env.PORT || 8000
 // Global middlewares
 app.use(helmet())
 app.use(morgan("tiny"))
-app.use(express.json())
+app.use(json())
 
 // Routes
 app.use("/api/v1/project", projectRoutes)

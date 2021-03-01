@@ -1,6 +1,6 @@
-const User = require("../models/User")
+import User from "../models/User.js"
 
-exports.dd = async (req, res) => {
+export async function dd(req, res) {
     const user = new User({
         name: "Test",
         email: "test@gmail.com",

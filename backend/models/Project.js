@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
 const { Schema, model } = mongoose
 
 const projectSchema = new Schema({
@@ -12,4 +12,4 @@ const projectSchema = new Schema({
     jobs: Object
 })
 
-module.exports = model("project", projectSchema)
+export default model("project", projectSchema)

@@ -1,10 +1,10 @@
-const express = require("express")
-const projectController = require("../controllers/project")
-const router = express.Router()
+import { Router } from "express"
+import { getAll, getOne, insertOne } from "../controllers/project.js"
+const router = Router()
 
 //  GET /api/v1/project
-router.get("/", projectController.getAll)
-router.get("/:id", projectController.getOne)
-router.post("/", projectController.insertOne)
+router.get("/", getAll)
+router.get("/:id", getOne)
+router.post("/", insertOne)
 
-module.exports = router
+export default router

@@ -1,8 +1,8 @@
-const express = require("express")
-const userController = require("../controllers/user")
-const router = express.Router()
+import { Router } from "express"
+import { dd } from "../controllers/user.js"
+const router = Router()
 
 //  GET /api/v1/user
-router.get("/", userController.dd)
+router.get("/", dd)
 
-module.exports = router
+export default router
