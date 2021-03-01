@@ -2,6 +2,8 @@ import express from 'express'
 import {db} from './models/bdd_manage.js'
 import bodyParser from "body-parser";
 import * as connection from './controllers/account_manage.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 //On définit notre objet express nommé app
 const app = express();
