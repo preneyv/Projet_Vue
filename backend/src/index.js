@@ -20,6 +20,7 @@ db.on("error", console.error.bind(console, "connection error:"))
 // Imports Routes
 const indexRoutes = require("../routes/index")
 const userRoutes = require("../routes/user")
+const projectRoutes = require("../routes/project")
 
 // Port Listening
 const port = process.env.PORT || 8000
@@ -30,6 +31,7 @@ app.use(morgan("tiny"))
 app.use(express.json())
 
 // Routes
+app.use("/api/v1/project", projectRoutes)
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1", indexRoutes)
 app.all("*", (req, res, next) => {
