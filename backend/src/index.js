@@ -5,6 +5,11 @@ import express, { json } from "express"
 import morgan from "morgan"
 import helmet from "helmet"
 import mongoose from "mongoose"
+
+// Imports Routes
+import indexRoutes from "../routes/index.js"
+import userRoutes from "../routes/user.js"
+import projectRoutes from "../routes/project.js"
 const app = express()
 
 // Connect to MongoDB
@@ -18,10 +23,6 @@ mongoose.connect(
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error:"))
 
-// Imports Routes
-import indexRoutes from "../routes/index.js"
-import userRoutes from "../routes/user.js"
-import projectRoutes from "../routes/project.js"
 
 // Port Listening
 const port = process.env.PORT || 8000

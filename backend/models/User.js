@@ -1,12 +1,13 @@
 import mongoose from "mongoose"
 const { Schema, model } = mongoose
 
-const userSchema = new Schema({
-    name: String,
-    email: String,
-    password: String,
-    projects: Array,
-    manageProjects: Array,
-})
+const userSchema = new Schema(
+    {
+        name: String,
+        email: String,
+        password: String,
+    },
+    { timestamps: { createdAt: "created_at" } }
+)
 
 export default model("user", userSchema)
