@@ -12,7 +12,7 @@ import userRoutes from "../routes/user.js"
 import projectRoutes from "../routes/project.js"
 
 //Import BDD
-import db from './bdd_manage.js'
+import db from './DbManage.js'
 const app = express()
 
 // Connect to MongoDB

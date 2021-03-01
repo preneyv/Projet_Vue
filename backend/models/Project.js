@@ -3,13 +3,13 @@ const { Schema, model } = mongoose
 
 const projectSchema = new Schema({
     title: String,
-    author: String,
+    author: ObjectId,
     description: String,
-    tags: Object,
+    tags: [String],
     licence: String,
     contact: String,
     links: Object,
-    jobs: Object
+    jobs: [Object]
 })
 
 export default model("project", projectSchema)
