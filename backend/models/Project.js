@@ -5,11 +5,11 @@ const projectSchema = new Schema({
     title: String,
     author: ObjectId,
     description: String,
-    tags: Object,
+    tags: [String],
     licence: String,
     contact: String,
     links: Object,
-    jobs: Array
+    jobs: [Object]
 })
 
 export default model("project", projectSchema)

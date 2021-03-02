@@ -10,18 +10,13 @@ import mongoose from "mongoose"
 import indexRoutes from "../routes/index.js"
 import userRoutes from "../routes/user.js"
 import projectRoutes from "../routes/project.js"
+
+//Import BDD
+import db from './DbManage.js'
 const app = express()
 
 // Connect to MongoDB
-mongoose.connect(
-    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URI}/marchelibre?retryWrites=true&w=majority`,
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    }
-)
-const db = mongoose.connection
-db.on("error", console.error.bind(console, "connection error:"))
+db.initDatabase()
 
 
 // Port Listening
