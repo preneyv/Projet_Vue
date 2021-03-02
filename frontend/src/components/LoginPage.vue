@@ -1,71 +1,56 @@
 <template>
     <div class="login-ctn">
-        <div class="top-ctn">
-            <div class="subscribeHeader">
-                <div class="registerOne"><h3>Come In</h3><h6>Glad to see you again !</h6></div>
-                <div><i class="fas fa-arrow-right fa-3x"></i></div>
-            </div>
+            <div class="logo"><img src="../assets/logoV.png" width="73"></div>
             <form action="" method="post" >
-                <div class="item-input">
-                    <input type="email" placeholder="Ton email" id="email" name="email" />
-                </div>
-                <div class="item-input">
-                    <input type="password" placeholder="Mot de passe" id="pass" name="pass" />
-                </div>
-                <div class="item-input">
-                    <input type="submit"  id="submit" name="submit" value="Se connecter" />
-                </div>
+                <InputComponent id="email" type="email" placeholder="Ton email" name="email" required/>
+                <InputComponent id="password" type="email" placeholder="Ton mot de passe" name="password" required/>
+                <input type="submit"  id="submit" name="submit" value="Se connecter" />
             </form> 
-        </div>
-        <div style="color: white;">
-            Vous n'avez pas de compte ? <a href="" style="text-decoration: underline; color: white;">Créez en un !</a>
-        </div>
     </div>
-    
 </template>
 
 <script>
-
+import InputComponent from '@/components/Input.vue'
 export default {
     name:'LogIn',
+    components:{
+        InputComponent
+    }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 
 .login-ctn{
    
-    width:20%;
-    min-width:100px;
-    max-width:300px;
-    display: flex;
-    flex-direction: column;
-    background : #5DADE2;
+    width:max-content;
     padding: 12px;
+    background-color: #484848;
+    border-radius:5px;
   
 }
-.top-ctn{
-    margin-bottom: 20px;
+
+.logo{
+    width: auto;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 55px;
 }
 
 form{
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-
+    @include flex(column);
+    gap: 16px;
 }
 
-.item-input > input, .item-input{
-    height:100%;
-    width : 100%;
-    box-sizing: border-box;
+input[type=submit]{
+
+    padding: 24px;
+    border: none;
+    border-radius: 3px;
+    margin: 10px 0;
 }
 
-.item-input input{
-    background-color: white;
-    border:none;
-    font-family: 'Barlow Semi Condensed', sans-serif;
-    padding : 13px;
-}
+
+
 </style>

@@ -12,12 +12,12 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'InputComponent',
   props: {
     id:          String,
     type:        String,
     placeholder: String,
-    label:       String,
+    label:       Boolean,
     name:        String,
     required:    Boolean
   }
@@ -25,7 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../config.scss';
 
 label {
     display: block;
@@ -34,17 +33,17 @@ label {
 }
 
 input {
-    background-color: #121212;
-    font-family: $font;
+    background-color: #484848;
     font-size: 14px;
     color: white;
-    padding: 10px 20px;
-    border: 1px solid #323232;
-    border-radius: 5px;
+    border: none;
+    width: 300px;
+    height: 50px;
+
 
     &:focus {
         outline: none;
-        border-color: #1c62b9;
+        border-bottom: solid 1px white;
     }
 }
 </style>
