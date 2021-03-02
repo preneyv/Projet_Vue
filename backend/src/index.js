@@ -10,6 +10,7 @@ import mongoose from "mongoose"
 import indexRoutes from "../routes/index.js"
 import userRoutes from "../routes/user.js"
 import projectRoutes from "../routes/project.js"
+import authRoutes from "../routes/auth.js"
 
 //Import BDD
 import db from './DbManage.js'
@@ -28,6 +29,7 @@ app.use(morgan("tiny"))
 app.use(json())
 
 // Routes
+app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/project", projectRoutes)
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1", indexRoutes)
