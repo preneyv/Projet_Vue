@@ -2,3 +2,11 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+.reset-position {
+    position: static;
+    top: initial;
+    left: initial;
+    width: auto;
+    height: auto;
+}

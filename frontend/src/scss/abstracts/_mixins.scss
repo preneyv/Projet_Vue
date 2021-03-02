@@ -4,7 +4,6 @@
     justify-content: $justify;
     align-items: $align;
 }
-
 @mixin heading() {
     $j: 5;
     $multiplier: 1.25;
@@ -18,9 +17,26 @@
         $j: $j - 1;
     }
 }
-
-@mixin gap($i) {
-    & > * + * {
-        @supports (gap: );
+@mixin gap($i, $direction: margin-left, $gap: both) {
+    #{$direction}: space($i);
+    @supports (gap: #{$i}) {
+        #{$direction}: 0;
+        @if $gap == col {
+            gap-col: space($i);
+        } @else if $gap == row {
+            gap-row: space($i);
+        } @else {
+            gap: space($i);
+        }
+    }
+}
+@mixin responsive($breakpoint) {
+    @if map-has-key($breakpoints, $breakpoint) {
+        @media #{inspect(map-get($breakpoints, $breakpoint))} {
+            @content;
+        }
+    } @else {
+        @warn "Unfortunately, no value could be retrieved from `#{$breakpoint}`. "
+        + "Available breakpoints are: #{map-keys($breakpoints)}.";
     }
 }
