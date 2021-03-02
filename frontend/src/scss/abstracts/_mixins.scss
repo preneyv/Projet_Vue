@@ -5,8 +5,8 @@
     align-items: $align;
 }
 @mixin heading() {
-    $j: 5;
-    $multiplier: 1.25;
+    $j: 4;
+    $multiplier: 1.22;
     @for $i from 1 through $j {
         .heading-#{$j} {
             font: calc(
