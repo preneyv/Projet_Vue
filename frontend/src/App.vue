@@ -4,10 +4,10 @@
     <router-link to="/about">About</router-link>
   </div>
   <router-view/>
-</template>
+ </template>
+
 
 <style lang="scss">
-@import './config.scss';
 
 body {
   background-color: $background-color;

@@ -1,0 +1,5 @@
+// Calculate a space
+@function space($i) {
+    @return calc(#{$i} * var(--space));
+}
+

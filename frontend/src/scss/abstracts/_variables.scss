@@ -1,0 +1,22 @@
+$fontBase: 1rem;
+$space: 0.25rem;
+$black: black;
+$white: white;
+$primaryColor: pink;
+$secondaryColor: red;
+$typoTitle: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+$typoText: "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+// Convert SCSS variable to CSS variable to easily calculate values
+:root {
+    --color-black: #{$black};
+    --color-white: #{$white};
+    --color-primary: #{$primaryColor};
+    --color-secondary: #{$secondaryColor};
+    --space: #{$space};
+    --font-base: #{$fontBase};
+    --typo-title: #{$typoTitle};
+    --typo-text: #{$typoText};
+}
