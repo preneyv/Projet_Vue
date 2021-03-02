@@ -6,6 +6,7 @@
         v-bind:type="type"
         v-bind:placeholder="placeholder"
         v-bind:name="name"
+        v-bind:required="required"
     />
   </div>
 </template>
@@ -33,7 +34,7 @@ label {
 }
 
 input {
-    background-color: #484848;
+    background-color: #252525;
     font-size: 14px;
     color: white;
     border: none;
@@ -43,7 +44,7 @@ input {
 
     &:focus {
         outline: none;
-        border-bottom: solid 1px white;
+        border-bottom: solid 1px var(--color-primary);
     }
 }
 </style>
