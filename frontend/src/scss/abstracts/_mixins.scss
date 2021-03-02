@@ -1,5 +1,17 @@
-@mixin flex {
+@mixin flex($direction: row, $justify: center, $align: center) {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: $direction;
+    align-items: $justify;
+    justify-content: $align;
+}
+
+@mixin heading() {
+    $j: 5;
+    $multiplier: 1.25;
+    @for $i from 1 through $j {
+        .heading-#{$j} {
+          font-size: calc(var(--font-base) * (#{$i} * #{$multiplier}));
+        }
+        $j: $j - 1;
+    }
 }

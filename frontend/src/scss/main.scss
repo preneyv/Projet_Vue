@@ -1,11 +1,11 @@
 // Abstract
-@use "abstracts/variables";
-@use "abstracts/mixins";
-@use "abstracts/functions";
+@import "abstracts/variables";
+@import "abstracts/mixins";
+@import "abstracts/functions";
 
 // Base
-@use "base/reset";
-@use "base/typography";
+@import "base/reset";
+@import "base/typography";
 
 // Components
-@use "components/btn";
+@import "components/btn";
