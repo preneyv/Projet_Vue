@@ -1,7 +1,8 @@
 <template>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> | 
+    <router-link to="/entering">Log</router-link>
   </div>
   <router-view/>
  </template>
@@ -13,6 +14,19 @@ body {
   background-color: $background-color;
   color: $text-color;
   font-family: $font;
+}
+
+html, body, #app{
+  margin:0;
+  width:100vw;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
 }
 
 #nav {
