@@ -1,11 +1,20 @@
+// SASS Core
+@use "sass:color" as *;
+
 // Abstract
 @import "abstracts/variables";
-@import "abstracts/mixins";
 @import "abstracts/functions";
+@import "abstracts/mixins";
 
 // Base
 @import "base/reset";
 @import "base/typography";
+@import "base/atomic";
+@import "base/animations";
+
+// Globals
+@import "layout/body";
+@import "layout/layout";
 
 // Components
 @import "components/btn";

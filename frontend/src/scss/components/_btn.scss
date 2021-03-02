@@ -1,0 +1,7 @@
+.button {
+    @include flex(row, center, center);
+    background-color: var(--color-primary);
+    border-radius: space(2);
+    color: var(--color-black);
+    padding: space(1) space(3);
+}

@@ -1,13 +1,18 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> | 
-    <router-link to="/entering">Log</router-link>
-  </div>
-  <router-view/>
- </template>
+    <Navbar />
+    <router-view />
+    <Footer />
+</template>
 
+<script>
+import Navbar from "@/components/Navbar.vue"
+import Footer from "@/components/Footer.vue"
+export default {
+    components: {
+        Navbar,
+        Footer
+    },
+}
+</script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
