@@ -1,30 +1,15 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view/>
- </template>
+    <Navbar />
+    <router-view />
+</template>
 
-
-<style lang="scss">
-
-body {
-  background-color: $background-color;
-  color: $text-color;
-  font-family: $font;
+<script>
+import Navbar from "@/components/Navbar.vue"
+export default {
+    components: {
+        Navbar,
+    },
 }
+</script>
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+<style lang="scss"></style>
