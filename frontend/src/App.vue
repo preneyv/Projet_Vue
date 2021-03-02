@@ -5,9 +5,3 @@
   </div>
   <router-view/>
 </template>
-
-<style lang="scss">
-#nav {
-  color: blue;
-}
-</style>
