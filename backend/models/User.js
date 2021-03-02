@@ -20,6 +20,7 @@ userSchema.methods = {
 
     generateAccessToken: function() {
         const tokenData = {
+            _id: this._id,
             name: this.name,
             email: this.email
         }
