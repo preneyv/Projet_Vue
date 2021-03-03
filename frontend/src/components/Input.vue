@@ -1,7 +1,7 @@
 <template>
-  <div class="input">
-    <label v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
-    <input
+  <div class="input-wrapper">
+    <label class="input-wrapper__input-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
+    <input class="input-wrapper__input"
         v-bind:id="id"
         v-bind:type="type"
         v-bind:placeholder="placeholder"
@@ -26,25 +26,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.input-wrapper {
+	&__input-label {
+		display: block;
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
 
-label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
+	&__input {
+		background-color: #252525;
+		font-size: 14px;
+		color: white;
+		border: none;
+		min-width: 300px;
+		padding: 1rem 1.5rem;
 
-input {
-    background-color: #252525;
-    font-size: 14px;
-    color: white;
-    border: none;
-    width: 300px;
-    height: 50px;
-
-
-    &:focus {
-        outline: none;
-        border-bottom: solid 1px var(--color-primary);
-    }
+		&:focus {
+			outline: none;
+			border-bottom: solid 1px var(--color-primary);
+		}
+	}
 }
 </style>
