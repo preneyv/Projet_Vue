@@ -1,7 +1,7 @@
 <template>
     <div class="login-ctn">
             <div class="logo"><img src="../assets/logoV.png" width="73"></div>
-            <form action="" method="post" >
+            <form :action="getActionURI" method="post" >
                 <InputComponent 
                     v-for="item in tabOfInput" 
                     :key="item.id"
@@ -11,7 +11,7 @@
                     :name="item.name"
                     :required="item.required"
                 />
-                <input type="submit"  id="submit" name="submit" :value="typeOfAuth==='in' ? 'Se connecter' : `S'inscrire`" />
+                <input type="submit"  id="submit" name="submit" :value="typeOfAuth==='signin' ? 'Se connecter' : `S'inscrire`" />
             </form>
             <span @click="switchForm" class="switchForm">{{bottomMsg}}</span> 
     </div>
@@ -32,6 +32,11 @@ export default {
     methods:{
         switchForm(){     
             this.$emit('handleSwitchForm') 
+        }
+    },
+    computed:{
+        getActionURI : function() {
+            return `http://localhost:8800/api/v1/auth/${this.typeOfAuth}`
         }
     }
 }

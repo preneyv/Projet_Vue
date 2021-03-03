@@ -4,7 +4,6 @@ dotenv.config()
 import express, { json } from "express"
 import morgan from "morgan"
 import helmet from "helmet"
-import mongoose from "mongoose"
 
 // Imports Routes
 import indexRoutes from "../routes/index.js"
@@ -21,7 +20,7 @@ db.initDatabase()
 
 
 // Port Listening
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 8800
 
 // Global middlewares
 app.use(helmet())
