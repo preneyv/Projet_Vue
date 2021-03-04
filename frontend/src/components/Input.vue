@@ -8,6 +8,7 @@
         v-bind:name="name"
         v-bind:required="required"
     />
+    <div class="barBottomInput"></div>
   </div>
 </template>
 
@@ -40,11 +41,37 @@ input {
     border: none;
     width: 300px;
     height: 50px;
+    position: relative;
+    z-index:2;
+
 
 
     &:focus {
         outline: none;
-        border-bottom: solid 1px var(--color-primary);
+        & + .barBottomInput{
+          width:300px;
+          transition: all .5s ease-in-out;
+        }
     }
+
 }
+
+.input{
+  position: relative;
+
+  .barBottomInput{
+    width: 0;
+    height: 50px;
+    left: 0;
+    top: 3px;
+    border-bottom: solid 3px #41b883;
+    position: absolute;
+    z-index: 1;
+    transition: width 0.5s ease-in-out;
+
+  
+  }
+      
+}
+
 </style>

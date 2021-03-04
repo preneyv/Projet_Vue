@@ -1,8 +1,8 @@
 <template>
     <div class="entering-ctn">
-        <transition name="form-change">
-            <AuthTemplate v-if="isInOrUp==='in'" :tabOfInput="itemLogIn" bottomMsg="Tu n'as pas de compte ? Inscris toi !" typeOfAuth="signin" v-on:handleSwitchForm="switchForm"/>
-            <AuthTemplate v-else :tabOfInput="itemLogUp" bottomMsg="Tu possède déjà un compte chez nous ? Connecte toi !" typeOfAuth="signup" v-on:handleSwitchForm="switchForm"/>
+        <transition name="form-change" mode="out-in">
+            <AuthTemplate key="in" v-if="isInOrUp==='in'" :tabOfInput="itemLogIn" bottomMsg="Tu n'as pas de compte ? Inscris toi !" typeOfAuth="signin" v-on:handleSwitchForm="switchForm"/>
+            <AuthTemplate key="up" v-else :tabOfInput="itemLogUp" bottomMsg="Tu possèdes déjà un compte chez nous ? Connecte toi !" typeOfAuth="signup" v-on:handleSwitchForm="switchForm"/>
         </transition>
     </div>
 </template>
@@ -83,8 +83,9 @@ export default {
         align-items: center;
     }
 
+    
     .form-change-enter-active, .form-change-leave-active{
-        transition: opacity .3s ease-in-out;
+        transition: all .3s ease-in-out;
     }
 
     .form-change-enter, .form-change-leave-to{
