@@ -1,7 +1,7 @@
 <template>
-  <div class="input">
-    <label v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
-    <input
+  <div class="input-wrapper">
+    <label class="input-wrapper__input-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
+    <input class="input-wrapper__input"
         v-bind:id="id"
         v-bind:type="type"
         v-bind:placeholder="placeholder"
@@ -27,37 +27,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-label {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-
-input {
-    background-color: #252525;
-    font-size: 14px;
-    color: white;
-    border: none;
-    width: 300px;
-    height: 50px;
-    position: relative;
-    z-index:2;
-
-
-
-    &:focus {
-        outline: none;
-        & + .barBottomInput{
-          width:300px;
-          transition: all .5s ease-in-out;
-        }
-    }
-
-}
-
-.input{
+.input-wrapper {
   position: relative;
+
+	&__input-label {
+		display: block;
+		font-size: 14px;
+		margin-bottom: 5px;
+	}
+
+
+  &__input {
+      background-color: #252525;
+      font-size: 14px;
+      color: white;
+      border: none;
+      width: 300px;
+      height: 50px;
+      position: relative;
+      z-index:2;
+
+
+
+      &:focus {
+          outline: none;
+          & + .barBottomInput{
+            width:300px;
+            transition: all .5s ease-in-out;
+          }
+      }
+
+  }
 
   .barBottomInput{
     width: 0;
@@ -68,10 +68,8 @@ input {
     position: absolute;
     z-index: 1;
     transition: width 0.5s ease-in-out;
-
-  
   }
-      
+   
 }
 
 </style>
