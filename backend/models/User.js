@@ -19,13 +19,13 @@ userSchema.methods = {
     },
 
     generateAccessToken: function() {
-        const tokenData = {
+        const payload = {
             _id: this._id,
             name: this.name,
             email: this.email
         }
 
-        return jwt.sign(tokenData, process.env.TOKEN_SECRET)
+        return jwt.sign(payload, process.env.TOKEN_SECRET)
     }
 }
 
