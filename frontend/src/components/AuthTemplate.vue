@@ -11,7 +11,7 @@
                     :name="item.name"
                     :required="item.required"
                 />
-                <input type="submit"  id="submit" name="submit" :value="typeOfAuth==='signin' ? 'Se connecter' : `S'inscrire`" />
+                <input type="submit"  id="submit" name="submit"  :value="typeOfAuth==='signin' ? 'Se connecter' : `S'inscrire`" />
             </form>
             <span @click="switchForm" class="switchForm">{{bottomMsg}}</span> 
     </div>
@@ -70,9 +70,9 @@ form{
 
 input[type=submit]{
 
-    padding: 24px;
+    
     border: none;
-    border-radius: 3px;
+    @include btn_component(1,5,4);
     margin: 10px 0px;
 }
 

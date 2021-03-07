@@ -40,3 +40,14 @@
         + "Available breakpoints are: #{map-keys($breakpoints)}.";
     }
 }
+
+@mixin btn_component($radius, $rl-pad, $tb-pad){
+    
+        @include flex(row, center, center);
+        background-color: var(--color-primary);
+        border-radius: space($radius);
+        color: var(--color-black);
+        padding: space($tb-pad) space($rl-pad);
+    
+    
+}
