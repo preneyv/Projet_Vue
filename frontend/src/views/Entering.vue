@@ -79,7 +79,7 @@ export default {
         height:100%;
         display: flex;
         justify-content: center;
-        font-family: 'Barlow Semi Condensed', sans-serif;
+        
         align-items: center;
     }
 
