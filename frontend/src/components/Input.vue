@@ -18,7 +18,7 @@ export default {
     id:          String,
     type:        String,
     placeholder: String,
-    label:       Boolean,
+    label:       String,
     name:        String,
     required:    Boolean
   }
