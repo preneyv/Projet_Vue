@@ -40,6 +40,7 @@ export default {
 		border: none;
 		min-width: 300px;
 		padding: 1rem 1.5rem;
+    border-bottom: solid 1px transparent;
 
 		&:focus {
 			outline: none;
