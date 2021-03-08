@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    <select v-bind:id="id" v-bind:name="name" v-bind:required="required">
+    <select v-bind:id="id" v-bind:name="name" :required="required">
         <option value="" disabled hidden :selected="selected === null ? true : false">Choisir</option>
         <option v-for="item, i in items" v-bind:key="i" v-bind:value="item.value" :selected="selected?.value === item.value">
             {{ item.name }}
@@ -94,8 +94,10 @@ export default {
 
     &__dropdown {
         background-color: #252525;
+        border-top: 1px solid rgba(0, 0, 0, 0.25);
         position: absolute;
         width: 100%;
+        z-index: 1000;
     }
 
     &__option {

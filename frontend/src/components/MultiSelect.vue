@@ -24,6 +24,12 @@
             </ul>
         </div>
     </div>
+
+    <select v-bind:id="id" v-bind:name="name" :required="required" multiple>
+        <option v-for="item, i in items" v-bind:key="i" v-bind:value="item.value" :selected="selected.includes(item)">
+            {{ item.name }}
+        </option>
+    </select>
   </div>
 </template>
 
@@ -108,8 +114,10 @@ export default {
 
     &__dropdown {
         background-color: #252525;
+        border-top: 1px solid rgba(0, 0, 0, 0.25);
         position: absolute;
         width: 100%;
+        z-index: 1000;
     }
 
     &__option {
@@ -126,6 +134,10 @@ export default {
             height: 1em;
             margin-right: 1em;
         }
+    }
+
+    select {
+        display: none;
     }
 }
 </style>

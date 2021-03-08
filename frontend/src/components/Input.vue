@@ -6,7 +6,7 @@
         v-bind:type="type"
         v-bind:placeholder="placeholder"
         v-bind:name="name"
-        v-bind:required="required"
+        :required="required"
     />
   </div>
 </template>
