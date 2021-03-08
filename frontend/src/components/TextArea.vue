@@ -36,15 +36,13 @@ export default {
 		background-color: #252525;
 		font-size: 14px;
 		color: white;
-		border: none;
-		min-width: 300px;
+		border: 1px solid lighten($color: #252525, $amount: 15);
 		padding: 1rem 1.5rem;
         margin: 0;
-        border-bottom: solid 1px transparent;
 
 		&:focus {
 			outline: none;
-			border-bottom: solid 1px var(--color-primary);
+			border: 1px solid lighten($color: #252525, $amount: 60);
 		}
 	}
 }

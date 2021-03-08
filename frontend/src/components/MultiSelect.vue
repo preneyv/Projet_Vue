@@ -96,7 +96,6 @@ export default {
 		font-size: 14px;
 		color: var(--primary-color);
 		border: none;
-		min-width: 300px;
 
 		&:focus {
 			outline: none;
