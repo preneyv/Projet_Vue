@@ -2,11 +2,9 @@
   <div class="input-wrapper">
     <label class="input-wrapper__input-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
     <input class="input-wrapper__input"
-        v-bind:id="id"
-        v-bind:type="type"
-        v-bind:placeholder="placeholder"
-        v-bind:name="name"
-        v-bind:required="required"
+        v-bind="$props"
+        v-on="inputListeners"
+        v-model="el.value" 
     />
     <div class="barBottomInput"></div>
   </div>
@@ -15,13 +13,37 @@
 <script>
 export default {
   name: 'InputComponent',
+  data(){
+    return{
+      el:{
+        id : this.id,
+        value: null
+      }
+    }
+  },
   props: {
     id:          String,
     type:        String,
     placeholder: String,
     label:       Boolean,
     name:        String,
-    required:    Boolean
+    required:    Boolean,
+
+  },
+  created(){
+    console.log(this.$props)
+  },
+  computed: {
+    inputListeners : function(){
+      let vm=this
+      return Object.assign({},
+        {
+          input:function(){
+            vm.$parent.insertIntoDataStore(vm.el)
+          }
+        }
+      )
+    }
   }
 }
 </script>

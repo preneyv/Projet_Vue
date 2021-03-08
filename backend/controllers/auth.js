@@ -3,16 +3,20 @@ import passwordHash from "password-hash"
 
 export async function signin(req, res) {
     const { email, password } = req.body
+
+    if (!email || !password) {
+        return res.status(403).json([{message: `Veuillez remplir le formulaire correctement`}])
+    }
+
     try {
         const user = await User.findOne({ email })
         if (!user?.authenticate(password)) {
-            return res
-            .status(403)
-            .json({ message: `Email ou mot de passe invalide` })
+            return res.status(403).json([{ message: `Email ou mot de passe invalide` }])
         }
 
         const token = user.generateAccessToken()
         return res.json({ token })
+        
     } catch (e) {
         return res
         .status(500)
@@ -24,15 +28,13 @@ export async function signup(req, res) {
     const { name, email, password, externals } = req.body
 
     if (!name || !email || !password) {
-        return res.sendStatus(400)
+        return res.status(403).json([{message: `Veuillez remplir le formulaire correctement`}])
     }
 
     const isEmailTaken = (await User.find({ email })).length !== 0
 
     if (isEmailTaken) {
-        return res
-        .status(403)
-        .json({ message: `Email déjà associé à un compte` })
+        return res.status(403).json([{message: `Email déjà associé à un compte`}])
     }
 
     try {
@@ -47,7 +49,7 @@ export async function signup(req, res) {
             if (err) throw new Error(err)
 
             const token = user.generateAccessToken()
-            return res.json({ token })
+            return res.status(200).json({ token })
         })
     } catch (e) {
         return res

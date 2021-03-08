@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import passwordHash from "password-hash"
+import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 const { Schema, model } = mongoose
 
@@ -19,6 +20,8 @@ userSchema.methods = {
     },
 
     generateAccessToken: function() {
+        dotenv.config()
+        console.log(process.env.TOKEN_SECRET)
         const tokenData = {
             _id: this._id,
             name: this.name,
