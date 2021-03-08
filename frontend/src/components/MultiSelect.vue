@@ -115,6 +115,7 @@ export default {
     &__dropdown {
         background-color: #252525;
         border-top: 1px solid rgba(0, 0, 0, 0.25);
+        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
         position: absolute;
         width: 100%;
         z-index: 1000;
