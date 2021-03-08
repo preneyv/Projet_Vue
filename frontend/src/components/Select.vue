@@ -69,6 +69,10 @@ export default {
 		display: block;
 		font-size: 14px;
 		margin-bottom: 5px;
+
+        span {
+            opacity: 0.55;
+        }
 	}
 
 	&__select {

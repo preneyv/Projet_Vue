@@ -34,6 +34,10 @@ export default {
 	&__input-label {
 		display: block;
 		margin-bottom: 5px;
+
+    	span {
+            opacity: 0.55;
+        }
 	}
 
   &__input-prefix {
