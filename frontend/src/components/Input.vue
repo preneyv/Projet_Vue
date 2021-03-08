@@ -54,6 +54,9 @@ export default {
 .input-wrapper {
   font-size: 14px;
   position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
 
 	&__input-label {
 		display: block;
@@ -69,8 +72,9 @@ export default {
     background-color: #313131;
     border: 1px solid lighten($color: #252525, $amount: 15);
     border-right: none;
-    display: inline-block;
     text-align: center;
+    width: auto;
+    flex: 2;
 	}
 
   &__input {
@@ -81,6 +85,7 @@ export default {
 		padding: 1rem 1.5rem;
 		position: relative;
 		z-index:2;
+    flex: 4;
 
 
 

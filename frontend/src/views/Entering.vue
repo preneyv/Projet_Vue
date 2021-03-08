@@ -25,6 +25,7 @@ export default {
                         id:"email",
                         name:"email",
                         type:'email',
+                        prefix:'Email',
                         placeholder:"Ton email",
                         required:true
                     },
@@ -32,6 +33,7 @@ export default {
                         id:"password",
                         name:"password",
                         type:"password",
+                        prefix:'Mot de passe',
                         placeholder:"Ton mot de passe",
                         required:true,
                     }
@@ -40,6 +42,7 @@ export default {
                     {
                         id:"name",
                         name:"name",
+                        prefix:'Nom',
                         placeholder:"Ton nom",
                         required:true
                     },
@@ -47,6 +50,7 @@ export default {
                         id:"email",
                         name:"email",
                         type:"email",
+                        prefix:'Email',
                         placeholder:"Ton email",
                         required:true
                     },
@@ -54,6 +58,7 @@ export default {
                         id:"password",
                         name:"password",
                         type:'password',
+                        prefix:'Mot de passe',
                         placeholder:"Ton mot de passe",
                         required:true,
                     }

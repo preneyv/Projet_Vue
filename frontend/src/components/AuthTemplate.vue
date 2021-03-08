@@ -7,6 +7,7 @@
                         v-for="item in tabOfInput" 
                         :key="item.id"
                         :id="item.id"
+                        :prefix="item.prefix"
                         :placeholder="item.placeholder"
                         :type="item.type"
                         :name="item.name"
@@ -82,6 +83,7 @@ export default {
 .main-ctn{
     width:max-content;
     height: fit-content;
+    min-width: 400px;
 }
 .log-ctn{
    
@@ -101,7 +103,7 @@ export default {
 }
 
 form{
-    @include flex(column);
+    @include flex(column, flex-start, flex-start);
     gap: 16px;
     margin-bottom: 15px;
 }
@@ -111,7 +113,7 @@ input[type=submit]{
     
     border: none;
     @include btn_component(1,5,4);
-    margin: 10px 0px;
+    margin: 10px auto;
 }
 
 .switchForm{
