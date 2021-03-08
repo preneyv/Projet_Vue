@@ -1,6 +1,7 @@
 <template>
   <div class="input-wrapper">
     <label class="input-wrapper__input-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
+    <div class="input-wrapper__input-prefix" v-if="prefix">{{ prefix }}</div>
     <input class="input-wrapper__input"
         v-bind:id="id"
         v-bind:type="type"
@@ -19,6 +20,7 @@ export default {
     type:        String,
     placeholder: String,
     label:       String,
+    prefix:      String,
     name:        String,
     required:    Boolean
   }
@@ -27,24 +29,31 @@ export default {
 
 <style lang="scss" scoped>
 .input-wrapper {
+  font-size: 14px;
+
 	&__input-label {
 		display: block;
-		font-size: 14px;
 		margin-bottom: 5px;
+	}
+
+  &__input-prefix {
+		padding: calc(1rem - 1px) 1rem;
+    background-color: #313131;
+    border: 1px solid lighten($color: #252525, $amount: 15);
+    border-right: none;
+    display: inline-block;
+    text-align: center;
 	}
 
 	&__input {
 		background-color: #252525;
-		font-size: 14px;
 		color: white;
-		border: none;
-		min-width: 300px;
+    border: 1px solid lighten($color: #252525, $amount: 15);
 		padding: 1rem 1.5rem;
-    border-bottom: solid 1px transparent;
 
 		&:focus {
 			outline: none;
-			border-bottom: solid 1px var(--color-primary);
+			border: 1px solid lighten($color: #252525, $amount: 60);
 		}
 	}
 }
