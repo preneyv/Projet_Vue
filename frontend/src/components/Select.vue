@@ -30,25 +30,41 @@
 
 <script>
 export default {
-  name: 'SelectComponent',
-  props: {
-    id:          String,
-    label:       String,
-    name:        String,
-    required:    Boolean,
-    items:       Array
-  },
-  data () {
-      return {
-          focused: false,
-          selected: null
-      }
-  }
+    name: 'SelectComponent',
+    props: {
+        id:          String,
+        label:       String,
+        name:        String,
+        required:    Boolean,
+        items:       Array
+    },
+    data () {
+        return {
+            focused: false,
+            selected: null
+        }
+    },
+    methods: {
+        handleOutsideClick(event) {
+        if (!this.$el.contains(event.target))
+            this.focused = false
+        }
+    },
+    mounted() {
+        document.addEventListener('click', this.handleOutsideClick, true)
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this.handleOutsideClick, true)
+    },
 }
 </script>
 
 <style lang="scss" scoped>
 .select-wrapper {
+    position: relative;
+    user-select: none;
+    display: table;
+
 	&__select-label {
 		display: block;
 		font-size: 14px;
@@ -74,6 +90,12 @@ export default {
         &.no-value {
             color: #9A9A9A;
         }
+    }
+
+    &__dropdown {
+        background-color: #252525;
+        position: absolute;
+        width: 100%;
     }
 
     &__option {
