@@ -3,7 +3,6 @@
     <label class="text-area-wrapper__area-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
     <textarea class="text-area-wrapper__area"
         v-bind:id="id"
-        v-bind:type="type"
         v-bind:placeholder="placeholder"
         v-bind:name="name"
         v-bind:required="required"
@@ -16,7 +15,6 @@ export default {
   name: 'TextAreaComponent',
   props: {
     id:          String,
-    type:        String,
     placeholder: String,
     label:       String,
     name:        String,
