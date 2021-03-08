@@ -20,7 +20,7 @@
                         </router-link>
                     </li>
                     <li class="navbar__link">
-                        <router-link to="/submit" class="button">
+                        <router-link to="/projects/submit" class="button">
                             Soumettre un projet
                         </router-link>
                     </li>
