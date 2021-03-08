@@ -1,6 +1,7 @@
 <template>
   <div class="input-wrapper">
     <label class="input-wrapper__input-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
+    <div class="input-wrapper__input-prefix" v-if="prefix">{{ prefix }}</div>
     <input class="input-wrapper__input"
         v-bind="$props"
         v-on="inputListeners"
@@ -25,7 +26,8 @@ export default {
     id:          String,
     type:        String,
     placeholder: String,
-    label:       Boolean,
+    label:       String,
+    prefix:      String,
     name:        String,
     required:    Boolean,
 
@@ -50,35 +52,47 @@ export default {
 
 <style lang="scss" scoped>
 .input-wrapper {
+  font-size: 14px;
   position: relative;
 
 	&__input-label {
 		display: block;
-		font-size: 14px;
 		margin-bottom: 5px;
+
+		span {
+				opacity: 0.55;
+			}
 	}
 
+  &__input-prefix {
+		padding: calc(1rem - 1px) 1rem;
+    background-color: #313131;
+    border: 1px solid lighten($color: #252525, $amount: 15);
+    border-right: none;
+    display: inline-block;
+    text-align: center;
+	}
 
   &__input {
-      background-color: #252525;
-      font-size: 14px;
-      color: white;
-      border: none;
-      width: 300px;
-      height: 50px;
-      position: relative;
-      z-index:2;
+		background-color: #252525;
+		font-size: 14px;
+		color: white;
+		border: 1px solid lighten($color: #252525, $amount: 15);
+		padding: 1rem 1.5rem;
+		position: relative;
+		z-index:2;
 
 
 
-      &:focus {
-          outline: none;
-          & + .barBottomInput{
-            width:300px;
-            transition: all .5s ease-in-out;
-          }
-      }
-
+		&:focus {
+			outline: none;
+			border: 1px solid lighten($color: #252525, $amount: 60);
+			
+			& + .barBottomInput{
+				width:300px;
+				transition: all .5s ease-in-out;
+			}
+		}
   }
 
   .barBottomInput{
