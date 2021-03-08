@@ -9,6 +9,7 @@
         v-bind:name="name"
         :required="required"
     />
+    <div class="barBottomInput"></div>
   </div>
 </template>
 
@@ -30,14 +31,15 @@ export default {
 <style lang="scss" scoped>
 .input-wrapper {
   font-size: 14px;
+  position: relative;
 
 	&__input-label {
 		display: block;
 		margin-bottom: 5px;
 
-    	span {
-            opacity: 0.55;
-        }
+		span {
+				opacity: 0.55;
+			}
 	}
 
   &__input-prefix {
@@ -49,16 +51,39 @@ export default {
     text-align: center;
 	}
 
-	&__input {
+  &__input {
 		background-color: #252525;
+		font-size: 14px;
 		color: white;
-    border: 1px solid lighten($color: #252525, $amount: 15);
+		border: 1px solid lighten($color: #252525, $amount: 15);
 		padding: 1rem 1.5rem;
+		position: relative;
+		z-index:2;
+
+
 
 		&:focus {
 			outline: none;
 			border: 1px solid lighten($color: #252525, $amount: 60);
+			
+			& + .barBottomInput{
+				width:300px;
+				transition: all .5s ease-in-out;
+			}
 		}
-	}
+  }
+
+  .barBottomInput{
+    width: 0;
+    height: 50px;
+    left: 0;
+    top: 3px;
+    border-bottom: solid 3px #41b883;
+    position: absolute;
+    z-index: 1;
+    transition: width 0.5s ease-in-out;
+  }
+   
 }
+
 </style>

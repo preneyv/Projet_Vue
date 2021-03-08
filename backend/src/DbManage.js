@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
 import dotenv from "dotenv"
-dotenv.config()
+
 
 const db = {
 
     initDatabase : function (){
-
+        dotenv.config()
         this.password_db = process.env.DB_PASSWORD
         this.login_db = process.env.DB_USER
         this.db_name = process.env.DB_NAME
