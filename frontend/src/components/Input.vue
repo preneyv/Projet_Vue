@@ -1,13 +1,15 @@
 <template>
   <div class="input-wrapper">
     <label class="input-wrapper__input-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
-    <div class="input-wrapper__input-prefix" v-if="prefix">{{ prefix }}</div>
-    <input class="input-wrapper__input"
-        v-bind="$props"
-        v-on="inputListeners"
-        v-model="el.value" 
-    />
-    <div class="barBottomInput"></div>
+    <div class="input-wrapper__input-row">
+      <div class="input-wrapper__input-prefix" v-if="prefix">{{ prefix }}</div>
+      <input v-bind:class="`input-wrapper__input ${error ? 'invalid' : ''}`"
+          v-bind="$props"
+          v-on="inputListeners"
+          v-model="el.value" 
+      />
+    </div>
+    <small class="input-wrapper__error" v-if="error">{{ error }}</small>
   </div>
 </template>
 
@@ -30,7 +32,7 @@ export default {
     prefix:      String,
     name:        String,
     required:    Boolean,
-
+    error:       String,
   },
   created(){
     console.log(this.$props)
@@ -54,9 +56,11 @@ export default {
 .input-wrapper {
   font-size: 14px;
   position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
+
+  &__input-row {
+    display: flex;
+    justify-content: flex-start;
+  }
 
 	&__input-label {
 		display: block;
@@ -65,6 +69,11 @@ export default {
 		span {
 				opacity: 0.55;
 			}
+	}
+
+  &__error {
+		color: var(--color-error);
+    font-size: 12px;
 	}
 
   &__input-prefix {
@@ -84,33 +93,21 @@ export default {
 		border: 1px solid lighten($color: #252525, $amount: 15);
 		padding: 1rem 1.5rem;
 		position: relative;
-		z-index:2;
-    flex: 4;
+    flex: 5;
 
-
+    &.invalid {
+      border: 1px solid var(--color-error);
+    }
 
 		&:focus {
-			outline: none;
+      outline: none;
 			border: 1px solid lighten($color: #252525, $amount: 60);
-			
-			& + .barBottomInput{
-				width:300px;
-				transition: all .5s ease-in-out;
-			}
 		}
-  }
 
-  .barBottomInput{
-    width: 0;
-    height: 50px;
-    left: 0;
-    top: 3px;
-    border-bottom: solid 3px #41b883;
-    position: absolute;
-    z-index: 1;
-    transition: width 0.5s ease-in-out;
+    &:invalid {
+      box-shadow: none;
+    }
   }
-   
 }
 
 </style>

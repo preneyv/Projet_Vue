@@ -1,7 +1,7 @@
 <template>
   <div class="multiselect-wrapper">
     <label class="multiselect-wrapper__multiselect-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
-    <div class="multiselect-wrapper__multiselect">
+    <div v-bind:class="`multiselect-wrapper__multiselect ${error ? 'invalid' : ''}`">
         <div
             v-bind:class="`multiselect-wrapper__current ${selected.length !== 0 ? '' : 'no-value'}`"
             @click="focused = !focused"
@@ -24,6 +24,7 @@
             </ul>
         </div>
     </div>
+    <small class="input-wrapper__error" v-if="error">{{ error }}</small>
 
     <select v-bind:id="id" v-bind:name="name" :required="required" multiple>
         <option v-for="item, i in items" v-bind:key="i" v-bind:value="item.value" :selected="selected.includes(item)">
@@ -41,7 +42,8 @@ export default {
         label:       String,
         name:        String,
         required:    Boolean,
-        items:       Array
+        items:       Array,
+        error:       String,
     },
     data () {
         return {
@@ -84,6 +86,7 @@ export default {
     position: relative;
     user-select: none;
     display: table;
+    width: 100%;
 
 	&__multiselect-label {
 		display: block;
@@ -95,15 +98,20 @@ export default {
         }
 	}
 
+    &__error {
+		color: var(--color-error);
+    font-size: 12px;
+	}
+
 	&__multiselect {
 		background-color: #252525;
 		font-size: 14px;
 		color: var(--primary-color);
-		border: none;
+		border: 1px solid lighten($color: #252525, $amount: 15);
 
-		&:focus {
-			outline: none;
-		}
+        &.invalid {
+            border: 1px solid var(--color-error);
+        }
 	}
 
     &__current {
@@ -117,9 +125,12 @@ export default {
 
     &__dropdown {
         background-color: #252525;
-        border-top: 1px solid rgba(0, 0, 0, 0.25);
-        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+        border: 1px solid lighten($color: #252525, $amount: 15);
+        border-top: none;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
         position: absolute;
+        left: 0;
+        transform: translateY(1px);
         width: 100%;
         z-index: 1000;
     }

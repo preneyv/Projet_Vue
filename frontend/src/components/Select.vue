@@ -1,8 +1,8 @@
 <template>
   <div class="select-wrapper">
     <label class="select-wrapper__select-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
-    <div class="select-wrapper__select" @click="focused = !focused">
-        <div v-bind:class="`select-wrapper__current ${selected ? '' : 'no-value'}`">
+    <div v-bind:class="`select-wrapper__select ${invalid ? 'invalid' : ''}`" @click="focused = !focused">
+        <div v-bind:class="`select-wrapper__current ${error ? '' : 'no-value'}`">
             {{ selected ? selected.name : 'Sélectionner...' }}
         </div>
 
@@ -18,6 +18,7 @@
             </ul>
         </div>
     </div>
+    <small class="input-wrapper__error" v-if="error">{{ error }}</small>
 
     <select v-bind:id="id" v-bind:name="name" :required="required">
         <option value="" disabled hidden :selected="selected === null ? true : false">Choisir</option>
@@ -36,7 +37,8 @@ export default {
         label:       String,
         name:        String,
         required:    Boolean,
-        items:       Array
+        items:       Array,
+        error:       String,
     },
     data () {
         return {
@@ -64,6 +66,7 @@ export default {
     position: relative;
     user-select: none;
     display: table;
+    width: 100%;
 
 	&__select-label {
 		display: block;
@@ -75,15 +78,20 @@ export default {
         }
 	}
 
+    &__error {
+		color: var(--color-error);
+    font-size: 12px;
+	}
+
 	&__select {
 		background-color: #252525;
 		font-size: 14px;
 		color: var(--primary-color);
-		border: none;
+		border: 1px solid lighten($color: #252525, $amount: 15);
 
-		&:focus {
-			outline: none;
-		}
+        &.invalid {
+            border: 1px solid var(--color-error);
+        }
 	}
 
     &__current {
@@ -97,9 +105,12 @@ export default {
 
     &__dropdown {
         background-color: #252525;
-        border-top: 1px solid rgba(0, 0, 0, 0.25);
-        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.25);
+        border: 1px solid lighten($color: #252525, $amount: 15);
+        border-top: none;
+        box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.5);
         position: absolute;
+        left: 0;
+        transform: translateY(1px);
         width: 100%;
         z-index: 1000;
     }
