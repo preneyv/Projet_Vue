@@ -103,7 +103,7 @@ export default {
 }
 
 form{
-    @include flex(column, flex-start, flex-start);
+    @include flex(column, flex-start, stretch);
     gap: 16px;
     margin-bottom: 15px;
 }
@@ -117,7 +117,10 @@ input[type=submit]{
 }
 
 .switchForm{
-    margin:10px auto 0 auto;
+    margin-top: 10px;
+    width: 100%;
+    display: block;
+    text-align: center;
     font-size:var(--font-base);
     &:hover{
         text-decoration: underline;

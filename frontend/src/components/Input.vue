@@ -93,7 +93,7 @@ export default {
 		border: 1px solid lighten($color: #252525, $amount: 15);
 		padding: 1rem 1.5rem;
 		position: relative;
-    flex: 5;
+    flex: 4;
 
     &.invalid {
       border: 1px solid var(--color-error);
