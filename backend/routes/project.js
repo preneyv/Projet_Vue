@@ -1,14 +1,14 @@
 import { Router } from "express"
-import { getAll, getOneById, insertOne, updateOne } from "../controllers/project.js"
+import populate from '../utils/populate.js'
+import { getAll, getOneById, insertOne, updateOne, deleteOneById } from "../controllers/project.js"
 const router = Router()
 
 //  GET /api/v1/project
 router.get("/", getAll)
+router.get("/debug", populate)
 router.get("/:id", getOneById)
+router.delete("/:id", deleteOneById)
 router.post("/", insertOne)
 router.put("/:id", updateOne)
-router.get("/debug", (req, res) => {
-    res.json("Hello")
-})
 
 export default router

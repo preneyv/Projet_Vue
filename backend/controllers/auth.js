@@ -12,7 +12,8 @@ export async function signin(req, res) {
 
     try {
         const user = await User.findOne({ email })
-        if (!user?.authenticate(password)) {
+        // TODO: dehash the password to compare
+        if (!user.password === password) {
             return res
                 .status(403)
                 .json({ message: `Email ou mot de passe invalide` })
