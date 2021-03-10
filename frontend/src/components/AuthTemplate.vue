@@ -7,9 +7,9 @@
                         v-for="item in tabOfInput" 
                         :key="item.id"
                         :id="item.id"
-                        :prefix="item.prefix"
                         :placeholder="item.placeholder"
                         :type="item.type"
+                        :prefix="item.prefix"
                         :name="item.name"
                         :required="item.required"
                     />
@@ -54,11 +54,19 @@ export default {
             Axios.post(this.getActionURI,this.tabOfValue)
             .then(function(res) {
 
+                /**
+                 * GERER L'ACTION EN CAS DE REUSSITE
+                 */
                 console.log(res)
             }).catch(function(error){
 
-                let back = error.response.data
-                vm.tabOfErrors = back
+                let back = [];
+                if(error.response){
+                     back = error.response.data
+                }else{
+                    back.push({message:"Problème serveur"})
+                }
+                vm.tabOfErrors = [...back]
             })
             
         },
@@ -110,10 +118,12 @@ form{
 
 input[type=submit]{
 
-    
     border: none;
     @include btn_component(1,5,4);
     margin: 10px auto;
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 .switchForm{

@@ -3,7 +3,11 @@
     <label class="input-wrapper__input-label" v-if="label" v-bind:for="id">{{ label }}<span v-if="required"> *</span></label>
     <div class="input-wrapper__input-prefix" v-if="prefix">{{ prefix }}</div>
     <input class="input-wrapper__input"
-        v-bind="$props"
+        :id="id"
+        :type="type"
+        :placeholder="placeholder"
+        :name="name"
+        :required="required"
         v-on="inputListeners"
         v-model="el.value" 
     />
@@ -31,9 +35,6 @@ export default {
     name:        String,
     required:    Boolean,
 
-  },
-  created(){
-    console.log(this.$props)
   },
   computed: {
     inputListeners : function(){
