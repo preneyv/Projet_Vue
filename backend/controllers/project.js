@@ -8,7 +8,7 @@ export async function getAll(req, res) {
         res.json({ message: `Error: ${e}` })
     }
 }
-export async function getOne(req, res) {
+export async function getOneById(req, res) {
     const { id } = req.body
     try {
         const project = await Project.findOne({ _id: id })
@@ -46,4 +46,7 @@ export async function insertOne(req, res) {
     } catch (e) {
         res.json({ message: `Error: ${e}` })
     }
+}
+export async function updateOne(req, res) {
+    res.json(req.body)
 }

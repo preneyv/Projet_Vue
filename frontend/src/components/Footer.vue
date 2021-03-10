@@ -79,7 +79,7 @@ export default {
         margin-top: space(6);
         flex-direction: column;
         h4 {
-            opacity: .45;
+            opacity: 0.45;
             margin-bottom: space(1);
             text-transform: uppercase;
         }
