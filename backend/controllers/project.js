@@ -23,7 +23,7 @@ export async function getOneById(req, res) {
     }
 }
 
-// Working
+// Done
 export async function insertOne(req, res) {
     const {
         title,
@@ -51,11 +51,11 @@ export async function insertOne(req, res) {
             res.json(project)
         })
     } catch (e) {
-        res.json({ message: `Error: ${e}` })
+        res.json({ error: e })
     }
 }
 
-// WOrking
+// Working
 export async function updateOne(req, res) {
     const { id } = req.params
     res.json(req.body)
