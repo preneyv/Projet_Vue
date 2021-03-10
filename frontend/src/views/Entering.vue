@@ -1,8 +1,8 @@
 <template>
     <div class="entering-ctn">
         <transition name="form-change" mode="out-in">
-            <AuthTemplate key="in" v-if="isInOrUp==='in'" :tabOfInput="itemLogIn" bottomMsg="Tu n'as pas de compte ? Inscris toi !" typeOfAuth="signin" v-on:handleSwitchForm="switchForm"/>
-            <AuthTemplate key="up" v-else :tabOfInput="itemLogUp" bottomMsg="Tu possèdes déjà un compte chez nous ? Connecte toi !" typeOfAuth="signup" v-on:handleSwitchForm="switchForm"/>
+            <AuthTemplate key="in" v-if="isInOrUp==='in'" :tabOfInput="itemLogIn" bottomMsg="Pas de compte ? Rejoignez nous !" typeOfAuth="signin" v-on:handleSwitchForm="switchForm"/>
+            <AuthTemplate key="up" v-else :tabOfInput="itemLogUp" bottomMsg="Déjà inscrit ? Connectez-vous ici !" typeOfAuth="signup" v-on:handleSwitchForm="switchForm"/>
         </transition>
     </div>
 </template>
@@ -26,7 +26,7 @@ export default {
                         name:"email",
                         type:'email',
                         prefix:'Email',
-                        placeholder:"Ton email",
+                        placeholder:"Saisir un email",
                         required:true
                     },
                     {
@@ -34,7 +34,7 @@ export default {
                         name:"password",
                         type:"password",
                         prefix:'Mot de passe',
-                        placeholder:"Ton mot de passe",
+                        placeholder:"Saisir un mot de passe",
                         required:true,
                     }
             ],
@@ -43,7 +43,7 @@ export default {
                         id:"name",
                         name:"name",
                         prefix:'Nom',
-                        placeholder:"Ton nom",
+                        placeholder:"Saisir un  nom",
                         required:true
                     },
                     {
@@ -51,7 +51,7 @@ export default {
                         name:"email",
                         type:"email",
                         prefix:'Email',
-                        placeholder:"Ton email",
+                        placeholder:"Saisir un email",
                         required:true
                     },
                     {
@@ -59,7 +59,7 @@ export default {
                         name:"password",
                         type:'password',
                         prefix:'Mot de passe',
-                        placeholder:"Ton mot de passe",
+                        placeholder:"Saisir un mot de passe",
                         required:true,
                     }
             ]

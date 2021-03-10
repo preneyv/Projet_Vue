@@ -12,6 +12,6 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-    padding: 0 10vw;
+    padding: 0 0vw;
 }
 </style>
