@@ -10,10 +10,13 @@
         </div>
 
         <div class="multiselect-wrapper__dropdown" v-show="focused">
+            <div class="multiselect-wrapper__dropdown__search-wrapper" v-if="allowSearch">
+                <input class="multiselect-wrapper__dropdown__search" @input="searchItems"/>
+            </div>
             <ul class="multiselect-wrapper__options">
                 <li
                     class="multiselect-wrapper__option"
-                    v-for="item, i in items"
+                    v-for="item, i in displayedItems"
                     v-bind:key="i"
                     @click="() => handleItemClick(item)">
                     <span class="multiselect-wrapper__option__status">
@@ -44,11 +47,13 @@ export default {
         required:    Boolean,
         items:       Array,
         error:       String,
+        allowSearch: Boolean
     },
     data () {
         return {
             focused: false,
-            selected: []
+            selected: [],
+            displayedItems: this.items
         }
     },
     methods: {
@@ -70,6 +75,27 @@ export default {
 
         compareItems(a, b) {
             return this.items.indexOf(a) > this.items.indexOf(b)
+        },
+
+        searchItems(event) {
+            // To lowercase without accents
+            const research = event.target.value
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+
+            if (research.trim().length === 0) 
+                this.displayedItems = this.items
+            else
+                this.displayedItems = this.items.filter(item => {
+                    // To lowercase without accents
+                    const name = item.name
+                        .toLowerCase()
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+
+                    return name.includes(research)
+                })
         }
     },
     mounted() {
@@ -133,6 +159,24 @@ export default {
         transform: translateY(1px);
         width: 100%;
         z-index: 1000;
+
+        &__search-wrapper {
+            padding: 0.75rem 1.5em 0.5em;
+        }
+
+        &__search {
+            padding: 0.5rem 0.5em;
+            border-radius: 3px;
+            color: var(--primary-color);
+            background-color: darken($color: #252525, $amount: 2);
+            border: 1px solid lighten($color: #252525, $amount: 15);
+            width: 100%;
+
+            &:focus {
+                outline: none;
+			    border: 1px solid lighten($color: #252525, $amount: 40);
+            }
+        }
     }
 
     &__option {
