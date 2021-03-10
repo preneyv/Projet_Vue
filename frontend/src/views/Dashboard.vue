@@ -1,7 +1,7 @@
 <template>
     <section>
         <ProjectList :tabOfProject="listOfProject"/>
-        <ProjectDash />
+        <ProjectDash :project="listOfProject[0]"/>
     </section>
 </template>
 
@@ -28,7 +28,49 @@ export default {
                     tags:['Git',"Java","Meca","Alarme","Domotique"],
                     sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
                     Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
-                    ea nisi.`
+                    ea nisi.`,
+                    collabs:[
+                        {
+                            type:'Developpeur',
+                            requiredNb:4,
+                            nameCollabPeople:["Jean Seguin","Jean Seguin","Jean Seguin","Jean Seguin"]
+                        },
+                        {
+                            type:'Developpeur',
+                            requiredNb:4,
+                            nameCollabPeople:["Jean Seguin","Jean Seguin","Jean Seguin","Jean Seguin"]
+                        },
+                        {
+                            type:'Developpeur',
+                            requiredNb:4,
+                            nameCollabPeople:["Jean Seguin","Jean Seguin","Jean Seguin","Jean Seguin"]
+                        },
+                        {
+                            type:'Developpeur',
+                            requiredNb:4,
+                            nameCollabPeople:["Jean Seguin","Jean Seguin","Jean Seguin","Jean Seguin"]
+                        },
+                        {
+                            type:'Developpeur',
+                            requiredNb:4,
+                            nameCollabPeople:["Jean Seguin","Jean Seguin","Jean Seguin","Jean Seguin"]
+                        },
+                        {
+                            type:'Graphiste',
+                            requiredNb:3,
+                            nameCollabPeople:["Jean Seguin","Jean Seguin"]
+                        },
+                        {
+                            type:'Admin System',
+                            requiredNb:2,
+                            nameCollabPeople:["Jean Seguin"]
+                        },
+                        {
+                            type:'Juriste',
+                            requiredNb:1,
+                            nameCollabPeople:[]
+                        },
+                    ]
                 },
                 {
                     id:1,
