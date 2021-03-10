@@ -34,9 +34,6 @@ export default {
     required:    Boolean,
     error:       String,
   },
-  created(){
-    console.log(this.$props)
-  },
   computed: {
     inputListeners : function(){
       let vm=this
