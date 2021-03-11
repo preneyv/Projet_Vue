@@ -25,10 +25,29 @@ export default {
                     licence:"Licence 2",
                     lastUpdate:"03/01/2020",
                     startedDate:"01/01/2020",
+                    stateProject:"En cours",
                     tags:['Git',"Java","Meca","Alarme","Domotique"],
                     sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
                     Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
                     ea nisi.`,
+                    links:[
+                        {
+                            title:'GitHub',
+                            value:'http://projet.github.com'
+                        },
+                        {
+                            title:'GitHub',
+                            value:'http://projet.github.com'
+                        },
+                        {
+                            title:'GitHub',
+                            value:'http://projet.github.com'
+                        },
+                        {
+                            title:'GitHub',
+                            value:'http://projet.github.com'
+                        }
+                    ],
                     collabs:[
                         {
                             type:'Developpeur',

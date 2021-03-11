@@ -13,9 +13,6 @@ export default {
         nameCollabPeople:Array,
         requiredNb:Number
     },
-    mounted(){
-        console.log(this.type,this.nameCollabPeople,this.requiredNb)
-    }
 }
 </script>
 

@@ -20,7 +20,7 @@
 			</form>
 			<span @click="triggerBottomMessageClicked" class="switch-form">{{ bottomMessage }}</span>  
 		</div>
-		<HandlingErrors v-if="errors.length !== 0" :errors="errors"/>
+		<HandlingErrors v-if="errors.length !== 0" :errors="errors" :removeError="removeError"/>
 	</div>
 </template>
 
