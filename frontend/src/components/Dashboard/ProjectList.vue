@@ -1,36 +1,36 @@
 <template>
-    <div class="list-ctn">
-        <ItemListProject 
-            v-for="pr in tabOfProject"
-            :key="pr.id"
-            :project="pr"
-        />
-    </div>
+	<div class="list-ctn">
+		<ItemListProject 
+			v-for="pr in tabOfProject"
+			:key="pr.id"
+			:project="pr"
+		/>
+	</div>
 </template>
 <script>
 import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 export default {
-    name:'ProjectList',
-    components:{
-        ItemListProject
-    },
-    props:{
-        tabOfProject: Array
-    }
+	name:'ProjectList',
+	components:{
+		ItemListProject
+	},
+	props:{
+		tabOfProject: Array
+	}
 }
 </script>
 <style lang="scss" scoped>
 
-    .list-ctn{
-        flex:1;
-        background-color: #252525;
-        border: 1px solid lighten($color: #252525, $amount: 15);
-        height: 100%;
-        overflow-y: auto;
-        min-width: 260px;
-        max-width: 380px;
-        
-    }
+	.list-ctn{
+		flex:1;
+		background-color: #252525;
+		border: 1px solid lighten($color: #252525, $amount: 15);
+		height: 100%;
+		overflow-y: auto;
+		min-width: 260px;
+		max-width: 380px;
+		
+	}
 
 ::-webkit-scrollbar {
  width: 5px;

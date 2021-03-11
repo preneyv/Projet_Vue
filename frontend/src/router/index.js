@@ -5,40 +5,40 @@ import SubmitProject from '../views/projects/Submit.vue'
 import Dashboard from '../views/Dashboard.vue'
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path:'/entering',
-    name: 'LogPages',
-    component : Entering
-  },
-  {
-    path:'/dashboard',
-    name: 'Dashboard',
-    component : Dashboard
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  // Projects
-  {
-    path:'/projects/submit',
-    name: 'SubmitProject',
-    component : SubmitProject
-  }
+	{
+		path: '/',
+		name: 'Home',
+		component: Home
+	},
+	{
+		path:'/entering',
+		name: 'LogPages',
+		component : Entering
+	},
+	{
+		path:'/dashboard',
+		name: 'Dashboard',
+		component : Dashboard
+	},
+	{
+		path: '/about',
+		name: 'About',
+		// route level code-splitting
+		// this generates a separate chunk (about.[hash].js) for this route
+		// which is lazy-loaded when the route is visited.
+		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+	},
+	// Projects
+	{
+		path:'/projects/submit',
+		name: 'SubmitProject',
+		component : SubmitProject
+	}
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+	history: createWebHistory(process.env.BASE_URL),
+	routes
 })
 
 export default router

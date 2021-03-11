@@ -139,14 +139,14 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-    section{
-        display: flex;
-        height:100%;
-        width:100%;
-        gap: 10px;
-        padding: 10px;
-        max-height: calc(100vh - 62px);
-        
-    }
+	section{
+		display: flex;
+		height:100%;
+		width:100%;
+		gap: 10px;
+		padding: 10px;
+		max-height: calc(100vh - 62px);
+		
+	}
 
 </style>
