@@ -24,6 +24,7 @@
 					v-for="item in selected"
 					:key="item.value"
 					class="select-wrapper__current__item"
+					:style="{backgroundColor: `${item.color}55`, borderColor: `${item.color}AA`}"
 				>
 					{{ item.name }} <font-awesome-icon icon="times" @click="e => handleItemSpanClick(e, item)"/>
 				</span>
