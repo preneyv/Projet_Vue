@@ -80,7 +80,7 @@ export default {
 				if (error.response)
 					self.errors = error.response.data
 				else
-					self.errors = [{message: 'Serveur injoignable'}]
+					self.errors = [{message: 'Erreur serveur'}]
 			})
 		},
 	},
@@ -118,6 +118,15 @@ form {
 	@include flex(column, flex-start, stretch);
 	gap: 16px;
 	margin-bottom: 15px;
+}
+
+input[type=submit] {
+    border: none;
+    @include btn_component(1,5,4);
+    margin: 10px auto;
+    &:hover{
+        cursor: pointer;
+    }
 }
 
 input[type=submit] {

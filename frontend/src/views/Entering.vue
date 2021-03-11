@@ -30,7 +30,7 @@ export default {
 					name: 'email',
 					type: 'email',
 					prefix: 'Email',
-					placeholder: 'Ton email',
+					placeholder: 'Saisir un email',
 					required: true
 				},
 				{
@@ -38,7 +38,7 @@ export default {
 					name: 'password',
 					type: 'password',
 					prefix: 'Mot de passe',
-					placeholder: 'Ton mot de passe',
+					placeholder: 'Saisir un mot de passe',
 					required: true,
 				}
 			],
@@ -47,7 +47,7 @@ export default {
 					id: 'name',
 					name: 'name',
 					prefix: 'Nom',
-					placeholder: 'Ton nom',
+					placeholder: 'Saisir un nom',
 					required: true
 				},
 				{
@@ -55,7 +55,7 @@ export default {
 					name: 'email',
 					type: 'email',
 					prefix: 'Email',
-					placeholder: 'Ton email',
+					placeholder: 'Saisir un email',
 					required: true
 				},
 				{
@@ -63,7 +63,7 @@ export default {
 					name: 'password',
 					type: 'password',
 					prefix: 'Mot de passe',
-					placeholder: 'Ton mot de passe',
+					placeholder: 'Saisir un mot de passe',
 					required: true,
 				}
 			]

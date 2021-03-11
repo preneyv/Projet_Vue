@@ -3,7 +3,7 @@
     <Container>
         <router-view />
     </Container>
-    <Footer />
+    <Footer v-if="$route.name!=='Dashboard'"/>
 </template>
 
 <script>
@@ -16,6 +16,9 @@ export default {
         Container,
         Footer
     },
+    mounted(){
+        console.log(this.$route)
+    }
 }
 </script>
 
