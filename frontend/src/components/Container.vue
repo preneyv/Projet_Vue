@@ -1,17 +1,17 @@
 <template>
-    <div class="container">
-       <slot></slot>
-    </div>
+		<div class="container">
+			<slot></slot>
+		</div>
 </template>
 
 <script>
 export default {
-    name: "Container"
+		name: "Container"
 }
 </script>
 
 <style lang="scss" scoped>
 .container {
-    padding: 0 0vw;
+		padding: 0 0vw;
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
-    <Navbar />
-    <Container>
-        <router-view />
-    </Container>
-    <Footer v-if="$route.name!=='Dashboard'"/>
+	<Navbar />
+	<Container>
+		<router-view />
+	</Container>
+	<Footer v-if="$route.name!=='Dashboard'"/>
 </template>
 
 <script>
@@ -11,14 +11,14 @@ import Navbar from "@/components/Navbar.vue"
 import Container from "@/components/Container.vue"
 import Footer from "@/components/Footer.vue"
 export default {
-    components: {
-        Navbar,
-        Container,
-        Footer
-    },
-    mounted(){
-        console.log(this.$route)
-    }
+	components: {
+		Navbar,
+		Container,
+		Footer
+	},
+	mounted(){
+		console.log(this.$route)
+	}
 }
 </script>
 

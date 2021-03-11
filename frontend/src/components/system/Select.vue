@@ -1,7 +1,7 @@
 <template>
-  <div class="select-wrapper">
+	<div class="select-wrapper">
 		<!-- Label -->
-    <label
+		<label
 			v-if="label"
 			:for="id"
 			class="select-wrapper__select-label"
@@ -57,13 +57,13 @@
 				<!-- /Select option list -->
 			</div>
 			<!-- /Select dropdown -->
-    </div>
+		</div>
 		<!-- /Select wrapper -->
 
-    <small class="input-wrapper__error" v-if="error">{{ error }}</small>
+		<small class="input-wrapper__error" v-if="error">{{ error }}</small>
 
 		<!-- Real select (not shown)-->
-    <select
+		<select
 			v-show="false"
 			:id="id"
 			:name="name"
@@ -80,7 +80,7 @@
 			</option>
     </select>
 		<!-- /Real select -->
-  </div>
+	</div>
 </template>
 
 <script>
@@ -103,10 +103,10 @@ export default {
 		error: String,
 		allowSearch: Boolean,
 		// Events
-    onChange: Function,
-    onClick: Function,
-    onFocus: Function,
-    onFocusout: Function
+		onChange: Function,
+		onClick: Function,
+		onFocus: Function,
+		onFocusout: Function
 	},
 	data () {
 		return {
@@ -223,7 +223,7 @@ export default {
 
   &__error {
 		color: var(--color-error);
-    font-size: 12px;
+		font-size: 12px;
 	}
 
 	&__select {

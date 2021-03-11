@@ -4,20 +4,20 @@
 			{{ label }}<span v-if="required"> *</span>
 		</label>
 
-    <div class="input-wrapper__input-row">
-      <div v-if="prefix" class="input-wrapper__input-row__input-prefix">{{ prefix }}</div>
-      <input :class="`${error ? 'invalid' : ''}`"
+		<div class="input-wrapper__input-row">
+			<div v-if="prefix" class="input-wrapper__input-row__input-prefix">{{ prefix }}</div>
+			<input :class="`${error ? 'invalid' : ''}`"
 				v-bind="propsForInput"
 				:invalid="error"
 				@input="onInput"
 				@change="onChange"
 				@click="onChange"
 				@focus="onFocus"
-    />
-    </div>
+		/>
+		</div>
 
-    <small class="input-wrapper__error" v-if="error">{{ error }}</small>
-  </div>
+		<small class="input-wrapper__error" v-if="error">{{ error }}</small>
+	</div>
 </template>
 
 <script>
@@ -52,7 +52,7 @@ export default {
 		min: Number,
 		max: Number,
 		step: Number
-  },
+	},
 	data() {
 		return {
 			propsForInput: {
@@ -84,7 +84,7 @@ export default {
 <style lang="scss" scoped>
 .input-wrapper {
 	position: relative;
-  font-size: 14px;
+	font-size: 14px;
 
 	&__input-label {
 		display: block;
@@ -95,7 +95,7 @@ export default {
 		}
 	}
 
-  &__input-row {
+	&__input-row {
 		display: flex;
 		justify-content: flex-start;
 
