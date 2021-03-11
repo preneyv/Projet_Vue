@@ -18,7 +18,15 @@
 				:class="`select-wrapper__current ${selected.length !== 0 ? '' : 'no-value'}`"
 				@click="handleClick"
 			>
-				{{ selected.length !== 0 ? selected.map(item => item.name).join(', ') : 'Sélectionner...' }}
+				<span v-if="selected.length === 0">Sélectionner...</span>
+
+				<span
+					v-for="item in selected"
+					:key="item.value"
+					class="select-wrapper__current__item"
+				>
+					{{ item.name }} <font-awesome-icon icon="times" @click="e => handleItemSpanClick(e, item)"/>
+				</span>
 			</div>
 
 			<div
@@ -128,16 +136,7 @@ export default {
 					delete this.selected.splice(itemIndex, 1)
 				}
 
-				// Add value to real select
-				for (let option of this.select.options) {
-					if (this.selected.filter(item => item.value === option.value).length !== 0) {
-						option.selected = true
-					}
-					else {
-						option.selected = false
-					}
-				}
-
+				this.updateRealSelectValue()
 				this.select.dispatchEvent(new Event("change"))
 			}
 			else {
@@ -147,6 +146,15 @@ export default {
 				this.select.dispatchEvent(new Event("change"))
 				this.select.dispatchEvent(new Event("focusout"))
 			}
+		},
+
+		handleItemSpanClick(e, item) {
+			const itemIndex = this.selected.indexOf(item)
+			if (itemIndex !== -1)
+				delete this.selected.splice(itemIndex, 1)
+			
+			this.updateRealSelectValue()
+			e.stopPropagation()
 		},
 
 		handleOutsideClick(event) {
@@ -189,6 +197,17 @@ export default {
 
 			this.select.dispatchEvent(new Event("click"))
 		},
+
+		updateRealSelectValue() {
+			for (let option of this.select.options) {
+				if (this.selected.filter(item => item.value === option.value).length !== 0) {
+					option.selected = true
+				}
+				else {
+					option.selected = false
+				}
+			}
+		}
 	},
 	mounted() {
 		document.addEventListener('click', this.handleOutsideClick, true)
@@ -240,6 +259,17 @@ export default {
 	&__current {
 		padding: 1rem 1.5rem;
 		cursor: default;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+
+		&__item {
+			font-size: 12px;
+			background-color: lighten($color: #252525, $amount: 10);
+			border: 1px solid lighten($color: #252525, $amount: 20);
+			border-radius: 2px;
+			padding: 0.5px 6px;
+		}
 
 		&.no-value {
 				color: #9A9A9A;
