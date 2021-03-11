@@ -13,14 +13,14 @@
 
 <script>
 export default {
-  name: 'TextAreaComponent',
+  name: 'BaseTextarea',
   props: {
-    id:          String,
+    id: String,
     placeholder: String,
-    label:       String,
-    name:        String,
-    required:    Boolean,
-    error:       String,
+    label: String,
+    name: String,
+    required: Boolean,
+    error: String,
   }
 }
 </script>

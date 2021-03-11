@@ -1,110 +1,144 @@
 <template>
   <div class="submit-project">
-    <PageTitle text="Soumettre un projet"/>
+    <form>
+      <PageTitle text="Soumettre un projet"/>
 
-    <InputComponent
-      id="project-name"
-      name="name"
-      type="text"
-      placeholder="Mon super projet"
-      label="Nom"
-      required
-    />
+      <div class="submit-project__input-container">
+        <BaseInput
+          type="text"
+          id="project-name"
+          name="name"
+          placeholder="Mon super projet"
+          label="Nom"
+          required
+        />
+      </div>
 
-    <TextAreaComponent
-      id="project-description"
-      name="description"
-      placeholder="Ce projet a pour but..."
-      label="Description"
-    />
+      <div class="submit-project__input-container">
+        <BaseTextarea
+          id="project-description"
+          name="description"
+          placeholder="Ce projet a pour but..."
+          label="Description"
+        />
+      </div>
 
-    <SelectComponent
-      id="project-license"
-      name="license" 
-      label="Licence"
-      v-bind:items="licenses"
-      required
-    />
+      <div class="submit-project__input-container">
+        <BaseSelect
+          id="project-license"
+          name="license" 
+          label="Licence"
+          :items="licenses"
+          required
+        />
+      </div>
 
-    <MultiSelectComponent
-      id="project-categories"
-      name="categories"
-      label="Catégorie(s)"
-      v-bind:items="categories"
-      required
-    />
+      <div class="submit-project__input-container">
+        <BaseSelect
+          id="project-categories"
+          name="categories"
+          label="Catégorie(s)"
+          :items="categories"
+          required
+          multiple
+        />
+      </div>
 
-    <InputComponent
-      id="project-name"
-      name="name"
-      type="text"
-      placeholder="Email, téléphone, etc..."
-      label="Contact"
-      required
-    />
+      <div class="submit-project__input-container">
+        <BaseInput
+          type="text"
+          id="project-name"
+          name="name"
+          placeholder="Email, téléphone, etc..."
+          label="Contact"
+          required
+        />
+      </div>
 
-    <InputComponent
-      v-for="type in linkTypes"
-      v-bind:key="`link-${type.value}`"
-      v-bind:id="`project-${type.value}-link`"
-      v-bind:name="`link-${type.value}`"
-      type="url"
-      v-bind:placeholder="type.example"
-      v-bind:prefix="type.name"
-    />
+      <div class="submit-project__input-container">
+        <div
+          v-for="type, i in officialLinkTypes"
+          :key="`link-${type.value}`"
+          class="submit-project__input-container-sm"
+        >
+          <BaseInput
+            type="text"
+            :id="`project-${type.value}-link`"
+            :name="`link-${type.value}`"
+            :placeholder="type.example"
+            :prefix="type.name"
+            :label="i === 0 ? 'Liens officiels' : null"
+          />
+        </div>
+      </div>
 
+      <div class="submit-project__input-container">
+        <div class="submit-project__needed-profil">
+          <BaseSelect
+            id="project-needed-profil-type-0"
+            name="needed-profil-type-0" 
+            label="Profils recherchés"
+            :items="profilTypes"
+            allowSearch
+          />
+          <BaseInput
+            type="number"
+            id="project-needed-profil-number-0"
+            name="needed-profil-number-0"
+            :min="0"
+          />
+          <BaseSelect
+            id="project-categories"
+            name="categories"
+            :items="profilTypes[0].skills"
+            allowSearch
+            multiple
+          />
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
 import PageTitle from '@/components/PageTitle.vue'
-import InputComponent from '@/components/Input.vue'
-import SelectComponent from '@/components/Select.vue'
-import MultiSelectComponent from '@/components/MultiSelect.vue'
-import TextAreaComponent from '@/components/TextArea.vue'
+import BaseInput from '@/components/system/Input.vue'
+import BaseSelect from '@/components/system/Select.vue'
+import BaseTextarea from '@/components/system/Textarea.vue'
+import { licenses, categories, officialLinkTypes } from '@/constants/project.js'
+import { profilTypes } from '@/constants/contributor.js'
 
 export default {
   name: 'SubmitProject',
   components: {
     PageTitle,
-    InputComponent,
-    SelectComponent,
-    MultiSelectComponent,
-    TextAreaComponent
+    BaseInput,
+    BaseSelect,
+    BaseTextarea
   },
-  data () {
-    return {
-      licenses: [
-        { value: "CC-ZERO",     name: "CC Zero" },
-        { value: "CC-BY",       name: "CC BY" },
-        { value: "CC-BY-SA",    name: "CC BY-SA" },
-        { value: "CC-BY-ND",    name: "CC BY-ND" },
-        { value: "CC-BY-NC",    name: "CC BY-NC" },
-        { value: "CC-BY-NC-SA", name: "CC BY-NC-SA" },
-        { value: "CC-BY-NC-ND", name: "CC BY-NC-ND" },
-      ],
-      categories: [
-        { value: "development", name: "Développement" },
-        { value: "education",   name: "Éducation" },
-        { value: "games",       name: "Jeux" },
-        { value: "graphics",    name: "Graphiques" },
-        { value: "internet",    name: "Internet" },
-        { value: "multimedia",  name: "Multimédia" },
-        { value: "office",      name: "Bureautique" },
-        { value: "system",      name: "Système" },
-        { value: "utilities",   name: "Utilitaires" },
-      ],
-      linkTypes: [
-        { value: "official", name: "Site officiel", example: "https://example.com" },
-        { value: "github",   name: "GitHub",        example: "https://github.com/"},
-        { value: "wiki",     name: "Wiki",          example: "https://example.com"},
-        { value: "npm",      name: "npm",           example: "https://www.npmjs.com/package/" },
-        { value: "other",    name: "Autre",         example: "https://example.com" },
-      ]
-    }
+  data() {
+    return { licenses, categories, officialLinkTypes, profilTypes }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  form {
+    max-width: 600px;
+    margin: auto;
+  }
+
+  .submit-project {
+    &__input-container {
+      margin-bottom: 1rem;
+
+      &-sm {
+        margin-bottom: 3px;
+      }
+    }
+
+    // &__needed-profil {
+
+    // }
+  }
 </style>
