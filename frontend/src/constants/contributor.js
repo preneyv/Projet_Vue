@@ -1,6 +1,5 @@
-export const profilTypes = [
-	{
-		value: 'developer',
+export const profilTypes = {
+	developer: {
 		name: 'Développeur',
 		skills: [
 			// Java
@@ -35,22 +34,19 @@ export const profilTypes = [
 			{ value: 'mongodb', name: 'MongoDB', color: '#13AA52' },
 		]
 	},
-	{
-		value: 'ux-designer',
+	'ux-designer': {
 		name: 'UX Designer',
 		skills: [
 			{ value: '', name: '' }
 		]
 	},
-	{
-		value: 'accessibility-expert',
+	'accessibility-expert': {
 		name: 'Expert en accessibilité',
 		skills: [
 			{ value: '', name: '' }
 		]
 	},
-	{
-		value: 'ui-designer',
+	'ui-designer': {
 		name: 'UI Designer',
 		skills: [
 			{ value: 'illustrator', name: 'Illustrator', color: '#FF9A00' },
@@ -58,37 +54,32 @@ export const profilTypes = [
 			{ value: 'branding', name: 'Charte graphique' },
 		]
 	},
-	{
-		value: 'webmestre',
+	webmestre: {
 		name: 'Webmestre',
 		skills: [
 			{ value: '', name: '' }
 		]
 	},
-	{
-		value: 'project-manager',
+	'project-manager': {
 		name: 'Chef de projet',
 		skills: [
 			{ value: '', name: '' }
 		]
 	},
-	{
-		value: 'network-expert',
+	'network-expert': {
 		name: 'Expert réseau',
 		skills: [
 			{ value: 'security', name: 'Sécurité' }
 		]
 	},
-	{
-		value: 'database-expert',
+	'database-expert': {
 		name: 'Expert en base de données',
 		skills: [
 			{ value: 'sql', name: 'SQL', color: '#E48E00' },
 			{ value: 'mongodb', name: 'MongoDB', color: '#13AA52' },
 		],
 	},
-	{
-		value: 'translator',
+	translator: {
 		name: 'Traducteur',
 		skills: [
 			{ value: 'english', name: 'Anglais', color: '#C1121F' },
@@ -101,4 +92,4 @@ export const profilTypes = [
 			{ value: 'japanese', name: 'Japonais', color: '#FFFFFF' },
 		]
 	},
-]
+}
