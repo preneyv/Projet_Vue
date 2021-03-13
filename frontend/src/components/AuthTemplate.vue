@@ -129,11 +129,6 @@ input[type=submit] {
     }
 }
 
-input[type=submit] {
-	border: none;
-	@include btn_component(1,5,4);
-	margin: 10px auto;
-}
 
 .switch-form {
 	margin-top: 10px;

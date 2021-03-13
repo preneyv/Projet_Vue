@@ -5,7 +5,7 @@
             <div class="state-collab-ctn">
                 <div class="state-collab-ctn__head">
                     <span>Etat des collaborations</span>
-                    <i class="bi bi-plus-square add-btn" title="Ajouter un nouveau besoin de collaboration"></i>
+                    <i class="bi bi-plus-square add-btn" title="Ajouter un nouveau besoin de collaboration" @click="changeFormAndOpen(formAddCollab)"></i>
                 </div>
                 <div class="state-collab-ctn__main">
                     <Tile 
@@ -23,12 +23,12 @@
             <BasicCtn headTitle="Journal de bord">
             </BasicCtn>
             <BasicCtn headTitle="Catégories">
-                <template v-slot:btnHead><i class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie"></i></template>
+                <template v-slot:btnHead><i class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddTag)"></i></template>
                 <div class="tag-ctn">
                     <span 
-                        v-for="(tag,index) in project.tags"
-                        :key="index"
-                    >{{tag}}
+                        v-for="(tag) in project.tags"
+                        :key="tag.value"
+                    >{{tag.name}}
                     </span>
                 </div>
             </BasicCtn>
@@ -39,7 +39,7 @@
                 <div class="stateproject-ctn">
                     <div class="stateproject-ctn__firstline">
                         <span>{{project.stateUser=== 'Admin' ? "Vous êtes administrateur sur le projet." : "Vous êtes collaborateur sur le projet"}}</span>
-                        <input class="btn-end-project" type="button" value="Déclarer terminé"/>
+                        <input v-if="project.stateUser=== 'Admin'" class="btn-end-project" type="button" value="Déclarer terminé"/>
                     </div>
                     <div class="stateproject-ctn__lastline">
                         <span>{{project.licence}}</span>
@@ -49,6 +49,13 @@
                 </div>
             </BasicCtn>
             <BasicCtn headTitle="Liste des collaborateurs">
+                <div class="collabs-ctn">
+                    <div v-for="(collab,index) in getAllCollabsNames"
+                    :key="index"
+                    class="collab-line">
+                        <CollabsLine :collabName="collab" />
+                    </div>
+                </div>
             </BasicCtn>
             <BasicCtn headTitle="Liens utiles">
                 <template v-slot:btnHead><i class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie"></i></template>
@@ -63,22 +70,74 @@
                 </div>
             </BasicCtn>
         </div>
+    <FormHandlingAdd v-if="requiredForm!==null" v-bind="requiredForm"/>
     </div>
+    
 </template>
 <script>
 import Tile from '@/components/Dashboard/Tile.vue'
 import BasicCtn from '@/components/Dashboard/BasicCtn.vue'
-
+import CollabsLine from '@/components/Dashboard/CollabsLine.vue'
+import FormHandlingAdd from '@/components/Dashboard/FormHandlingAdd.vue'
+import {categories} from '../../constants/project.js'
 export default {
     name:'ProjectDash',
     components:{
         Tile,
         BasicCtn,
+        CollabsLine,
+        FormHandlingAdd
   
+    },
+    data(){
+        return{
+            requiredForm:null,
+            formAddCollab:{
+                title:'Besoin de nouvelles collaborations ?',
+                input:[{type:'text',prefix:'Titre'},{type:'number',prefix:'Nombre demandé',min:0,max:50}],
+                method:this.newCollab()
+            },
+            formAddTag:{
+                title:'Une nouvelle catégorie ?',
+                tabOfField:[{id:'tag',items:categories}],
+                valueSelect:'',
+                method:this.newTag()
+            }
+        }    
     },
     props:{
         project:Object
     },
+    computed:{
+        getAllCollabsNames : function(){
+            let tabCollabs = []
+            if(this.project.collabs){
+                this.project.collabs.forEach(({type, nameCollabPeople}) => {
+                    nameCollabPeople.forEach(name => {
+                        if(tabCollabs.find((obj) => obj.name===name) === undefined)
+                            tabCollabs.push({name:name,type:type})
+                        
+                    })
+                })
+            }
+            return tabCollabs
+        },
+
+        getStateUser : function(){
+            return this.project.stateUser === "Admin" ? "Admin" : "Collab"
+        },
+    },
+    methods:{
+        closeForm : function(){
+            this.requiredForm=null
+        },
+        changeFormAndOpen:function(form){
+            this.requiredForm = form
+        },
+        newCollab : function(){},
+        newTag : function(){},
+    }
+
 
 
 }
@@ -104,7 +163,7 @@ export default {
 
     .left-section{
         flex:3;
-        padding: 1rem 0 1rem 1.5rem;
+        padding: 1rem 0 0rem 1.5rem;
     }
 
     .middle-section,.right-section{
@@ -129,6 +188,7 @@ export default {
         @include flex(column, unset, unset);
         font-size: 1.5rem;
         gap:1rem;
+        overflow-y: auto;
         &__head{
             @include flex(row, space-between, unset);
             border-bottom: 1px solid lighten($color: #252525, $amount: 15);
@@ -142,6 +202,7 @@ export default {
             grid-template-rows: repeat(auto-fit, 150px);
             grid-gap: 1rem;
             height: 100%;
+            overflow-y: auto;
         }
     }
 
@@ -149,7 +210,8 @@ export default {
 
     .middle-section{
         .basic-ctn:first-child, .basic-ctn:nth-child(2){
-            flex:2
+            flex: 2 0 200px;
+            overflow-y: auto;
         }
 
         .basic-ctn:last-child{
@@ -161,6 +223,8 @@ export default {
     .description{
         display: flex;
         width:100%;
+        font-size: 0.9rem;
+        overflow-y: auto;
     }
     .no-desc{  
         justify-content: center;
@@ -204,6 +268,9 @@ export default {
         font-size: 0.8rem;
         border-radius: 3px;
         color: white;
+        &:hover{
+            cursor: pointer;
+        }
     }
 
     .btn-head-stateproject{background-color: #f44a4a;}
@@ -226,6 +293,14 @@ export default {
         &__lastline{
             color: #969595;font-size: 0.7rem;
         }
+    }
+
+    /*Collabs subpart*/
+    .collabs-ctn{
+        @include flex(column, unset, unset);
+        font-size: 1.1rem;
+        gap:0.2rem;
+        width:100%;
     }
 
     /*links subpart*/
@@ -253,6 +328,10 @@ export default {
             flex:3;
         }
     }
+ 
+ 
+
+
 
 
 
