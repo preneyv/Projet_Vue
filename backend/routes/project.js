@@ -3,6 +3,7 @@ import { authenticateToken } from "../middlewares/auth.js"
 import populate from "../utils/populate.js"
 import {
     getAll,
+    getAllByUserId,
     getOneById,
     insertOne,
     updateOne,
@@ -12,6 +13,7 @@ const router = Router()
 
 //  GET /api/v1/project
 router.get("/", getAll)
+router.get("/projects/:id", getAllByUserId)
 router.get("/debug", populate)
 router.get("/:id", getOneById)
 router.delete("/:id", authenticateToken, deleteOneById)

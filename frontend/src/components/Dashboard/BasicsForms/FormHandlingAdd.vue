@@ -5,40 +5,44 @@
                 <span class="btn-exit" @click="$parent.closeForm"><i class="bi bi-x"></i></span>
                 {{title}}
                 <form>
-                    <Select v-for="(field,index) in tabOfField"
-                        :key="index"
-                        v-bind="field"
-                        :onChange="handleChange"
-                    />
-                    
-                    <input type="submit" @click="method" value="Valider"/>
+                    <component v-bind:is="form" ref="child"></component>
+                    <input type="submit" @click.prevent="submit" value="Valider"/>
                 </form>
             </div>
+            <HandlingError v-if="errors.length > 0" :errors="errors" :removeError="removeError"/>
         </div>
     </div>
 </template>
 <script>
-import Select from '@/components/system/Select.vue'
+
+import HandlingError from '@/components/HandlingErrors.vue'
 export default {
     name:"FormHandlingAdd",
-    components: { 
-        Select
+    components:{
+        HandlingError
     },
     props:{
         title:String,
-        tabOfField:Array,
         method:Function,
-        value:String
+        form:Object
     },
     data(){
         return{
-            valueOfSelect : this.value
+            errors: [],
+            valueToSend:{}
         }
     },
+
     methods:{
-        handleChange : function(e){
-            this.valueOfSelect = e.target.value
-        }
+        submit : function(){
+            this.valueToSend = this.$refs.child.newValues
+        },
+
+//Errors Displaying functions
+        removeError(i) {
+			this.errors.splice(i, 1)
+		},
+
     }
 }
 </script>
@@ -70,8 +74,10 @@ export default {
                 @include flex(column,center,unset);
 
                 form{
-                    @include flex(row);
+                    @include flex(column,center, unset);
                     gap:1rem;
+                    margin-top: 1rem;
+                    text-align: left;
                 }
             }
            

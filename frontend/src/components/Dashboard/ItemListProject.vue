@@ -68,6 +68,7 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		flex-wrap: wrap;
 
 	}
 	.foot-ctn,.short-sumup{color: #969595;font-size: 0.7rem;padding: 4px 0;}

@@ -58,7 +58,7 @@
                 </div>
             </BasicCtn>
             <BasicCtn headTitle="Liens utiles">
-                <template v-slot:btnHead><i class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie"></i></template>
+                <template v-slot:btnHead><i class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddLinks)"></i></template>
                 <div class="links-ctn">
                     <div class="link-item"
                         v-for="(link,index) in project.links"
@@ -71,6 +71,8 @@
             </BasicCtn>
         </div>
     <FormHandlingAdd v-if="requiredForm!==null" v-bind="requiredForm"/>
+        
+
     </div>
     
 </template>
@@ -78,8 +80,11 @@
 import Tile from '@/components/Dashboard/Tile.vue'
 import BasicCtn from '@/components/Dashboard/BasicCtn.vue'
 import CollabsLine from '@/components/Dashboard/CollabsLine.vue'
-import FormHandlingAdd from '@/components/Dashboard/FormHandlingAdd.vue'
-import {categories} from '../../constants/project.js'
+import FormHandlingAdd from '@/components/Dashboard/BasicsForms/FormHandlingAdd.vue'
+import AddTag from '@/components/Dashboard/BasicsForms/AddTag.vue'
+import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
+import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
+import { markRaw } from 'vue'
 export default {
     name:'ProjectDash',
     components:{
@@ -94,14 +99,19 @@ export default {
             requiredForm:null,
             formAddCollab:{
                 title:'Besoin de nouvelles collaborations ?',
-                input:[{type:'text',prefix:'Titre'},{type:'number',prefix:'Nombre demandé',min:0,max:50}],
-                method:this.newCollab()
+                method:this.newCollab(),
+                form:markRaw(AddCollabs),  
             },
             formAddTag:{
+                
                 title:'Une nouvelle catégorie ?',
-                tabOfField:[{id:'tag',items:categories}],
-                valueSelect:'',
-                method:this.newTag()
+                method:this.newTag(),
+                form: markRaw(AddTag), 
+            },
+            formAddLinks:{
+                title:'Ajouter un autre lien',
+                method:this.newLink,
+                form: markRaw(AddLinks), 
             }
         }    
     },
@@ -131,11 +141,12 @@ export default {
         closeForm : function(){
             this.requiredForm=null
         },
-        changeFormAndOpen:function(form){
-            this.requiredForm = form
+        changeFormAndOpen:function(el){
+            this.requiredForm = el
         },
         newCollab : function(){},
         newTag : function(){},
+        newLink : function(){}
     }
 
 
