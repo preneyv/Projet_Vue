@@ -58,25 +58,28 @@ export default {
     },
     watch:{
         valueType : function(newOne){
-            this.turnDynamicSelectTechno(newOne)
+            console.log(newOne)
+            this.turnDynamicSelectTechno(newOne.valueType)
         }
     },
     methods:{
         assemblingType(){
             let newArrayOfType = []
-            profilTypes.forEach(({value, name}) =>{
-                newArrayOfType.push({value,name})
-            })
+            for(const profil in profilTypes){
+                newArrayOfType.push({value:profil,name:profilTypes[profil].name})
+            }
             this.selectType.items = newArrayOfType
         },
         turnDynamicSelectTechno(valueType){
+            console.log(valueType)
             
             let el = []
             if(valueType !== "" && valueType !== undefined){
-                el = profilTypes.find(line => line.value === valueType)
-                el = el.skills 
+                
+                el = profilTypes[valueType].skills
             }
             this.selectTechno = Object.assign({}, this.selectTechno, {items:[...el]})
+            console.log(this.selectTechno)
         },
         handleChange(e){
 
@@ -88,6 +91,7 @@ export default {
 
             if(e.target.name === 'selectType'){
                 this.newValues.valueType = e.target.value
+                this.turnDynamicSelectTechno(this.newValues.valueType)
             }
         }
     }
