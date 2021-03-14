@@ -36,6 +36,31 @@ export default {
     methods:{
         submit : function(){
             this.valueToSend = this.$refs.child.newValues
+            
+            console.log(this.valueToSend)
+            this.checkValueToSendPromise().then((res)=>{
+                console.log(res)
+            }).catch((error) => {
+                this.errors.push(error)
+            })
+            
+        },
+        checkValueToSendPromise(){
+            return new Promise((resolve,reject)=>{
+                let errors=0
+                for (const field in this.valueToSend){
+                    if(this.valueToSend[field]==="" || this.valueToSend[field] === undefined || (Array.isArray(this.valueToSend[field]) && this.valueToSend[field].length === 0)){
+                        errors+=1
+                    }
+                }
+
+                if(errors == 0){
+                    resolve("OK")
+                }else{
+                    reject({message:'Veuillez remplir le formulaire correctement'})
+                }
+            })
+            
         },
 
 //Errors Displaying functions
@@ -95,12 +120,12 @@ export default {
 
     .btn-exit{
         background-color: white;
-        font-size: 1.7rem;
+        font-size: 1.3rem;
         color: black;
         border-radius: 75%;
-        padding: 0rem 0.3rem;
+        padding: 0.1rem 0.3rem 0 0.3rem;
         position: absolute;
-        top: -20px;
+        top: -15px;
         left: 96%;
         &:hover{
             cursor: pointer;

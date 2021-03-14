@@ -5,11 +5,11 @@
             <div class="state-collab-ctn">
                 <div class="state-collab-ctn__head">
                     <span>Etat des collaborations</span>
-                    <i class="bi bi-plus-square add-btn" title="Ajouter un nouveau besoin de collaboration" @click="changeFormAndOpen(formAddCollab)"></i>
+                    <i class="bi bi-plus-square add-btn" v-if="project.stateUser=== 'Admin'" title="Ajouter un nouveau besoin de collaboration" @click="changeFormAndOpen(formAddCollab)"></i>
                 </div>
                 <div class="state-collab-ctn__main">
                     <Tile 
-                    v-for="(col,index) in project.collabs"
+                    v-for="(col,index) in project.jobs"
                     :key="index"
                     v-bind="col"
                     />
@@ -23,7 +23,7 @@
             <BasicCtn headTitle="Journal de bord">
             </BasicCtn>
             <BasicCtn headTitle="Catégories">
-                <template v-slot:btnHead><i class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddTag)"></i></template>
+                <template v-slot:btnHead><i v-if="project.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddTag)"></i></template>
                 <div class="tag-ctn">
                     <span 
                         v-for="(tag) in project.tags"
@@ -44,7 +44,7 @@
                     <div class="stateproject-ctn__lastline">
                         <span>{{project.licence}}</span>
                         <span>{{project.stateProject}}</span>
-                        <span>Créé le {{project.startedDate}}</span>
+                        <span>Créé le {{formatedDate(project.startedDate)}}</span>
                     </div>
                 </div>
             </BasicCtn>
@@ -58,7 +58,7 @@
                 </div>
             </BasicCtn>
             <BasicCtn headTitle="Liens utiles">
-                <template v-slot:btnHead><i class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddLinks)"></i></template>
+                <template v-slot:btnHead><i v-if="project.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddLinks)"></i></template>
                 <div class="links-ctn">
                     <div class="link-item"
                         v-for="(link,index) in project.links"
@@ -85,6 +85,7 @@ import AddTag from '@/components/Dashboard/BasicsForms/AddTag.vue'
 import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
 import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
 import { markRaw } from 'vue'
+import format from 'date-format'
 export default {
     name:'ProjectDash',
     components:{
@@ -101,6 +102,7 @@ export default {
                 title:'Besoin de nouvelles collaborations ?',
                 method:this.newCollab(),
                 form:markRaw(AddCollabs),  
+                
             },
             formAddTag:{
                 
@@ -121,11 +123,11 @@ export default {
     computed:{
         getAllCollabsNames : function(){
             let tabCollabs = []
-            if(this.project.collabs){
-                this.project.collabs.forEach(({type, nameCollabPeople}) => {
-                    nameCollabPeople.forEach(name => {
+            if(this.project.jobs){
+                this.project.jobs.forEach(({type, nameCollabPeople}) => {
+                    nameCollabPeople.forEach(collab => {
                         if(tabCollabs.find((obj) => obj.name===name) === undefined)
-                            tabCollabs.push({name:name,type:type})
+                            tabCollabs.push({name:collab.name,type:type,id:collab._collab})
                         
                     })
                 })
@@ -144,6 +146,10 @@ export default {
         changeFormAndOpen:function(el){
             this.requiredForm = el
         },
+        formatedDate(date){
+			return format('dd/MM/yyyy',new Date(date))
+			
+		},
         newCollab : function(){},
         newTag : function(){},
         newLink : function(){}

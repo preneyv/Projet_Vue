@@ -1,13 +1,18 @@
 
 import Axios from 'axios'
 import config from '@/config.js'
-export default AdminAPI={
+const AdminAPI={
 
         //Grab all project matching the id (the author's one)
         getListProject : function(id){
-            Axios.get(`${config.API_URL}project/projects/${id}`)
-            .then()
-            .catch()
+            let resultat = Axios.get(`${config.API_URL}project/projects/${id}`)
+            .then((res)=>{
+                return res
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+            return resultat
         }
 
         //TODO : Add a tag matching the id (project Id)
@@ -23,3 +28,5 @@ export default AdminAPI={
 
     
 }
+
+export default AdminAPI

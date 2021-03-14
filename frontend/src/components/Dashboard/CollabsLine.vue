@@ -20,9 +20,7 @@ export default {
     props:{
         collabName:Object,
     },
-    updated(){
-        console.log(this.isOptionOpened)
-    }
+
     
 }
 </script>

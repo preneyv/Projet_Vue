@@ -1,5 +1,5 @@
 <template>
-	<div @click="selectProject(project.id)" :class="[{'item-list-ctn__isSelected' : isSelected }, 'item-list-ctn']">
+	<div @click="selectProject(project._id)" :class="[{'item-list-ctn__isSelected' : isSelected }, 'item-list-ctn']">
 		<div class="head-ctn">
 			<span>{{project.title}}</span>
 			<span :class="[project.stateUser==='Admin' ? 'userAdmin':'userCollab', 'sp-tag']">{{project.stateUser}}</span>
@@ -15,30 +15,38 @@
 		</div>
 		<div class="foot-ctn">
 			<span>{{project.licence}}</span>
-			<span>{{project.lastUpdate}}</span>
-			<span>{{project.startedDate}}</span>
+			<span>{{formatedDate(project.lastUpdate)}}</span>
+			<span>{{formatedDate(project.startedDate)}}</span>
 		</div>
 	</div>
 </template>
 
 <script>
+
+import format from 'date-format'
 export default {
 	name:'ItemListProject',
 	props:{
 		project:Object,
-		nbSelectedProject:Number
+		nbSelectedProject:String
 	},
 	methods:{
 		selectProject : function(id)
 		{
 			this.bus.emit('handleChangeProject', id)
+		},
+
+		formatedDate(date){
+			return format('dd/MM/yyyy',new Date(date))
 		}
 	},
 	computed:{
 		isSelected(){
-			return this.nbSelectedProject === this.project.id ? true : false
-		}
+			return this.nbSelectedProject === this.project._id ? true : false
+		},
+		
 	}
+
 }
 </script>
 <style lang="scss" scoped>
