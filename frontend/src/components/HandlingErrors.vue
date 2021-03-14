@@ -1,6 +1,6 @@
 <template>
 	<transition-group tag="div" name="list-error" class="errors-ctn" mode="out-in" appear>
-		<span v-for="(err, index) in errors" :key="index">{{err.message}}<i class="bi bi-x" @click="$parent.removeError(index)"></i></span>
+		<span v-for="(err, index) in errors" :key="index">{{err.message}}<i class="bi bi-x" @click="removeError(index)"></i></span>
 	</transition-group>
 </template>
 
@@ -8,7 +8,8 @@
 export default {
 	name:'HandlingError',
 	props:{
-		errors : Array
+		errors : Array,
+		removeError: Function
 	},
 }
 </script>

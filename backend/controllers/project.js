@@ -1,6 +1,7 @@
 // TODO: Handle Error Unreadable Id on route getOneById
 
 import Project from "../models/Project.js"
+import mongoose from 'mongoose'
 
 // Done
 export async function getAll(req, res) {
@@ -9,6 +10,27 @@ export async function getAll(req, res) {
         res.json(projects)
     } catch (e) {
         res.json({ message: `Error: ${e}` })
+    }
+}
+
+export async function getAllByUserId(req, res) {
+    const { id } = req.params
+    console.log(id)
+    try {
+        const project = await Project.aggregate([
+                { $match: { $or:[{author: mongoose.Types.ObjectId(id)},{'jobs.nameCollabPeople._collab': mongoose.Types.ObjectId(id)}]}}
+            ])
+            .addFields({
+                        stateUser:{
+                                $cond:[{$eq:['$author',mongoose.Types.ObjectId(id)]}, 'Admin', "Collab"]
+                            }
+                    })
+                    
+
+        res.json(project)
+        
+    } catch (e) {
+        res.json({ error: e.response })
     }
 }
 

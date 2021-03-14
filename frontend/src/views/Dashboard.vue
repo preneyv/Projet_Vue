@@ -1,96 +1,53 @@
 <template>
-	<section>
-		<ProjectList :tabOfProject="listOfProject"/>
-		<ProjectDash />
-	</section>
+    <section>
+        <div class="list-ctn">
+            <ItemListProject 
+                v-for="pr in listOfProject"
+                :key="pr._id"
+                :project="pr"
+                :nbSelectedProject="currentProject._id"
+            />
+        </div>
+        <!--<transition name="project-change" mode="out-in">-->
+            <ProjectDash  :project="getCurrentProject"/>
+        <!--</transition>-->
+    </section>
 </template>
 
 <script>
-import ProjectList from '@/components/Dashboard/ProjectList.vue'
+import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
 
+import AdminAPI from '../components/Dashboard/AdminAPI.js'
+
 export default {
-	name:"Dashboard",
-	components:{
-		ProjectList,
-		ProjectDash
-	},
-	data(){
-		return{
-			listOfProject:[
-				{
-					id:0,
-					title:"Alarme Web Mobile",
-					stateUser:"Admin",
-					licence:"Licence 2",
-					lastUpdate:"03/01/2020",
-					startedDate:"01/01/2020",
-					tags:['Git',"Java","Meca","Alarme","Domotique"],
-					sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
-					Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
-					ea nisi.`
-				},
-				{
-					id:1,
-					title:"Alarme Web Mobile",
-					stateUser:"Admin",
-					licence:"Licence 2",
-					lastUpdate:"03/01/2020",
-					startedDate:"01/01/2020",
-					tags:['Git',"Java","Meca","Alarme","Domotique"],
-					sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
-					Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
-					ea nisi.`
-				},
-				{
-					id:2,
-					title:"Alarme Web Mobile",
-					stateUser:"Collab",
-					licence:"Licence 2",
-					lastUpdate:"03/01/2020",
-					startedDate:"01/01/2020",
-					tags:['Git',"Java","Meca","Alarme","Domotique"],
-					sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
-					Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
-					ea nisi.`
-				},
-				{
-					id:3,
-					title:"Alarme Web Mobile",
-					stateUser:"Admin",
-					licence:"Licence 2",
-					lastUpdate:"03/01/2020",
-					startedDate:"01/01/2020",
-					tags:['Git',"Java","Meca","Alarme","Domotique"],
-					sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
-					Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
-					ea nisi.`
-				},
-				{
-					id:4,
-					title:"Alarme Web Mobile",
-					stateUser:"Collab",
-					licence:"Licence 2",
-					lastUpdate:"03/01/2020",
-					startedDate:"01/01/2020",
-					tags:['Git',"Java","Meca","Alarme","Domotique"],
-					sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
-					Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
-					ea nisi.`
-				},
-				{
-					id:5,
-					title:"Alarme Web Mobile",
-					stateUser:"Collab",
-					licence:"Licence 2",
-					lastUpdate:"03/01/2020",
-					startedDate:"01/01/2020",
-					tags:['Git',"Java","Meca","Alarme","Domotique"],
-					sumup:`Ipsum eiusmod reprehenderit labore dolore do Lorem qui nulla labore. 
-					Ea duis ex non culpa minim deserunt culpa in officia et sunt. Dolore cillum 
-					ea nisi.`
-				},
-			]
+    name:"Dashboard",
+    components:{
+        ItemListProject,
+        ProjectDash
+    },
+    beforeMount(){
+        AdminAPI.getListProject("603c08ff76c5cf37b82d2ba3").then(res=>{
+            this.listOfProject = res.data
+            this.currentProject = this.listOfProject[0]
+        })  
+        this.bus.on('handleChangeProject', (id)=>this.changeProject(id))
+    },
+    data(){
+        return{
+            listOfProject:[],
+            currentProject:null
+        }
+    },
+    computed:{
+        getCurrentProject(){
+            return this.currentProject
+        }
+
+    },
+    methods:{
+		changeProject:function(id){
+           this.currentProject= this.listOfProject.find(item => item._id === id)
 		}
 	}
 }
@@ -107,4 +64,25 @@ export default {
 		
 	}
 
+    /*List Projects Part*/
+    .list-ctn{
+		flex:1;
+		background-color: #252525;
+		border: 1px solid lighten($color: #252525, $amount: 15);
+		height: 100%;
+		overflow-y: auto;
+		min-width: 260px;
+		max-width: 380px;
+		
+	}
+
+
+
+    .project-change-enter-active, .form-change-leave-active{
+        transition: all .3s ease-in-out;
+    }
+
+    .project-change-enter, .form-change-leave-to{
+        transform: translateX(100%);
+    }
 </style>

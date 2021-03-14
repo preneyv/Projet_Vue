@@ -83,7 +83,7 @@
 			@focus="onFocus"
 			@focusout="onFocusout"
 		>
-		<option value="" :selected="multiple ? selected.length === 0 : selected !== null"></option>
+		<!--<option value="" :selected="multiple ? selected.length === 0 : selected !== null"></option>-->
 			<option v-for="item, i in items" :key="i" :value="item.value" :selected="multiple ? selected.includes(item) : selected === item">
 				{{ item.name }}
 			</option>

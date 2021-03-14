@@ -1,5 +1,5 @@
 <template>
-	<div class="item-list-ctn">
+	<div @click="selectProject(project._id)" :class="[{'item-list-ctn__isSelected' : isSelected }, 'item-list-ctn']">
 		<div class="head-ctn">
 			<span>{{project.title}}</span>
 			<span :class="[project.stateUser==='Admin' ? 'userAdmin':'userCollab', 'sp-tag']">{{project.stateUser}}</span>
@@ -9,24 +9,44 @@
 		</div>
 		<div class="tag-ctn">
 			<span class="tag sp-tag"
-				v-for="(tag, index) in project.tags"
-				:key="index"
-			>{{tag}}</span>
+				v-for="(tag) in project.tags"
+				:key="tag.value"
+			>{{tag.name}}</span>
 		</div>
 		<div class="foot-ctn">
 			<span>{{project.licence}}</span>
-			<span>{{project.lastUpdate}}</span>
-			<span>{{project.startedDate}}</span>
+			<span>{{formatedDate(project.lastUpdate)}}</span>
+			<span>{{formatedDate(project.startedDate)}}</span>
 		</div>
 	</div>
 </template>
 
 <script>
+
+import format from 'date-format'
 export default {
 	name:'ItemListProject',
 	props:{
-		project:Object
+		project:Object,
+		nbSelectedProject:String
+	},
+	methods:{
+		selectProject : function(id)
+		{
+			this.bus.emit('handleChangeProject', id)
+		},
+
+		formatedDate(date){
+			return format('dd/MM/yyyy',new Date(date))
+		}
+	},
+	computed:{
+		isSelected(){
+			return this.nbSelectedProject === this.project._id ? true : false
+		},
+		
 	}
+
 }
 </script>
 <style lang="scss" scoped>
@@ -38,7 +58,16 @@ export default {
 		flex-direction: column;
 		padding: 1rem;
 		border-bottom: 1px solid lighten($color: #252525, $amount: 15);
+		&:hover{
+			cursor: pointer;
+			background-color: #202120;
+		}
+
+		&__isSelected{
+			background-color: #202120;
+		}
 	}
+
 	.item-list-ctn:last-child{
 		border:none
 	}
@@ -47,6 +76,7 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		flex-wrap: wrap;
 
 	}
 	.foot-ctn,.short-sumup{color: #969595;font-size: 0.7rem;padding: 4px 0;}

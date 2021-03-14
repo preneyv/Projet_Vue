@@ -36,7 +36,7 @@ app.use(json())
 
 // Routes
 app.use("/api/v1/auth", cors(corsOption), authRoutes)
-app.use("/api/v1/project", projectRoutes)
+app.use("/api/v1/project", cors(corsOption), projectRoutes)
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1", indexRoutes)
 app.all("*", (req, res, next) => {
