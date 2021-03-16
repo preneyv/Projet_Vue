@@ -1,15 +1,15 @@
 <template>
     <div class="project-ctn">
         <div class="section left-section">
-            <div class="title-ctn"><h2>{{project.title}}</h2></div>
+            <div class="title-ctn"><h2>{{projectLocal.title}}</h2></div>
             <div class="state-collab-ctn">
                 <div class="state-collab-ctn__head">
                     <span>Etat des collaborations</span>
-                    <i class="bi bi-plus-square add-btn" v-if="project.stateUser=== 'Admin'" title="Ajouter un nouveau besoin de collaboration" @click="changeFormAndOpen(formAddCollab)"></i>
+                    <i class="bi bi-plus-square add-btn" v-if="projectLocal.stateUser=== 'Admin'" title="Ajouter un nouveau besoin de collaboration" @click="changeFormAndOpen(formAddCollab)"></i>
                 </div>
                 <div class="state-collab-ctn__main">
                     <Tile 
-                    v-for="(col,index) in project.jobs"
+                    v-for="(col,index) in projectLocal.jobs"
                     :key="index"
                     v-bind="col"
                     />
@@ -18,17 +18,17 @@
         </div>
         <div class="section middle-section">
             <BasicCtn headTitle="Description">
-                <div :class="[project.description ? '' : 'no-desc', 'description']" >{{project.description ? project.description : "Pas de détail"}}</div>
+                <div :class="[projectLocal.description ? '' : 'no-desc', 'description']" >{{projectLocal.description ? projectLocal.description : "Pas de détail"}}</div>
             </BasicCtn>
             <BasicCtn headTitle="Journal de bord">
             </BasicCtn>
             <BasicCtn headTitle="Catégories">
-                <template v-slot:btnHead><i v-if="project.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddTag)"></i></template>
+                <template v-slot:btnHead><i v-if="projectLocal.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddTag)"></i></template>
                 <div class="tag-ctn">
                     <span 
-                        v-for="(tag) in project.tags"
-                        :key="tag.value"
-                    >{{tag.name}}
+                        v-for="(tag) in projectLocal.tags"
+                        :key="tag"
+                    >{{getNameTag(tag)}}
                     </span>
                 </div>
             </BasicCtn>
@@ -38,13 +38,13 @@
                 <template v-slot:btnHead><input class="btn-head-stateproject" type="button" :value="project.stateUser=== 'Admin' ? 'Supprimer le projet' : 'Se retirer du projet'"/></template>
                 <div class="stateproject-ctn">
                     <div class="stateproject-ctn__firstline">
-                        <span>{{project.stateUser=== 'Admin' ? "Vous êtes administrateur sur le projet." : "Vous êtes collaborateur sur le projet"}}</span>
+                        <span>{{projectLocal.stateUser=== 'Admin' ? "Vous êtes administrateur sur le projet." : "Vous êtes collaborateur sur le projet"}}</span>
                         <input v-if="project.stateUser=== 'Admin'" class="btn-end-project" type="button" value="Déclarer terminé"/>
                     </div>
                     <div class="stateproject-ctn__lastline">
-                        <span>{{project.licence}}</span>
-                        <span>{{project.stateProject}}</span>
-                        <span>Créé le {{formatedDate(project.startedDate)}}</span>
+                        <span>{{projectLocal.licence}}</span>
+                        <span>{{projectLocal.stateProject}}</span>
+                        <span>Créé le {{formatedDate(projectLocal.startedDate)}}</span>
                     </div>
                 </div>
             </BasicCtn>
@@ -58,10 +58,10 @@
                 </div>
             </BasicCtn>
             <BasicCtn headTitle="Liens utiles">
-                <template v-slot:btnHead><i v-if="project.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddLinks)"></i></template>
+                <template v-slot:btnHead><i v-if="projectLocal.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddLinks)"></i></template>
                 <div class="links-ctn">
                     <div class="link-item"
-                        v-for="(link,index) in project.links"
+                        v-for="(link,index) in projectLocal.links"
                         :key="index"
                     >
                         <span>{{link.title}}</span>
@@ -86,6 +86,7 @@ import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
 import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
 import { markRaw } from 'vue'
 import format from 'date-format'
+import {categories} from '../../constants/project.js'
 export default {
     name:'ProjectDash',
     components:{
@@ -97,6 +98,7 @@ export default {
     },
     data(){
         return{
+            projectLocal : this.project,
             requiredForm:null,
             formAddCollab:{
                 title:'Besoin de nouvelles collaborations ?',
@@ -107,7 +109,7 @@ export default {
             formAddTag:{
                 
                 title:'Une nouvelle catégorie ?',
-                method:this.newTag(),
+                method:this.newTag,
                 form: markRaw(AddTag), 
             },
             formAddLinks:{
@@ -123,8 +125,8 @@ export default {
     computed:{
         getAllCollabsNames : function(){
             let tabCollabs = []
-            if(this.project.jobs){
-                this.project.jobs.forEach(({type, nameCollabPeople}) => {
+            if(this.projectLocal.jobs){
+                this.projectLocal.jobs.forEach(({type, nameCollabPeople}) => {
                     nameCollabPeople.forEach(collab => {
                         if(tabCollabs.find((obj) => obj.name===name) === undefined)
                             tabCollabs.push({name:collab.name,type:type,id:collab._collab})
@@ -136,10 +138,16 @@ export default {
         },
 
         getStateUser : function(){
-            return this.project.stateUser === "Admin" ? "Admin" : "Collab"
+            return this.projectLocal.stateUser === "Admin" ? "Admin" : "Collab"
         },
+        
     },
     methods:{
+        getNameTag : function(val){
+            console.log(val)
+            return categories.find(({value}) => val === value).name
+            
+        },
         closeForm : function(){
             this.requiredForm=null
         },
@@ -151,7 +159,14 @@ export default {
 			
 		},
         newCollab : function(){},
-        newTag : function(){},
+        newTag(val){
+
+            if(this.projectLocal.tags.includes(val.valueTag))
+                return ({message:'Cette catégorie est déjà présente dans votre projet.'})
+
+            this.projectLocal.tags = [...this.projectLocal.tags,val.valueTag]
+            
+        },
         newLink : function(){}
     }
 
@@ -252,10 +267,9 @@ export default {
     /*Tag subpart*/
     .tag-ctn{
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(80px,1fr));
+        grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
         width: 100%;
         font-size: 0.9rem;
-        grid-auto-rows: min-content;
         grid-gap: 1rem;
 
         span{

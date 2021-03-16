@@ -60,7 +60,7 @@ export default {
 		width:100%;
 		gap: 10px;
 		padding: 10px;
-		max-height: calc(100vh - 62px);
+		position : relative;
 		
 	}
 
@@ -71,8 +71,9 @@ export default {
 		border: 1px solid lighten($color: #252525, $amount: 15);
 		height: 100%;
 		overflow-y: auto;
-		min-width: 260px;
-		max-width: 380px;
+        min-width: 260px;
+        max-width: 380px;
+        max-height: 100vh;
 		
 	}
 

@@ -38,8 +38,9 @@ export default {
             this.valueToSend = this.$refs.child.newValues
             
             console.log(this.valueToSend)
-            this.checkValueToSendPromise().then((res)=>{
-                console.log(res)
+            this.checkValueToSendPromise().then(()=>{
+                let backResult = (this.method)(this.valueToSend)
+                if (backResult ) throw backResult 
             }).catch((error) => {
                 this.errors.push(error)
             })

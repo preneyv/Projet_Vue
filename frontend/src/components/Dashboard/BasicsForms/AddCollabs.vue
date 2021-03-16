@@ -31,6 +31,7 @@ export default {
                 name:'selectTechno',
                 required:true,
                 multiple:true,
+                allowSearch:true,
                 label:'Choisir plusieurs technos',
                 items: [],
             },
