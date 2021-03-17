@@ -51,8 +51,9 @@ export default {
             this.input = Object.assign({}, this.input, {placeholder:el})
         },
         handleChange(e){
+
             if(e.target.name==='selectTypeLink')
-                this.newValues.valueSelect = e.target.selectedOptions[0].textContent
+                this.newValues.valueSelect = e.target.value
 
             if(e.target.name==='valueLink')
                 this.newValues.valueInput = e.target.value

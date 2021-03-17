@@ -64,7 +64,7 @@
                         v-for="(link,index) in projectLocal.links"
                         :key="index"
                     >
-                        <span>{{link.title}}</span>
+                        <span>{{getNameLink(link.title)}}</span>
                         <span>{{link.value}}</span>
                     </div>
                 </div>
@@ -84,9 +84,10 @@ import FormHandlingAdd from '@/components/Dashboard/BasicsForms/FormHandlingAdd.
 import AddTag from '@/components/Dashboard/BasicsForms/AddTag.vue'
 import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
 import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
+import AdminAPI from './AdminAPI.js'
 import { markRaw } from 'vue'
 import format from 'date-format'
-import {categories} from '../../constants/project.js'
+import {categories, officialLinkTypes} from '../../constants/project.js'
 export default {
     name:'ProjectDash',
     components:{
@@ -136,19 +137,16 @@ export default {
             }
             return tabCollabs
         },
-
-        getStateUser : function(){
-            return this.projectLocal.stateUser === "Admin" ? "Admin" : "Collab"
-        },
-        
     },
     methods:{
-        getNameTag : function(val){
-            console.log(val)
+        getNameTag(val){
             return categories.find(({value}) => val === value).name
-            
         },
-        closeForm : function(){
+        getNameLink(val){
+            return officialLinkTypes.find(({value}) => val === value).name
+        },
+
+        closeForm(){
             this.requiredForm=null
         },
         changeFormAndOpen:function(el){
@@ -158,16 +156,35 @@ export default {
 			return format('dd/MM/yyyy',new Date(date))
 			
 		},
-        newCollab : function(){},
-        newTag(val){
+        newCollab(){
 
-            if(this.projectLocal.tags.includes(val.valueTag))
+        },
+        newTag({valueTag}){
+
+            if(this.projectLocal.tags.includes(valueTag))
                 return ({message:'Cette catégorie est déjà présente dans votre projet.'})
 
-            this.projectLocal.tags = [...this.projectLocal.tags,val.valueTag]
+            this.projectLocal.tags = [...this.projectLocal.tags,valueTag]
+            AdminAPI.addTagToProject(this.projectLocal._id,valueTag)
+                    .then((res)=> {
+                        console.log(res)
+                    })
+
             
         },
-        newLink : function(){}
+        newLink({valueSelect, valueInput}){
+            
+            this.projectLocal.links.forEach((el) =>{
+                if(el.title === valueSelect && el.value === valueInput)
+                    return ({message:'Ce lien est déjà présent dans votre projet.'})      
+            })
+
+
+            this.projectLocal.links = [...this.projectLocal.links,{title:valueSelect,value:valueInput}]
+
+
+
+        }
     }
 
 
