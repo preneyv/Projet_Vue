@@ -1,12 +1,15 @@
 <template>
     <section>
-        <div class="list-ctn">
-            <ItemListProject 
-                v-for="pr in listOfProject"
-                :key="pr._id"
-                :project="pr"
-                :nbSelectedProject="currentProject._id"
-            />
+        <div :class="[{'isOpen' : isListOpened } ,'list-ctn']">
+            <div class="list-ctn__main">
+                <ItemListProject 
+                    v-for="pr in listOfProject"
+                    :key="pr._id"
+                    :project="pr"
+                    :nbSelectedProject="currentProject._id"
+                />
+            </div> 
+            <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
         </div>
         <!--<transition name="project-change" mode="out-in">-->
             <ProjectDash  :project="getCurrentProject"/>
@@ -36,7 +39,8 @@ export default {
     data(){
         return{
             listOfProject:[],
-            currentProject:null
+            currentProject:null,
+            isListOpened: false,
         }
     },
     computed:{
@@ -65,15 +69,59 @@ export default {
 	}
 
     /*List Projects Part*/
+    
     .list-ctn{
+        margin-left:-274px;
 		flex:1;
-		background-color: #252525;
-		border: 1px solid lighten($color: #252525, $amount: 15);
-		height: 100%;
-		overflow-y: auto;
-        min-width: 260px;
-        max-width: 380px;
-        max-height: 100vh;
+		display: flex;
+        position: relative;
+        transition: .5s ease;
+
+        &.isOpen {
+            margin-left:0
+        }
+
+        @include responsive("laptop"){
+            transition: .5s ease;
+            margin-left:0;
+        }
+
+        &__main{
+            background-color: #252525;
+            border: 1px solid #4b4b4b;
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+            min-width: 260px;
+            max-width: 380px;
+            max-height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .btn-open{
+            display:block;
+            font-size: 2rem;
+            padding-left: 0.5rem;
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+            &:hover{
+                cursor: pointer;
+            }
+
+            i{
+                transition: .5s ease;
+                display: block;
+                &.isOpen {
+                    transform: rotate(90deg);
+                    
+                }
+            }
+            @include responsive("laptop"){
+                display: none;
+            }
+        }
 		
 	}
 

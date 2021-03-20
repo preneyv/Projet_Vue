@@ -87,6 +87,8 @@ import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
 import { markRaw } from 'vue'
 import format from 'date-format'
 import {categories} from '../../constants/project.js'
+
+import AdminAPI from './AdminAPI.js'
 export default {
     name:'ProjectDash',
     components:{
@@ -102,7 +104,7 @@ export default {
             requiredForm:null,
             formAddCollab:{
                 title:'Besoin de nouvelles collaborations ?',
-                method:this.newCollab(),
+                method:this.newCollab,
                 form:markRaw(AddCollabs),  
                 
             },
@@ -158,16 +160,36 @@ export default {
 			return format('dd/MM/yyyy',new Date(date))
 			
 		},
-        newCollab : function(){},
-        newTag(val){
+        newCollab({valueType, valueTechno, valueNb}){
 
-            if(this.projectLocal.tags.includes(val.valueTag))
+            this.projectLocal.jobs.forEach((el) =>{
+                if(el.type === valueType)
+                    return ({message:'Cette collaboration est déjà définie dans le projet.'})      
+            })
+
+            this.projectLocal.jobs = [...this.projectLocal.jobs,{type:valueType,requiredNb:valueNb,skills:valueTechno,nameCollabPeople:[]}]
+        },
+        newTag({valueTag}){
+
+            if(this.projectLocal.tags.includes(valueTag))
                 return ({message:'Cette catégorie est déjà présente dans votre projet.'})
 
-            this.projectLocal.tags = [...this.projectLocal.tags,val.valueTag]
-            
+            this.projectLocal.tags = [...this.projectLocal.tags,valueTag]
+            AdminAPI.addTagToProject(this.projectLocal._id,valueTag)
+                    .then((res)=> {
+                        console.log(res)
+                    })
         },
-        newLink : function(){}
+        newLink({valueSelect, valueInput}){
+            
+            this.projectLocal.links.forEach((el) =>{
+                if(el.title === valueSelect && el.value === valueInput)
+                    return ({message:'Ce lien est déjà présent dans votre projet.'})      
+            })
+
+            this.projectLocal.links = [...this.projectLocal.links,{title:valueSelect,value:valueInput}]
+            AdminAPI.addLinkToProject(this.projectLocal._id,{title:valueSelect,value:valueInput})
+        }
     }
 
 
@@ -183,8 +205,12 @@ export default {
         border: 1px solid lighten($color: #252525, $amount: 15);
         height:100%;
         display:flex;
+        flex-direction: column;
         padding:1rem;
         gap: 2rem;
+        @include responsive('xl-desktop'){
+            flex-direction: row
+        }
     }
 
     .section{

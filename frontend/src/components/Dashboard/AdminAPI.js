@@ -13,9 +13,9 @@ const AdminAPI={
                 console.log(error)
             })
             return resultat
-        }
+        },
 
-        //TODO : Add a tag matching the id (project Id)
+        // Add a tag matching the id (project Id)
 
 
         //TODO : Add job requirement matching the id (project id)
@@ -24,6 +24,16 @@ const AdminAPI={
         //TODO : Add a co-worker into the matching project (project id) and the matching type of collab (type of job) - Add the user id
 
         //TODO : Add link into the matching project(project id)
+        addLinkToProject: function(id, link) {
+            let response = Axios.put(`${config.API_URL}project/${id}`,{newLink:link})
+                                .then((res)=> {
+                                    return res
+                                }).catch((error)=> {
+                                    console.log(error)
+                                })
+
+            return response
+        }
 
 
     
