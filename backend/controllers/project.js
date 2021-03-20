@@ -80,7 +80,14 @@ export async function insertOne(req, res) {
 // Working
 export async function updateOne(req, res) {
     const { id } = req.params
-    res.json(req.body)
+    try{
+        Project.updateOne({_id:id},{$push:{tags:req.body.tagValue}}).then().catch(e=>console.log(e))
+        
+    }catch(e){
+        console.log(e)
+    }
+    
+    //res.json(req.body)
 }
 
 // Done

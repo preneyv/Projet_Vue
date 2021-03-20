@@ -18,6 +18,6 @@ router.get("/debug", populate)
 router.get("/:id", getOneById)
 router.delete("/:id", authenticateToken, deleteOneById)
 router.post("/", authenticateToken, insertOne)
-router.put("/:id", authenticateToken, updateOne)
+router.put("/:id", /*authenticateToken,*/ updateOne)
 
 export default router
