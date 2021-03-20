@@ -1,18 +1,29 @@
 <template>
     <div class="tile-ctn">
         <span>{{nameCollabPeople.length}}/{{requiredNb}}</span>
-        <span>{{type}}</span>
+        <span>{{getTypeCollab(type)}}</span>
     </div>
 </template>
 
 <script>
+//Files Import
+import {profilTypes} from '../../constants/contributor.js'
+
 export default {
-    name:'Tile',
-    props:{
-        type:String,
-        nameCollabPeople:Array,
-        requiredNb:Number
+    name: 'Tile',
+    props: {
+        type: String,
+        nameCollabPeople: Array,
+        requiredNb: Number
     },
+    methods: {
+        /**
+         * Récupère le name associé à la clef dans l'objet 'profilTypes
+         */
+         getTypeCollab(val) {
+            return profilTypes[val].name
+        },
+    }
 }
 </script>
 
@@ -26,6 +37,7 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding-bottom: 0.5rem;
 
         & span:first-child{
             flex:2;
@@ -35,6 +47,7 @@ export default {
         & span:last-child{
             flex:1;
             font-size: 1rem;
+            text-align: center;
         }
 
         &:hover{

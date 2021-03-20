@@ -25,15 +25,20 @@
 </template>
 
 <script>
-import Axios from 'axios'
+//Components Import
 import BaseInput from '@/components/system/Input.vue'
 import HandlingErrors from '@/components/HandlingErrors.vue'
+
+//Files Import
 import config from '@/config.js'
 
+//Librairies Import
+import Axios from 'axios'
+
 export default {
-	name:'AuthTemplate',
+	name: 'AuthTemplate',
 	inheritAttrs: false,
-	components:{
+	components: {
 		BaseInput,
 		HandlingErrors
 	},
@@ -43,12 +48,12 @@ export default {
 			errors: []
 		}
 	},
-	props:{
+	props: {
 		inputs: Array,
 		bottomMessage: String,
 		typeOfAuth: String,
 	},
-	methods:{
+	methods: {
 		triggerBottomMessageClicked() {     
 			this.$emit('bottomMessageClicked') 
 		},
@@ -84,7 +89,7 @@ export default {
 			})
 		},
 	},
-	computed:{
+	computed: {
 		getActionURI : function() {
 			return `${config.API_URL}auth/${this.typeOfAuth}`
 		}

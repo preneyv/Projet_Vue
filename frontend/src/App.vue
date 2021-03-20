@@ -16,9 +16,6 @@ export default {
 		Container,
 		Footer
 	},
-	mounted(){
-		console.log(this.$route)
-	}
 }
 </script>
 

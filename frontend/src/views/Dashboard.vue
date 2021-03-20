@@ -12,7 +12,7 @@
             <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
         </div>
         <!--<transition name="project-change" mode="out-in">-->
-            <ProjectDash  :project="getCurrentProject"/>
+            <ProjectDash  :project="currentProject"/>
         <!--</transition>-->
     </section>
 </template>
@@ -36,6 +36,9 @@ export default {
         })  
         this.bus.on('handleChangeProject', (id)=>this.changeProject(id))
     },
+    mounted(){
+        console.log(this.currentProject)
+    },
     data(){
         return{
             listOfProject:[],
@@ -43,15 +46,11 @@ export default {
             isListOpened: false,
         }
     },
-    computed:{
-        getCurrentProject(){
-            return this.currentProject
-        }
-
-    },
     methods:{
 		changeProject:function(id){
+            
            this.currentProject= this.listOfProject.find(item => item._id === id)
+           
 		}
 	}
 }

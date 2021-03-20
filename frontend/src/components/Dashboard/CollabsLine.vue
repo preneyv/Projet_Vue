@@ -2,31 +2,38 @@
             <span class="name-person" @click="isOptionOpened = !isOptionOpened">{{collabName.name}}</span>
             <transition name="growup-div">
                 <div v-if="isOptionOpened===true" class="option-panel">
-                    <span><i class="bi bi-gear"></i>{{collabName.type}}</span>
-                    <span v-if="$parent.$parent.getStateUser === 'Admin'" class="remove-from-project"><i class="bi bi-box-arrow-right"></i>Retirer du projet</span>
+                    <span><i class="bi bi-gear"></i>{{getTypeCollab(collabName.type)}}</span>
+                    <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project"><i class="bi bi-box-arrow-right"></i>Retirer du projet</span>
                 </div>
             </transition>
 
 </template>
 
 <script>
+//Files Import
+import {profilTypes} from '../../constants/contributor.js'
+
 export default {
-    name:"CollabLine",
-    data(){
-        return{
+    name: "CollabLine",
+    data() {
+        return {
             isOptionOpened : false
         }
     },
-    props:{
+    props: {
         collabName:Object,
     },
-
-    
+    methods: {
+        /**
+         * Récupère lee name associé à la clef dans profilTypes
+         */
+        getTypeCollab(val){
+            return profilTypes[val].name     
+        },
+    }  
 }
 </script>
 <style lang="scss" scoped>
-
-    
 
     .name-person{
         font-size: 1rem;

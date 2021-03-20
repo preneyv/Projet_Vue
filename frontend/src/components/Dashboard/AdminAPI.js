@@ -19,7 +19,7 @@ const AdminAPI={
 
         addTagToProject : function(id, tag) {
 
-            let resultat = Axios.put(`${config.API_URL}project/${id}`,{tagValue:tag})
+            let resultat = Axios.put(`${config.API_URL}project/${id}`,{$set:{lastUpdate:Date()},$push:{tags:tag}})
                                 .then((res)=> {
                                     return res
                                 }).catch((error)=> {
@@ -27,17 +27,39 @@ const AdminAPI={
                                 })
 
             return resultat
-        }
+        },
 
 
         //TODO : Add job requirement matching the id (project id)
+        addJobRequirement: function(id, job) {
+            console.log(job)
+            let response = Axios.put(`${config.API_URL}project/${id}`,{$set:{lastUpdate:Date()},$push:{jobs:job}})
+                                .then((res)=> {
+                                    return res
+                                }).catch((error)=> {
+                                    console.log(error)
+                                })
+
+            return response
+        },
 
 
         //TODO : Add a co-worker into the matching project (project id) and the matching type of collab (type of job) - Add the user id
 
         //TODO : Add link into the matching project(project id)
         addLinkToProject: function(id, link) {
-            let response = Axios.put(`${config.API_URL}project/${id}`,{newLink:link})
+            let response = Axios.put(`${config.API_URL}project/${id}`,{$set:{lastUpdate:Date()},$push:{links:link}})
+                                .then((res)=> {
+                                    return res
+                                }).catch((error)=> {
+                                    console.log(error)
+                                })
+
+            return response
+        },
+
+        setDescription: function(id, value) {
+            let response = Axios.put(`${config.API_URL}project/${id}`,{$set:{description:value}})
                                 .then((res)=> {
                                     return res
                                 }).catch((error)=> {

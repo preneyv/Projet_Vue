@@ -1,15 +1,15 @@
 <template>
     <div class="project-ctn">
         <div class="section left-section">
-            <div class="title-ctn"><h2>{{projectLocal.title}}</h2></div>
+            <div class="title-ctn"><h2>{{getCurrentProject.title}}</h2></div>
             <div class="state-collab-ctn">
                 <div class="state-collab-ctn__head">
                     <span>Etat des collaborations</span>
-                    <i class="bi bi-plus-square add-btn" v-if="projectLocal.stateUser=== 'Admin'" title="Ajouter un nouveau besoin de collaboration" @click="changeFormAndOpen(formAddCollab)"></i>
+                    <i class="bi bi-plus-square add-btn" v-if="getCurrentProject.stateUser=== 'Admin'" title="Ajouter un nouveau besoin de collaboration" @click="changeFormAndOpen(formAddCollab)"></i>
                 </div>
                 <div class="state-collab-ctn__main">
                     <Tile 
-                    v-for="(col,index) in projectLocal.jobs"
+                    v-for="(col,index) in getCurrentProject.jobs"
                     :key="index"
                     v-bind="col"
                     />
@@ -18,15 +18,16 @@
         </div>
         <div class="section middle-section">
             <BasicCtn headTitle="Description">
-                <div :class="[projectLocal.description ? '' : 'no-desc', 'description']" >{{projectLocal.description ? projectLocal.description : "Pas de détail"}}</div>
+                 <template v-slot:btnHead><i v-if="getCurrentProject.stateUser=== 'Admin'" class="bi bi-pencil-square add-btn" title="Modifier la description" @click="changeFormAndOpen(formChangeDesc)"></i></template>
+                <div :class="[getCurrentProject.description ? '' : 'no-desc', 'description']" >{{getCurrentProject.description ? getCurrentProject.description : "Pas de détail"}}</div>
             </BasicCtn>
             <BasicCtn headTitle="Journal de bord">
             </BasicCtn>
             <BasicCtn headTitle="Catégories">
-                <template v-slot:btnHead><i v-if="projectLocal.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddTag)"></i></template>
+                <template v-slot:btnHead><i v-if="getCurrentProject.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddTag)"></i></template>
                 <div class="tag-ctn">
                     <span 
-                        v-for="(tag) in projectLocal.tags"
+                        v-for="(tag) in getCurrentProject.tags"
                         :key="tag"
                     >{{getNameTag(tag)}}
                     </span>
@@ -35,16 +36,16 @@
         </div>
         <div class="section right-section">
             <BasicCtn headTitle="Etat du projet">
-                <template v-slot:btnHead><input class="btn-head-stateproject" type="button" :value="project.stateUser=== 'Admin' ? 'Supprimer le projet' : 'Se retirer du projet'"/></template>
+                <template v-slot:btnHead><input class="btn-head-stateproject" type="button" :value="getCurrentProject.stateUser=== 'Admin' ? 'Supprimer le projet' : 'Se retirer du projet'"/></template>
                 <div class="stateproject-ctn">
                     <div class="stateproject-ctn__firstline">
-                        <span>{{projectLocal.stateUser=== 'Admin' ? "Vous êtes administrateur sur le projet." : "Vous êtes collaborateur sur le projet"}}</span>
-                        <input v-if="project.stateUser=== 'Admin'" class="btn-end-project" type="button" value="Déclarer terminé"/>
+                        <span>{{getCurrentProject.stateUser === 'Admin' ? "Vous êtes administrateur sur le projet." : "Vous êtes collaborateur sur le projet"}}</span>
+                        <input v-if="getCurrentProject.stateUser === 'Admin'" class="btn-end-project" type="button" value="Déclarer terminé"/>
                     </div>
                     <div class="stateproject-ctn__lastline">
-                        <span>{{projectLocal.licence}}</span>
-                        <span>{{projectLocal.stateProject}}</span>
-                        <span>Créé le {{formatedDate(projectLocal.startedDate)}}</span>
+                        <span>{{getCurrentProject.licence}}</span>
+                        <span>{{getCurrentProject.stateProject}}</span>
+                        <span>Créé le {{formatedDate(getCurrentProject.startedDate)}}</span>
                     </div>
                 </div>
             </BasicCtn>
@@ -58,10 +59,10 @@
                 </div>
             </BasicCtn>
             <BasicCtn headTitle="Liens utiles">
-                <template v-slot:btnHead><i v-if="projectLocal.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddLinks)"></i></template>
+                <template v-slot:btnHead><i v-if="getCurrentProject.stateUser=== 'Admin'" class="bi bi-plus-square add-btn" title="Ajouter une nouvelle catégorie" @click="changeFormAndOpen(formAddLinks)"></i></template>
                 <div class="links-ctn">
                     <div class="link-item"
-                        v-for="(link,index) in projectLocal.links"
+                        v-for="(link,index) in getCurrentProject.links"
                         :key="index"
                     >
                         <span>{{getNameLink(link.title)}}</span>
@@ -71,12 +72,11 @@
             </BasicCtn>
         </div>
     <FormHandlingAdd v-if="requiredForm!==null" v-bind="requiredForm"/>
-        
-
     </div>
     
 </template>
 <script>
+//Components Import
 import Tile from '@/components/Dashboard/Tile.vue'
 import BasicCtn from '@/components/Dashboard/BasicCtn.vue'
 import CollabsLine from '@/components/Dashboard/CollabsLine.vue'
@@ -84,54 +84,70 @@ import FormHandlingAdd from '@/components/Dashboard/BasicsForms/FormHandlingAdd.
 import AddTag from '@/components/Dashboard/BasicsForms/AddTag.vue'
 import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
 import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
-import AdminAPI from './AdminAPI.js'
-import { markRaw } from 'vue'
-import format from 'date-format'
-import {categories} from '../../constants/project.js'
+import SetDesc from '@/components/Dashboard/BasicsForms/SetDesc.vue'
+
+//Files Import
 
 import AdminAPI from './AdminAPI.js'
+import {categories, officialLinkTypes} from '../../constants/project.js'
+
+//Librairies Import
+import { markRaw } from 'vue'
+import format from 'date-format'
+
+
 export default {
-    name:'ProjectDash',
-    components:{
+    name: 'ProjectDash',
+    components: {
         Tile,
         BasicCtn,
         CollabsLine,
-        FormHandlingAdd
-  
+        FormHandlingAdd,
     },
-    data(){
-        return{
-            projectLocal : this.project,
-            requiredForm:null,
-            formAddCollab:{
-                title:'Besoin de nouvelles collaborations ?',
-                method:this.newCollab,
-                form:markRaw(AddCollabs),  
+    data() {
+        return {
+            requiredForm: null,
+            formAddCollab: {
+                title: 'Besoin de nouvelles collaborations ?',
+                method: this.newCollab,
+                form: markRaw(AddCollabs),  
                 
             },
-            formAddTag:{
+            formAddTag: {
                 
-                title:'Une nouvelle catégorie ?',
-                method:this.newTag,
+                title: 'Une nouvelle catégorie ?',
+                method: this.newTag,
                 form: markRaw(AddTag), 
             },
-            formAddLinks:{
-                title:'Ajouter un autre lien',
-                method:this.newLink,
+            formAddLinks: {
+                title: 'Ajouter un autre lien',
+                method: this.newLink,
                 form: markRaw(AddLinks), 
+            },
+            formChangeDesc: {
+                title: 'Modifier votre description de projet',
+                method: this.changeDesc,
+                form: markRaw(SetDesc), 
             }
         }    
     },
-    props:{
-        project:Object
+    props: {
+        project: Object
     },
-    computed:{
-        getAllCollabsNames : function(){
+    computed: {
+        /**
+         * Récupère le nom, l'id et le type de collaboration.
+         * Cela permet de mettre le tableau des collaborateurs dans un autre tableau
+         * formaté selon ce qui suit afin qu'aucune action se soit effectuée par le composant 
+         * qui a besoin des noms des collaborateurs.
+         */
+        getAllCollabsNames() {
+            let projectLocal = this.getCurrentProject
             let tabCollabs = []
-            if(this.projectLocal.jobs){
-                this.projectLocal.jobs.forEach(({type, nameCollabPeople}) => {
+            if(projectLocal.jobs){
+                projectLocal.jobs.forEach(({type, nameCollabPeople}) => {
                     nameCollabPeople.forEach(collab => {
-                        if(tabCollabs.find((obj) => obj.name===name) === undefined)
+                        if(tabCollabs.find((obj) => obj.name===collab) === undefined)
                             tabCollabs.push({name:collab.name,type:type,id:collab._collab})
                         
                     })
@@ -139,55 +155,110 @@ export default {
             }
             return tabCollabs
         },
+        /**
+         * Retourne le projet actuel. Cela permet de rendre la prop : this.project reactive 
+         * et de constater ses changements
+         */
+        getCurrentProject() {
+             return this.project  
+        },
     },
     methods:{
-        getNameTag(val){
+        /**
+         * Récupère le name associé à la clef dans le tableau  categories
+         */
+        getNameTag(val) {
             return categories.find(({value}) => val === value).name
         },
-        getNameLink(val){
+        /**
+         * Récupère le name associé à la clef dans le tableau links
+         */
+        getNameLink(val) {
             return officialLinkTypes.find(({value}) => val === value).name
         },
-
-        closeForm(){
+        /**
+         * Ferme le formulaire d'ajout de collab, de lien, de catégories ou de modification de la description
+         */
+        closeForm() {
             this.requiredForm=null
         },
-        changeFormAndOpen:function(el){
+        /** 
+         * Change le formulaire demandé par le composant FormHandlingAdd
+        */
+        changeFormAndOpen(el) {
             this.requiredForm = el
         },
-        formatedDate(date){
+        /**
+         * Formate les dates en utilisant la librairie 'format'
+         */
+        formatedDate(date) {
 			return format('dd/MM/yyyy',new Date(date))
 			
 		},
-        newCollab({valueType, valueTechno, valueNb}){
-
-            this.projectLocal.jobs.forEach((el) =>{
+        /**
+         * Ajoute un nouveau besoin de collaboration en base de donnée.
+         * Met à jour les données du projet. 
+         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         */
+        newCollab({valueType, valueTechnos, valueNb}) {
+            let projectLocal = this.getCurrentProject
+            projectLocal.jobs.forEach((el) =>{
                 if(el.type === valueType)
                     return ({message:'Cette collaboration est déjà définie dans le projet.'})      
             })
 
-            this.projectLocal.jobs = [...this.projectLocal.jobs,{type:valueType,requiredNb:valueNb,skills:valueTechno,nameCollabPeople:[]}]
-        },
-        newTag({valueTag}){
-
-            if(this.projectLocal.tags.includes(valueTag))
-                return ({message:'Cette catégorie est déjà présente dans votre projet.'})
-
-            this.projectLocal.tags = [...this.projectLocal.tags,valueTag]
-            AdminAPI.addTagToProject(this.projectLocal._id,valueTag)
+            projectLocal.jobs = [...projectLocal.jobs,{type:valueType,requiredNb:Number(valueNb),skills:valueTechnos,nameCollabPeople:[]}]
+            AdminAPI.addJobRequirement(projectLocal._id,{type:valueType,requiredNb:Number(valueNb),skills:valueTechnos,nameCollabPeople:[]})
                     .then((res)=> {
                         console.log(res)
                     })
         },
-        newLink({valueSelect, valueInput}){
-            
-            this.projectLocal.links.forEach((el) =>{
+        /**
+         * Ajoute une nouvelle catégori en base de donnée.
+         * Met à jour les données du projet.
+         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         */
+        newTag({tags}) {
+            let projectLocal = this.getCurrentProject
+            if(projectLocal.tags.includes(tags))
+                return ({message:'Cette catégorie est déjà présente dans votre projet.'})
+
+            projectLocal.tags = [...projectLocal.tags,tags]
+            AdminAPI.addTagToProject(projectLocal._id,tags)
+                    .then((res)=> {
+                        console.log(res)
+                    })
+        },
+        /**
+         * Ajoute un nouveau lien en base de donnée.M
+         * Met et à jour les données du projet.
+         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         */
+        newLink({valueSelect, valueInput}) {
+            let projectLocal = this.getCurrentProject
+            projectLocal.links.forEach((el) => {
                 if(el.title === valueSelect && el.value === valueInput)
                     return ({message:'Ce lien est déjà présent dans votre projet.'})      
             })
 
-            this.projectLocal.links = [...this.projectLocal.links,{title:valueSelect,value:valueInput}]
-            AdminAPI.addLinkToProject(this.projectLocal._id,{title:valueSelect,value:valueInput})
+            if(!valueInput.match(/(https?|ftp|ssh|mailto):\/\/[a-z0-9/:%_+.,#?!@&=-]+/gi))
+                    return ({message:"L'adresse saisie n'est pas valide."})
+
+
+            projectLocal.links = [...projectLocal.links,{title:valueSelect,value:valueInput}]
+            AdminAPI.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
+        },
+        /**
+         * Change la description en base de donnée. Et met à jour les données du projet.
+         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         */
+        changeDesc({valueInput}) {
+            let projectLocal = this.getCurrentProject
+
+            projectLocal.description = valueInput
+            AdminAPI.setDescription(projectLocal._id,valueInput)
         }
+
     }
 
 

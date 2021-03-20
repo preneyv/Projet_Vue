@@ -22,35 +22,46 @@
 </template>
 
 <script>
-
+//Import librairies
 import format from 'date-format'
+
+//Import Files
 import {categories} from '../../constants/project.js'
 
 export default {
-	name:'ItemListProject',
-	props:{
-		project:Object,
-		nbSelectedProject:String
+	name: 'ItemListProject',
+	props: {
+		project: Object,
+		nbSelectedProject: String
 	},
-	methods:{
-		getNameTag : function(val){
-            return categories.find(({value}) => val === value).name
-            
+	methods: {
+		/**
+		 * Retourne le name associé à la clef dans categories
+		 */
+		getNameTag(val) {
+            return categories.find(({value}) => val === value).name   
         },
-		selectProject : function(id)
-		{
+		/**
+		 * Emet un évènement vers Dashboard pour informer qu'il faut modifier le projet
+		 * actuellement en cours de visionnage.
+		 */
+		selectProject(id) {
 			this.bus.emit('handleChangeProject', id)
 		},
-
-		formatedDate(date){
+		/**
+		 * Formate la date à l'aide de la librairie 'format'
+		 */
+		formatedDate(date) {
 			return format('dd/MM/yyyy',new Date(date))
 		}
 	},
-	computed:{
-		isSelected(){
+	computed: {
+		/**
+		 * Permet de savoir si le projet est séléctionné
+		 */
+		isSelected() {
 			return this.nbSelectedProject === this.project._id ? true : false
 		},
-		
 	}
 
 }

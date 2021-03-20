@@ -12,7 +12,7 @@ const routes = [
 	},
 	{
 		path:'/entering',
-		name: 'LogPages',
+		name: 'Log In',
 		component : Entering
 	},
 	{

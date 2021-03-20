@@ -14,31 +14,33 @@
     </div>
 </template>
 <script>
-
+//Components Import
 import HandlingError from '@/components/HandlingErrors.vue'
+
 export default {
-    name:"FormHandlingAdd",
-    components:{
+    name: "FormHandlingAdd",
+    components: {
         HandlingError
     },
-    props:{
-        title:String,
-        method:Function,
-        form:Object
+    props: {
+        title: String,
+        method: Function,
+        form: Object
     },
-    data(){
-        return{
+    data() {
+        return {
             errors: [],
-            valueToSend:{}
+            valueToSend: {}
         }
     },
-
-    methods:{
-        submit : function(){
+    methods: {
+        /**
+         * Permet de vérifier que le formulaire  est bien remplie et d'appeler 
+         * la méthode qui permettra la persitance des modifications.
+         */
+        submit(){
             this.valueToSend = this.$refs.child.newValues
-            
-            console.log(this.valueToSend)
-            this.checkValueToSendPromise().then(()=>{
+            this.checkValueToSendPromise().then(()=> {
                 let backResult = (this.method)(this.valueToSend)
                 if (backResult) throw backResult 
             }).catch((error) => {
@@ -46,25 +48,29 @@ export default {
             })
             
         },
-        checkValueToSendPromise(){
-            return new Promise((resolve,reject)=>{
+        /**
+         * Promesse pour vérifier que les champs ne sont pas vides
+         * (Oui c'était pour le kiff de faire une promesse)
+         */
+        checkValueToSendPromise() {
+            return new Promise((resolve,reject)=> {
                 let errors=0
-                for (const field in this.valueToSend){
+                for (const field in this.valueToSend) {
                     if(this.valueToSend[field]==="" || this.valueToSend[field] === undefined || (Array.isArray(this.valueToSend[field]) && this.valueToSend[field].length === 0)){
                         errors+=1
                     }
                 }
 
-                if(errors == 0){
+                if(errors == 0) {
                     resolve("OK")
                 }else{
                     reject({message:'Veuillez remplir le formulaire correctement'})
                 }
-            })
-            
+            }) 
         },
-
-//Errors Displaying functions
+        /**
+         * Supprime l'erreur du tableau d'erreur
+         */
         removeError(i) {
 			this.errors.splice(i, 1)
 		},

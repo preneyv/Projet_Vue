@@ -1,7 +1,7 @@
 .button {
 	@include flex(row, center, center);
 	background-color: var(--color-primary);
-	border-radius: space(2);
+	border-radius: space(1);
 	color: var(--color-black);
 	padding: space(1) space(3);
 }

@@ -90,7 +90,7 @@
 					<BaseSelect
 						id="project-categories"
 						name="categories"
-						:items="profilTypes[0].skills"
+						:items="null"
 						allowSearch
 						multiple
 					/>

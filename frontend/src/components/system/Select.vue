@@ -127,7 +127,8 @@ export default {
 	},
 	computed:{
 		dataItemsChange : function(){
-			return  this.size === null ? this.dataItems : this.dataItems.slice(0 , this.size)
+			console.log(this)
+			return  this.size === undefined  ? this.items : this.items.slice(0 , this.size)
 		},
 		
 	},

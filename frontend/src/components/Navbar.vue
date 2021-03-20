@@ -24,6 +24,11 @@
 							Soumettre un projet
 						</router-link>
 					</li>
+					<li class="navbar__link">
+						<router-link to="/entering" class="button">
+							Log In
+						</router-link>
+					</li>
 				</ul>
 			</div>
 		</div>
