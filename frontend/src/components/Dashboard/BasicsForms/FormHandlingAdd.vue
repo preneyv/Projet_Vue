@@ -40,7 +40,7 @@ export default {
             console.log(this.valueToSend)
             this.checkValueToSendPromise().then(()=>{
                 let backResult = (this.method)(this.valueToSend)
-                if (backResult ) throw backResult 
+                if (backResult) throw backResult 
             }).catch((error) => {
                 this.errors.push(error)
             })

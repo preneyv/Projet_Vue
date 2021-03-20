@@ -1,3 +1,7 @@
 # TODO
-## Route User
-- [] Verification before Inserting new User (possible duplicates)
+- [ ] Document functions
+- [ ] Cleaning architecture
+- [ ] Optimize functions
+
+# Possible Improve
+- [ ] Support for Image uploading
