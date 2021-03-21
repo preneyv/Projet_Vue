@@ -1,9 +1,20 @@
 <template>
-            <span class="name-person" @click="isOptionOpened = !isOptionOpened">{{collabName.name}}</span>
+            <div class="head-collab">
+                <span class="name-person" @click="isOptionOpened = !isOptionOpened">{{collab.name}}</span>
+                <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project" @click="handleClickRemove()"><i class="bi bi-box-arrow-right"></i>  Retirer du projet</span>
+            </div>
             <transition name="growup-div">
                 <div v-if="isOptionOpened===true" class="option-panel">
-                    <span><i class="bi bi-gear"></i>{{getTypeCollab(collabName.type)}}</span>
-                    <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project"><i class="bi bi-box-arrow-right"></i>Retirer du projet</span>
+                    <div class="list-type">
+                        <span class="list-type__line"
+                        v-for="(type,index) in collab.type" 
+                        :key="index">
+                        <span><i class="bi bi-gear"></i> {{getTypeCollab(type)}}</span>
+                        <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project" @click="handleClickRemove(type)" title="Retirer en tant que..."><i class="bi bi-x"></i></span>
+                        </span>
+                    </div>
+                    
+                    
                 </div>
             </transition>
 
@@ -21,23 +32,30 @@ export default {
         }
     },
     props: {
-        collabName:Object,
+        collab: Object,
+        method: Function
     },
     methods: {
         /**
          * Récupère lee name associé à la clef dans profilTypes
          */
-        getTypeCollab(val){
+        getTypeCollab(val) {
             return profilTypes[val].name     
         },
+        handleClickRemove(type){
+            type !== undefined ? this.method(this.collab.name, type) : this.method(this.collab.name)
+        }
     }  
 }
 </script>
 <style lang="scss" scoped>
 
-    .name-person{
+    .head-collab {
+        @include flex(row, space-between)
+    }
+    .name-person {
         font-size: 1rem;
-        &:hover{
+        &:hover {
             cursor: pointer;
         }
     }
@@ -47,17 +65,26 @@ export default {
         color: #969595;
         border-bottom: 1px solid lighten($color: #252525, $amount: 15);
         padding-top: 5px;
-        width: 90%;
+        width: 97%;
         float: right;
 
-        span{
-            display: flex;
-            gap:0.2rem;
+        .list-type {
+            @include flex(column, flex-start, flex-start);
+            width: 100%;
+            &__line {
+                @include flex(row,space-between);
+                gap: 0.2rem;
+                width: 100%;
+            }
         }
+
+        
     }
 
-    .remove-from-project{
-        &:hover{
+    .remove-from-project {
+        font-size: 0.8rem;
+        color: #969595;
+        &:hover {
             cursor: pointer;
             text-decoration: underline;
         }

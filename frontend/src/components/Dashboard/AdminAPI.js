@@ -16,7 +16,6 @@ const AdminAPI={
         },
 
         // Add a tag matching the id (project Id)
-
         addTagToProject : function(id, tag) {
 
             let resultat = Axios.put(`${config.API_URL}project/${id}`,{$set:{lastUpdate:Date()},$push:{tags:tag}})
@@ -58,8 +57,9 @@ const AdminAPI={
             return response
         },
 
+
         setDescription: function(id, value) {
-            let response = Axios.put(`${config.API_URL}project/${id}`,{$set:{description:value}})
+            let response = Axios.put(`${config.API_URL}project/${id}`,{$set:{description:value,lastUpdate:Date()}})
                                 .then((res)=> {
                                     return res
                                 }).catch((error)=> {
@@ -67,7 +67,21 @@ const AdminAPI={
                                 })
 
             return response
+        },
+
+        removeCollabFromProject(idProject, name, typeValue) {
+            console.log(name)
+            let reqBody = typeValue === undefined ? {body:{$pull:{'jobs.$[].nameCollabPeople':{name:name}}}, tail:{multi:true}}  : {filter : { 'jobs.type': typeValue}, body: {$pull:{'jobs.$.nameCollabPeople':{name:name}}}} ;
+            let response = Axios.put(`${config.API_URL}project/${idProject}`, reqBody )
+                                .then((res)=> {
+                                    return res
+                                }).catch((error)=> {
+                                    return error
+                                })
+
+            return response
         }
+
 
 
     

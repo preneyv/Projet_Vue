@@ -36,9 +36,6 @@ export default {
         })  
         this.bus.on('handleChangeProject', (id)=>this.changeProject(id))
     },
-    mounted(){
-        console.log(this.currentProject)
-    },
     data(){
         return{
             listOfProject:[],

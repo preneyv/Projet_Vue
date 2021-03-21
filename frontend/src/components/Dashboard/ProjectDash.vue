@@ -54,7 +54,7 @@
                     <div v-for="(collab,index) in getAllCollabsNames"
                     :key="index"
                     class="collab-line">
-                        <CollabsLine :collabName="collab" />
+                        <CollabsLine :collab="collab" :method="removeCollabFromProject"/>
                     </div>
                 </div>
             </BasicCtn>
@@ -147,9 +147,14 @@ export default {
             if(projectLocal.jobs){
                 projectLocal.jobs.forEach(({type, nameCollabPeople}) => {
                     nameCollabPeople.forEach(collab => {
-                        if(tabCollabs.find((obj) => obj.name===collab) === undefined)
-                            tabCollabs.push({name:collab.name,type:type,id:collab._collab})
-                        
+                        let currentCollab = tabCollabs.find((obj) => obj.id===collab._collab)
+                        if( currentCollab === undefined) {
+                            tabCollabs.push({name:collab.name,type:[type],id:collab._collab})
+
+                        }else {
+                            if(currentCollab.type.find((el) => el === type) === undefined)
+                                currentCollab.type = [...currentCollab.type,type]
+                        }
                     })
                 })
             }
@@ -214,7 +219,7 @@ export default {
                     })
         },
         /**
-         * Ajoute une nouvelle catégori en base de donnée.
+         * Ajoute une nouvelle catégorie en base de donnée.
          * Met à jour les données du projet.
          * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
          */
@@ -247,6 +252,9 @@ export default {
 
             projectLocal.links = [...projectLocal.links,{title:valueSelect,value:valueInput}]
             AdminAPI.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
+                    .then((res)=> {
+                        console.log(res)
+                    })
         },
         /**
          * Change la description en base de donnée. Et met à jour les données du projet.
@@ -257,6 +265,34 @@ export default {
 
             projectLocal.description = valueInput
             AdminAPI.setDescription(projectLocal._id,valueInput)
+        },
+        /**
+         * Retire un collaborateur du projet ou simplement une collaboration sur laquelle il est présent.
+         */
+        removeCollabFromProject(name, type) {
+            let projectLocal = this.getCurrentProject
+            if(type !== undefined) {
+                let obj = projectLocal.jobs.find((el) => el.type === type)
+                let person = obj.nameCollabPeople.find((p) => p.name === name)
+                console.log(obj)
+                console.log(obj.nameCollabPeople.indexOf(person))
+                obj.nameCollabPeople.splice(obj.nameCollabPeople.indexOf(person),1)
+
+            }else{
+                projectLocal.jobs.forEach((el) => {
+                    let person = el.nameCollabPeople.find((p) => p.name === name)
+                    console.log(el)
+                    console.log(person)
+                    el.nameCollabPeople.splice(el.nameCollabPeople.indexOf(person),1)
+                })
+            }
+            
+            AdminAPI.removeCollabFromProject(projectLocal._id, name, type)
+                    .then((res)=> {
+                        console.log(res)
+                    }).catch((err)=>{
+                        console.log(err)
+                    })
         }
 
     }
