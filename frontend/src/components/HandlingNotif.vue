@@ -11,13 +11,15 @@ export default {
 		notifs : Object,
 		removeNotif: Function
 	},
-	updated() {
-		console.log('ok')
-		const timer = setTimeout(()=>{
-			
-			this.$parent.removeNotif
-		},2000)
-		clearTimeout(timer)
+	watch: {
+		notifs(){
+			console.log('ok')
+			const timer = setTimeout(()=>{
+				
+				this.$parent.removeNotif()
+			},2000)
+			clearTimeout(timer)
+		}
 	}
 }
 </script>
