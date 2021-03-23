@@ -20,14 +20,14 @@
 			</form>
 			<span @click="triggerBottomMessageClicked" class="switch-form">{{ bottomMessage }}</span>  
 		</div>
-		<HandlingErrors v-if="errors.length !== 0" :errors="errors" :removeError="removeError"/>
+		<HandlingNotif v-if="error !== null" :notifs="error" :removeNotif="removeError"/>
 	</div>
 </template>
 
 <script>
 //Components Import
 import BaseInput from '@/components/system/Input.vue'
-import HandlingErrors from '@/components/HandlingErrors.vue'
+import HandlingNotif from '@/components/HandlingNotif.vue'
 
 //Files Import
 import config from '@/config.js'
@@ -40,12 +40,12 @@ export default {
 	inheritAttrs: false,
 	components: {
 		BaseInput,
-		HandlingErrors
+		HandlingNotif
 	},
 	data() {
 		return {
 			formData: {},
-			errors: []
+			error: null
 		}
 	},
 	props: {
@@ -69,8 +69,8 @@ export default {
 			})
 		},
 
-		removeError(i) {
-			this.errors.splice(i, 1)
+		removeError() {
+			this.error = null
 		},
 
 		submitForm(e) {
@@ -85,7 +85,7 @@ export default {
 				if (error.response)
 					self.errors = error.response.data
 				else
-					self.errors = [{message: 'Erreur serveur'}]
+					self.errors = {'type': 'error',message: 'Erreur serveur'}
 			})
 		},
 	},

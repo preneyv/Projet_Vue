@@ -1,5 +1,6 @@
 <template>
     <div class="project-ctn">
+        <div class="notif-section"><HandlingNotif v-if="notifs !== null" :notifs="notifs" :removeNotif="removeNotif"/></div>
         <div class="section left-section">
             <div class="title-ctn"><h2>{{getCurrentProject.title}}</h2></div>
             <div class="state-collab-ctn">
@@ -85,6 +86,7 @@ import AddTag from '@/components/Dashboard/BasicsForms/AddTag.vue'
 import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
 import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
 import SetDesc from '@/components/Dashboard/BasicsForms/SetDesc.vue'
+import HandlingNotif from "@/components/HandlingNotif.vue"
 
 //Files Import
 
@@ -103,6 +105,7 @@ export default {
         BasicCtn,
         CollabsLine,
         FormHandlingAdd,
+        HandlingNotif
     },
     data() {
         return {
@@ -128,7 +131,8 @@ export default {
                 title: 'Modifier votre description de projet',
                 method: this.changeDesc,
                 form: markRaw(SetDesc), 
-            }
+            },
+            notifs:null
         }    
     },
     props: {
@@ -223,76 +227,106 @@ export default {
          * Met à jour les données du projet.
          * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
          */
-        newTag({tags}) {
+        async newTag({tags}) {
             let projectLocal = this.getCurrentProject
             if(projectLocal.tags.includes(tags))
-                return ({message:'Cette catégorie est déjà présente dans votre projet.'})
+                return ({type:'error', message:'Cette catégorie est déjà présente dans votre projet.'})
 
-            projectLocal.tags = [...projectLocal.tags,tags]
-            AdminAPI.addTagToProject(projectLocal._id,tags)
-                    .then((res)=> {
-                        console.log(res)
-                    })
+            
+            let res = await AdminAPI.addTagToProject(projectLocal._id,tags)
+            const { modified } = res.data
+            if(modified === 1) {
+                projectLocal.tags = [...projectLocal.tags,tags]
+                return {type: 'success', message:`La catégorie ${tags} a bien été ajoutée.`}
+
+            }else{
+                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+            }
+
         },
         /**
          * Ajoute un nouveau lien en base de donnée.M
          * Met et à jour les données du projet.
          * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
          */
-        newLink({valueSelect, valueInput}) {
+        async newLink({valueSelect, valueInput}) {
             let projectLocal = this.getCurrentProject
-            projectLocal.links.forEach((el) => {
-                if(el.title === valueSelect && el.value === valueInput)
-                    return ({message:'Ce lien est déjà présent dans votre projet.'})      
+            let item = projectLocal.links.find((el) => { 
+                if(el.title === valueSelect || el.value ===valueInput) return el
+                   
+                return
             })
 
-            if(!valueInput.match(/(https?|ftp|ssh|mailto):\/\/[a-z0-9/:%_+.,#?!@&=-]+/gi))
-                    return ({message:"L'adresse saisie n'est pas valide."})
+            if(item !== undefined && item.title === valueSelect) return ({type: 'error', message: `Vous possèdez déjà un lien ${valueSelect}.`})
+            if(item !== undefined && item.value === valueInput) return ({type: 'error', message: `L'adresse ${valueInput} est déjà présente.`})      
+            if(!valueInput.match(/(https?|ftp|ssh|mailto):\/\/[a-z0-9/:%_+.,#?!@&=-]+/gi)) return ({type:'error', message: "L'adresse saisie n'est pas valide."})
 
 
-            projectLocal.links = [...projectLocal.links,{title:valueSelect,value:valueInput}]
-            AdminAPI.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
-                    .then((res)=> {
-                        console.log(res)
-                    })
+            
+            let res = await AdminAPI.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
+            const { modified } = res.data
+            if(modified === 1) {
+                projectLocal.links = [...projectLocal.links,{title:valueSelect,value:valueInput}]
+                return ({type: 'success', message: `La lien ${valueSelect} a bien été ajouté.`})
+
+            }else{
+                return  ({type: 'error', message: `Un problème s'est produit. Réessayez plus tard.`})
+            }
         },
         /**
          * Change la description en base de donnée. Et met à jour les données du projet.
          * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
          */
-        changeDesc({valueInput}) {
-            let projectLocal = this.getCurrentProject
+        async changeDesc({valueInput}) {
 
-            projectLocal.description = valueInput
-            AdminAPI.setDescription(projectLocal._id,valueInput)
+            let projectLocal = this.getCurrentProject
+            
+            let res = await AdminAPI.setDescription(projectLocal._id,valueInput)
+            const { modified } = res.data
+            if(modified === 1) {
+                projectLocal.description = valueInput
+                return {type: 'success', message:`La description a bien été modifiée.`}
+
+            }else{
+                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+            }
         },
         /**
          * Retire un collaborateur du projet ou simplement une collaboration sur laquelle il est présent.
          */
-        removeCollabFromProject(name, type) {
+        async removeCollabFromProject(name, type) {
             let projectLocal = this.getCurrentProject
-            if(type !== undefined) {
-                let obj = projectLocal.jobs.find((el) => el.type === type)
-                let person = obj.nameCollabPeople.find((p) => p.name === name)
-                console.log(obj)
-                console.log(obj.nameCollabPeople.indexOf(person))
-                obj.nameCollabPeople.splice(obj.nameCollabPeople.indexOf(person),1)
+            
+            
+            let res = await AdminAPI.removeCollabFromProject(projectLocal._id, name, type)
+            const { modified } = res.data
+            if(modified === 1) {
+                
+                if(type !== undefined) {
+                    let obj = projectLocal.jobs.find((el) => el.type === type)
+                    let person = obj.nameCollabPeople.findIndex((p) => p.name === name)
+                    console.log(obj)
+                    console.log(person)
+                    console.log(res.data)
+                    obj.nameCollabPeople.splice(person,1)
+                    this.notifs = {type: 'success', message:`${name} n'est plus ${type} sur le projet.`}
+
+                }else{
+                    projectLocal.jobs.forEach((el) => {
+                        let person = el.nameCollabPeople.findIndex((p) => p.name === name)
+                        el.nameCollabPeople.splice(person,1)
+                    })
+                    this.notifs = {type: 'success', message:`${name} a été retiré du projet.`}
+                }
+                
 
             }else{
-                projectLocal.jobs.forEach((el) => {
-                    let person = el.nameCollabPeople.find((p) => p.name === name)
-                    console.log(el)
-                    console.log(person)
-                    el.nameCollabPeople.splice(el.nameCollabPeople.indexOf(person),1)
-                })
+                this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
             }
-            
-            AdminAPI.removeCollabFromProject(projectLocal._id, name, type)
-                    .then((res)=> {
-                        console.log(res)
-                    }).catch((err)=>{
-                        console.log(err)
-                    })
+
+        },
+        removeNotif() {
+            this.notifs = null
         }
 
     }
@@ -305,6 +339,7 @@ export default {
 
 /*MAIN CONFIG*/
     .project-ctn{
+        position: relative;
         flex:4;
         background-color: #252525;
         border: 1px solid lighten($color: #252525, $amount: 15);
@@ -489,6 +524,12 @@ export default {
             padding: 4px 10px;
             flex:3;
         }
+    }
+
+    .notif-section{
+        position: absolute;
+        right: 0;
+        top: 0;
     }
  
  

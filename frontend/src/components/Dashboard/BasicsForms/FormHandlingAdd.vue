@@ -9,18 +9,18 @@
                     <input type="submit" @click.prevent="submit" value="Valider"/>
                 </form>
             </div>
-            <HandlingError v-if="errors.length > 0" :errors="errors" :removeError="removeError"/>
+            <HandlingFormNotif v-if="error !== null" :notifs="error" :removeNotif="removeError"/>
         </div>
     </div>
 </template>
 <script>
 //Components Import
-import HandlingError from '@/components/HandlingErrors.vue'
+import HandlingNotif from '@/components/HandlingNotif.vue'
 
 export default {
     name: "FormHandlingAdd",
     components: {
-        HandlingError
+        HandlingNotif
     },
     props: {
         title: String,
@@ -29,7 +29,7 @@ export default {
     },
     data() {
         return {
-            errors: [],
+            error: null,
             valueToSend: {}
         }
     },
@@ -40,11 +40,14 @@ export default {
          */
         submit(){
             this.valueToSend = this.$refs.child.newValues
-            this.checkValueToSendPromise().then(()=> {
-                let backResult = (this.method)(this.valueToSend)
+            this.checkValueToSendPromise().then(async ()=> {
+
+                let backResult = await (this.method)(this.valueToSend)
                 if (backResult) throw backResult 
+
             }).catch((error) => {
-                this.errors.push(error)
+ 
+                this.error = {...error}
             })
             
         },
@@ -64,15 +67,15 @@ export default {
                 if(errors == 0) {
                     resolve("OK")
                 }else{
-                    reject({message:'Veuillez remplir le formulaire correctement'})
+                    reject({type:'error', message:'Veuillez remplir le formulaire correctement'})
                 }
             }) 
         },
         /**
          * Supprime l'erreur du tableau d'erreur
          */
-        removeError(i) {
-			this.errors.splice(i, 1)
+        removeError() {
+			this.error = null
 		},
 
     }
