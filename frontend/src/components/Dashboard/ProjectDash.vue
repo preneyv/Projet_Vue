@@ -1,6 +1,8 @@
 <template>
     <div class="project-ctn">
-        <div class="notif-section"><HandlingNotif v-if="notifs !== null" :notifs="notifs" :removeNotif="removeNotif"/></div>
+        <transition  name="list-notif"  mode="out-in" appear>
+            <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
+        </transition>
         <div class="section left-section">
             <div class="title-ctn"><h2>{{getCurrentProject.title}}</h2></div>
             <div class="state-collab-ctn">
@@ -209,18 +211,23 @@ export default {
          * Met à jour les données du projet. 
          * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
          */
-        newCollab({valueType, valueTechnos, valueNb}) {
+        async newCollab({valueType, valueTechnos, valueNb}) {
             let projectLocal = this.getCurrentProject
-            projectLocal.jobs.forEach((el) =>{
-                if(el.type === valueType)
-                    return ({message:'Cette collaboration est déjà définie dans le projet.'})      
-            })
+            let item =projectLocal.jobs.find((el) =>{ if(el.type === valueType) return el })
 
-            projectLocal.jobs = [...projectLocal.jobs,{type:valueType,requiredNb:Number(valueNb),skills:valueTechnos,nameCollabPeople:[]}]
-            AdminAPI.addJobRequirement(projectLocal._id,{type:valueType,requiredNb:Number(valueNb),skills:valueTechnos,nameCollabPeople:[]})
-                    .then((res)=> {
-                        console.log(res)
-                    })
+            if (item !== undefined)  return ({type:'error', message:'Cette collaboration est déjà définie dans le projet.'})      
+
+
+            let res = await AdminAPI.addJobRequirement(projectLocal._id,{type:valueType,requiredNb:Number(valueNb),skills:[...valueTechnos],nameCollabPeople:[]})
+            const { modified } = res.data
+            console.log(res)
+            if(modified === 1) {
+                projectLocal.jobs = [...projectLocal.jobs,{type:valueType,requiredNb:Number(valueNb),skills:[...valueTechnos],nameCollabPeople:[]}]
+                return {type: 'success', message:`Vous venez d'ajouter un nouveau besoin de collaboration.`}
+
+            }else{
+                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+            }
         },
         /**
          * Ajoute une nouvelle catégorie en base de donnée.
@@ -283,6 +290,7 @@ export default {
             
             let res = await AdminAPI.setDescription(projectLocal._id,valueInput)
             const { modified } = res.data
+            
             if(modified === 1) {
                 projectLocal.description = valueInput
                 return {type: 'success', message:`La description a bien été modifiée.`}
@@ -300,21 +308,19 @@ export default {
             
             let res = await AdminAPI.removeCollabFromProject(projectLocal._id, name, type)
             const { modified } = res.data
+
             if(modified === 1) {
                 
                 if(type !== undefined) {
                     let obj = projectLocal.jobs.find((el) => el.type === type)
                     let person = obj.nameCollabPeople.findIndex((p) => p.name === name)
-                    console.log(obj)
-                    console.log(person)
-                    console.log(res.data)
                     obj.nameCollabPeople.splice(person,1)
                     this.notifs = {type: 'success', message:`${name} n'est plus ${type} sur le projet.`}
 
                 }else{
                     projectLocal.jobs.forEach((el) => {
                         let person = el.nameCollabPeople.findIndex((p) => p.name === name)
-                        el.nameCollabPeople.splice(person,1)
+                        if(person !== -1) el.nameCollabPeople.splice(person,1)
                     })
                     this.notifs = {type: 'success', message:`${name} a été retiré du projet.`}
                 }
@@ -527,15 +533,22 @@ export default {
     }
 
     .notif-section{
-        position: absolute;
-        right: 0;
-        top: 0;
+        position: fixed;
+        right: 1rem;
+        top: 5rem;
     }
  
  
 
 
-
+/**TRANSITIONS */
+.list-notif-enter-active, .list-notif-leave-active {
+	transition: all .5s ease-in;
+}
+.list-notif-enter, .list-notif-leave-to /* .list-leave-active below version 2.1.8 */ {
+	opacity: 0;
+	transform: translateX(30px);
+}
 
 
 

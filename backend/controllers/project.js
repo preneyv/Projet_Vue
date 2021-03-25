@@ -94,11 +94,9 @@ export async function updateOne(req, res) {
 	const filter = req.body.filter ? { _id: id, ...req.body.filter} : {_id: id}
 	const body = req.body.body ? req.body.body : req.body
 	const tail = req.body.tail ? {...req.body.tail} : {}
-    console.log(filter)
-	console.log(body)
-	console.log(tail)
+
     try {
-		const project = await Project.updateOne(filter, body, tail)
+		const project = await Project.updateOne(filter, body)
 		res.json({ found: project.n, modified: project.nModified })
 	} catch (e) {
 		res.json({ error: e.errmsg })

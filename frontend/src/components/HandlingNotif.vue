@@ -1,7 +1,5 @@
 <template>
-	<transition  name="list-error"  mode="out-in" appear>
 		<div class="errors-ctn"><span  :class="notifs.type">{{notifs.message}}<i class="bi bi-x" @click="removeNotif"></i></span></div>
-	</transition>
 </template>
 
 <script>
@@ -11,16 +9,25 @@ export default {
 		notifs : Object,
 		removeNotif: Function
 	},
-	watch: {
-		notifs(){
-			console.log('ok')
-			const timer = setTimeout(()=>{
-				
-				this.$parent.removeNotif()
-			},2000)
-			clearTimeout(timer)
+	mounted(){
+
+		this.startTimer()
+	
+	},
+	updated() {
+
+		this.startTimer()
+	},
+	methods: {
+		startTimer() {
+			let timer = setTimeout( () => {
+				this.removeNotif()
+				clearTimeout(timer)
+			},3000)
+			
 		}
 	}
+
 }
 </script>
 <style lang="scss" scoped>
@@ -53,11 +60,4 @@ export default {
 		}
 	}
 
-.list-error-enter-active, .list-error-leave-active {
-	transition: all .5s ease-in;
-}
-.list-error-enter, .list-error-leave-to /* .list-leave-active below version 2.1.8 */ {
-	opacity: 0;
-	transform: translateX(30px);
-}
 </style>

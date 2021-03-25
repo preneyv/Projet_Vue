@@ -9,7 +9,7 @@
                     <input type="submit" @click.prevent="submit" value="Valider"/>
                 </form>
             </div>
-            <HandlingFormNotif v-if="error !== null" :notifs="error" :removeNotif="removeError"/>
+            <HandlingNotif v-if="error !== null" :notifs="error" :removeNotif="removeError"/>
         </div>
     </div>
 </template>
@@ -43,11 +43,12 @@ export default {
             this.checkValueToSendPromise().then(async ()=> {
 
                 let backResult = await (this.method)(this.valueToSend)
+                console.log(backResult)
                 if (backResult) throw backResult 
 
             }).catch((error) => {
  
-                this.error = {...error}
+                this.error = error
             })
             
         },

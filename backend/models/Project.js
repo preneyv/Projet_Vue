@@ -13,18 +13,7 @@ const projectSchema = new Schema({
     licence: String,
     contact: String,
     links: Object,
-    jobs: [
-            {
-                type:String,
-                requiredNb:Number,
-                nameCollabPeople:[
-                    {
-                        name:String,
-                        _collab:Schema.ObjectId
-                    }
-                ]
-            }
-        ],
+    jobs: [Object],
     historic: [String]
 })
 

@@ -31,7 +31,6 @@ const AdminAPI={
 
         //TODO : Add job requirement matching the id (project id)
         addJobRequirement: function(id, job) {
-            console.log(job)
             let response = Axios.put(`${config.API_URL}project/${id}`,{$set:{lastUpdate:Date()},$push:{jobs:job}})
                                 .then((res)=> {
                                     return res
@@ -70,7 +69,6 @@ const AdminAPI={
         },
 
         removeCollabFromProject(idProject, name, typeValue) {
-            console.log(name)
             let reqBody = typeValue === undefined ? {body:{$pull:{'jobs.$[].nameCollabPeople':{name:name}}}, tail:{multi:true}}  : {filter : { 'jobs.type': typeValue}, body: {$pull:{'jobs.$.nameCollabPeople':{name:name}}}} ;
             let response = Axios.put(`${config.API_URL}project/${idProject}`, reqBody )
                                 .then((res)=> {

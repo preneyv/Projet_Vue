@@ -1,7 +1,7 @@
 <template>
             <div class="head-collab">
                 <span class="name-person" @click="isOptionOpened = !isOptionOpened">{{collab.name}}</span>
-                <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project" @click="handleClickRemove()"><i class="bi bi-box-arrow-right"></i>  Retirer du projet</span>
+                <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project" @click="handleClickRemove()"><i class="bi bi-box-arrow-right" :title="collab.name"></i>  Retirer du projet</span>
             </div>
             <transition name="growup-div">
                 <div v-if="isOptionOpened===true" class="option-panel">
@@ -10,7 +10,7 @@
                         v-for="(type,index) in collab.type" 
                         :key="index">
                         <span><i class="bi bi-gear"></i> {{getTypeCollab(type)}}</span>
-                        <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project" @click="handleClickRemove(type)" title="Retirer en tant que..."><i class="bi bi-x"></i></span>
+                        <span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project" @click="handleClickRemove(type)" :title="collab.name"><i class="bi bi-x"></i></span>
                         </span>
                     </div>
                     
