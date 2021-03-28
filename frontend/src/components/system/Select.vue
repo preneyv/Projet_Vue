@@ -121,8 +121,12 @@ export default {
 		return {
 			focused: this.autofocus,
 			selected: this.multiple ? [] : null,
-			displayedItems: this.size === null ? this.items : this.items.slice(0 , this.size),
 			select: null
+		}
+	},
+	computed: {
+		displayedItems() {
+			return this.size === null ? this.items : this.items.slice(0 , this.size)
 		}
 	},
 	methods: {
