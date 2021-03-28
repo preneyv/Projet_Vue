@@ -1,9 +1,11 @@
 <template>
-	<Navbar />
-	<Container>
-		<router-view />
-	</Container>
-	<Footer v-if="$route.name!=='Dashboard'"/>
+	<div class="app">
+		<Navbar />
+		<Container>
+			<router-view />
+		</Container>
+		<Footer v-if="$route.name!=='Dashboard'"/>
+	</div>
 </template>
 
 <script>
