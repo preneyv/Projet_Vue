@@ -73,28 +73,34 @@
 			</div>
 
 			<div class="submit-project__input-container">
-				<div class="submit-project__needed-profil">
+				<div
+					v-for="profil, i in neededProfils"
+					:key="i"
+					class="submit-project__needed-profil">
 					<BaseSelect
-						id="project-needed-profil-type-0"
-						name="needed-profil-type-0" 
+						:id="`project-needed-profil-type-${i}`"
+						:name="`needed-profil-type-${i}`" 
 						label="Profils recherchés"
-						:items="profilTypes"
+						:items="profilTypesForSelect"
+						:value="profilTypes[profil.type] || null"
+						@change="e =>handleProfilTypeChange(e, i)"
 						allowSearch
 					/>
 					<BaseInput
 						type="number"
-						id="project-needed-profil-number-0"
-						name="needed-profil-number-0"
+						:id="`project-needed-profil-number-${i}`"
+						:name="`needed-profil-number-${i}`" 
 						:min="0"
 					/>
 					<BaseSelect
-						id="project-categories"
-						name="categories"
-						:items="profilTypes[0].skills"
+						:id="`project-needed-profil-skills-${i}`"
+						:name="`needed-profil-skills-${i}`" 
+						:items="profilTypes[profil.type]?.skills || []"
 						allowSearch
 						multiple
 					/>
 				</div>
+				<button type="button" @click="addProfil">Ajouter un profil</button>
 			</div>
 		</form>
 	</div>
@@ -117,8 +123,28 @@ export default {
 		BaseTextarea
 	},
 	data() {
-		return { licenses, categories, officialLinkTypes, profilTypes }
-	}
+		return {
+			licenses,
+			categories,
+			officialLinkTypes,
+			profilTypes,
+			profilTypesForSelect: Object.keys(profilTypes).map(key => ({ value: key, ...profilTypes[key] })),
+			neededProfils: []
+		}
+	},
+	methods: {
+		addProfil() {
+			this.neededProfils.push({
+				type: 'developer',
+				number: 0,
+				skills: []
+			})
+		},
+		handleProfilTypeChange(e, index) {
+			console.log(e.target.value, index)
+			this.neededProfils[index].type = e.target.value
+		}
+	},
 }
 </script>
 
