@@ -126,9 +126,6 @@ export default {
 		}
 	},
 	computed: {
-		displayedItems() {
-			return this.size === null ? this.items : this.items.slice(0 , this.size)
-		},
 		dataItemsChange : function(){
 			return  this.size === null ? this.dataItems : this.dataItems.slice(0 , this.size)
 		}
