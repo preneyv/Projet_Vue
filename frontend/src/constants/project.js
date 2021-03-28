@@ -21,8 +21,12 @@ export const categories = [
 ]
 
 export const officialLinkTypes = [
-	{ value: "official", name: "Site officiel", example: "https://my-project.com" },
-	{ value: "github", name: "GitHub", example: "https://github.com/"},
-	{ value: "wiki", name: "Wiki", example: "https://wiki.com/"},
+	{
+		value: "official",
+		name: "Site officiel",
+		example: "https://my-project.com",
+	},
+	{ value: "github", name: "GitHub", example: "https://github.com/" },
+	{ value: "wiki", name: "Wiki", example: "https://wiki.com/" },
 	{ value: "npm", name: "npm", example: "https://www.npmjs.com/package/" },
 ]

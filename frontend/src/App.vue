@@ -1,25 +1,18 @@
 <template>
 	<Navbar />
-	<Container>
+	<main>
 		<router-view />
-	</Container>
-	<Footer v-if="$route.name!=='Dashboard'"/>
+	</main>
+	<Footer v-if="$route.name !== 'Dashboard'" />
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue"
-import Container from "@/components/Container.vue"
-import Footer from "@/components/Footer.vue"
+import Navbar from "@/components/Navbar.vue";
+import Footer from "@/components/Footer.vue";
 export default {
 	components: {
 		Navbar,
-		Container,
-		Footer
+		Footer,
 	},
-	mounted(){
-		console.log(this.$route)
-	}
-}
+};
 </script>
-
-<style lang="scss"></style>

@@ -24,6 +24,7 @@ $breakpoints: (
 		min-width: 1920px,
 	),
 ) !default;
+
 // Convert SCSS variable to CSS variable to easily calculate values
 :root {
 	--color-black: #{$black};
