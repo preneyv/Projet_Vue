@@ -10,8 +10,8 @@
 		<div class="tag-ctn">
 			<span class="tag sp-tag"
 				v-for="(tag) in project.tags"
-				:key="tag.value"
-			>{{tag.name}}</span>
+				:key="tag"
+			>{{getNameTag(tag)}}</span>
 		</div>
 		<div class="foot-ctn">
 			<span>{{project.licence}}</span>
@@ -24,6 +24,8 @@
 <script>
 
 import format from 'date-format'
+import {categories} from '../../constants/project.js'
+
 export default {
 	name:'ItemListProject',
 	props:{
@@ -31,6 +33,10 @@ export default {
 		nbSelectedProject:String
 	},
 	methods:{
+		getNameTag : function(val){
+            return categories.find(({value}) => val === value).name
+            
+        },
 		selectProject : function(id)
 		{
 			this.bus.emit('handleChangeProject', id)

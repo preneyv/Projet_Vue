@@ -51,7 +51,7 @@
 				<ul class="select-wrapper__options">
 					<!-- Select option -->
 					<li
-						v-for="item, i in displayedItems"
+						v-for="item, i in dataItemsChange"
 						:key="i"
 						class="select-wrapper__option"
 						@click="() => handleItemClick(item)"
@@ -121,12 +121,16 @@ export default {
 		return {
 			focused: this.autofocus,
 			selected: this.multiple ? [] : null,
-			select: null
+			select: null,
+			dataItems : this.items
 		}
 	},
 	computed: {
 		displayedItems() {
 			return this.size === null ? this.items : this.items.slice(0 , this.size)
+		},
+		dataItemsChange : function(){
+			return  this.size === null ? this.dataItems : this.dataItems.slice(0 , this.size)
 		}
 	},
 	methods: {
@@ -176,8 +180,9 @@ export default {
 		updateDisplayedItems(event) {
 			const research = removeAccents(event.target.value.toLowerCase())
 			const matchingItems = this.searchItems(research)
-			this.displayedItems = this.size === null ? matchingItems : matchingItems.slice(0, this.size)
+			this.dataItems = this.size === null ? matchingItems : matchingItems.slice(0, this.size)
 		},
+		
 
 		searchItems(research) {
 			if (research.trim().length === 0) return this.items
@@ -291,6 +296,8 @@ export default {
 		transform: translateY(1px);
 		width: 100%;
 		z-index: 1000;
+		overflow-y: auto;
+		max-height: 500%;
 
 		&__search-wrapper {
 			padding: 0.75rem 1.5em 0.5em;
