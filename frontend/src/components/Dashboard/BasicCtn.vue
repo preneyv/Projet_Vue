@@ -32,6 +32,7 @@ export default {
         border : 1px solid lighten($color: #252525, $amount: 15);
         padding:1rem 1rem 0.5rem 1rem;
         border-radius: 3px;
+        position: relative;
         &__head{
             border-bottom: 1px solid lighten($color: #252525, $amount: 15);
             flex:1;

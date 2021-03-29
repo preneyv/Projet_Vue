@@ -1,20 +1,22 @@
 <template>
-    <section>
+    <section v-if="dowloadError === false">
         <div :class="[{'isOpen' : isListOpened } ,'list-ctn']">
-            <div class="list-ctn__main">
+            <div v-if="listOfProject.length > 0" class="list-ctn__main">
                 <ItemListProject 
                     v-for="pr in listOfProject"
                     :key="pr._id"
                     :project="pr"
                     :nbSelectedProject="currentProject._id"
+                    :switchProject="changeProject"
                 />
-            </div> 
+            </div>
             <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
         </div>
         <!--<transition name="project-change" mode="out-in">-->
             <ProjectDash  :project="currentProject"/>
         <!--</transition>-->
     </section>
+    <section v-else>Une erreur est survenue lors du chargement du Dashboard. Veuillez réessayez plus tard.</section>
 </template>
 
 <script>
@@ -33,19 +35,21 @@ export default {
         AdminAPI.getListProject("603c08ff76c5cf37b82d2ba3").then(res=>{
             this.listOfProject = res.data
             this.currentProject = this.listOfProject[0]
+        }).catch(() => {
+            this.dowloadError = true
         })  
-        this.bus.on('handleChangeProject', (id)=>this.changeProject(id))
+
     },
     data(){
         return{
             listOfProject:[],
             currentProject:null,
             isListOpened: false,
+            dowloadError: false
         }
     },
     methods:{
 		changeProject:function(id){
-            
            this.currentProject= this.listOfProject.find(item => item._id === id)
            
 		}

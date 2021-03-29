@@ -14,6 +14,7 @@ const projectSchema = new Schema({
     contact: String,
     links: Object,
     jobs: [Object],
+    collabRequest: [Object],
     historic: [String]
 })
 

@@ -11,12 +11,12 @@ export default {
 	},
 	mounted(){
 
-		this.startTimer()
+		//this.startTimer()
 	
 	},
 	updated() {
 
-		this.startTimer()
+		//this.startTimer()
 	},
 	methods: {
 		startTimer() {

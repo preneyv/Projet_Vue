@@ -43,7 +43,8 @@ export default {
             return profilTypes[val].name     
         },
         handleClickRemove(type){
-            type !== undefined ? this.method(this.collab.name, type) : this.method(this.collab.name)
+            console.log(this.collab)
+            type !== undefined ? this.method(this.collab.id, this.collab.name, type) : this.method(this.collab.id, this.collab.name)
         }
     }  
 }

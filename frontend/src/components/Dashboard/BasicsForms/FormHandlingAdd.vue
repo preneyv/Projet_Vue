@@ -93,6 +93,7 @@ export default {
         top:0;
         bottom:0;
         @include flex(row);
+        z-index: 19;
         .form-handling-add{
             min-width: 500px;
             padding: 12px;

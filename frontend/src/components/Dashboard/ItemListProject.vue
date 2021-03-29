@@ -1,5 +1,5 @@
 <template>
-	<div @click="selectProject(project._id)" :class="[{'item-list-ctn__isSelected' : isSelected }, 'item-list-ctn']">
+	<div @click="switchProject(project._id)" :class="[{'item-list-ctn__isSelected' : isSelected }, 'item-list-ctn']">
 		<div class="head-ctn">
 			<span>{{project.title}}</span>
 			<span :class="[project.stateUser==='Admin' ? 'userAdmin':'userCollab', 'sp-tag']">{{project.stateUser}}</span>
@@ -32,7 +32,8 @@ export default {
 	name: 'ItemListProject',
 	props: {
 		project: Object,
-		nbSelectedProject: String
+		nbSelectedProject: String,
+		switchProject: Function
 	},
 	methods: {
 		/**
@@ -41,13 +42,6 @@ export default {
 		getNameTag(val) {
             return categories.find(({value}) => val === value).name   
         },
-		/**
-		 * Emet un évènement vers Dashboard pour informer qu'il faut modifier le projet
-		 * actuellement en cours de visionnage.
-		 */
-		selectProject(id) {
-			this.bus.emit('handleChangeProject', id)
-		},
 		/**
 		 * Formate la date à l'aide de la librairie 'format'
 		 */

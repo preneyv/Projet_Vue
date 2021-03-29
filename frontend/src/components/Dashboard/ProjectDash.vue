@@ -1,5 +1,6 @@
 <template>
-    <div class="project-ctn">
+    <div :class="[getCurrentProject.stateProject==='En cours' ? 'open' : 'close', 'project-ctn']">
+        
         <transition  name="list-notif"  mode="out-in" appear>
             <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
         </transition>
@@ -39,11 +40,18 @@
         </div>
         <div class="section right-section">
             <BasicCtn headTitle="Etat du projet">
+                <div class="btn-requests-collabs" v-if=" (getCurrentProject.collabRequest)?.length > 0 " @click="requestPanelOpen = !requestPanelOpen"><i class="bi bi-exclamation"></i></div>
+                <div class="requests-collabs" v-if="requestPanelOpen">
+                    <div v-for="(req, index) in getCurrentProject.collabRequest" :key="index" class="requests-collabs__request">
+                        <span>{{req.name}} veut se joindre au projet en tant que {{req.type}}</span>
+                        <div class="requests-collabs__request__response"><button @click="acceptCollabRequest(req, index)">Valider</button><button>Refuser</button></div>
+                    </div>
+                </div>
                 <template v-slot:btnHead><input class="btn-head-stateproject" type="button" :value="getCurrentProject.stateUser=== 'Admin' ? 'Supprimer le projet' : 'Se retirer du projet'"/></template>
                 <div class="stateproject-ctn">
                     <div class="stateproject-ctn__firstline">
                         <span>{{getCurrentProject.stateUser === 'Admin' ? "Vous êtes administrateur sur le projet." : "Vous êtes collaborateur sur le projet"}}</span>
-                        <input v-if="getCurrentProject.stateUser === 'Admin'" class="btn-end-project" type="button" value="Déclarer terminé"/>
+                        <input v-if="getCurrentProject.stateUser === 'Admin'" class="btn-end-project" type="button" :value="getCurrentProject.stateProject === 'En cours' ? 'Déclarer terminé' : 'Reprendre' " @click="switchStateProject"/>
                     </div>
                     <div class="stateproject-ctn__lastline">
                         <span>{{getCurrentProject.licence}}</span>
@@ -109,6 +117,9 @@ export default {
         FormHandlingAdd,
         HandlingNotif
     },
+    updated() {
+        console.log(this.project)
+    },
     data() {
         return {
             requiredForm: null,
@@ -134,7 +145,8 @@ export default {
                 method: this.changeDesc,
                 form: markRaw(SetDesc), 
             },
-            notifs:null
+            notifs:null,
+            requestPanelOpen: false
         }    
     },
     props: {
@@ -302,24 +314,23 @@ export default {
         /**
          * Retire un collaborateur du projet ou simplement une collaboration sur laquelle il est présent.
          */
-        async removeCollabFromProject(name, type) {
+        async removeCollabFromProject(id,name, type) {
             let projectLocal = this.getCurrentProject
             
-            
-            let res = await AdminAPI.removeCollabFromProject(projectLocal._id, name, type)
+            let res = await AdminAPI.removeCollabFromProject(projectLocal._id, id, type)
             const { modified } = res.data
 
             if(modified === 1) {
                 
                 if(type !== undefined) {
                     let obj = projectLocal.jobs.find((el) => el.type === type)
-                    let person = obj.nameCollabPeople.findIndex((p) => p.name === name)
+                    let person = obj.nameCollabPeople.findIndex((p) => p._collab === id)
                     obj.nameCollabPeople.splice(person,1)
                     this.notifs = {type: 'success', message:`${name} n'est plus ${type} sur le projet.`}
 
                 }else{
                     projectLocal.jobs.forEach((el) => {
-                        let person = el.nameCollabPeople.findIndex((p) => p.name === name)
+                        let person = el.nameCollabPeople.findIndex((p) => p._collab === id)
                         if(person !== -1) el.nameCollabPeople.splice(person,1)
                     })
                     this.notifs = {type: 'success', message:`${name} a été retiré du projet.`}
@@ -330,6 +341,63 @@ export default {
                 this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
             }
 
+        },
+        /**
+         * Répond à une demande de collaboration - Accepte ou refuse.
+         */
+        async acceptCollabRequest(collab, index) {
+            let isMissing = true
+            let projectLocal = this.getCurrentProject
+            let obj = projectLocal.jobs.find((el) => el.type === collab.type)
+
+
+            if(obj.nameCollabPeople.length +1 > obj.requiredNb) {
+                this.notifs = {type: 'error', message:`Vous ne pouvez pas ajouter plus de ${collab.type}`}
+                return
+            }
+
+            obj.nameCollabPeople.forEach((el) => {
+                if(el._collab === collab._id) {
+                    this.notifs = {type: 'error', message:`${collab.name} est déjà ${collab.type} sur le projet`}
+                    isMissing = false
+                }
+                    
+            })
+            if (isMissing === false) return
+
+            let res = await AdminAPI.addCollabToProject(projectLocal._id, collab)
+            const {modified} = res.data ?? ""
+
+                if(modified === 1) {
+                    
+                    obj.nameCollabPeople = [...obj.nameCollabPeople, {name: collab.name, _collab: collab._id}]
+                    this.notifs = {type: 'success', message:`Vous avez ajouté ${collab.name} au projet.`}
+
+                    projectLocal.collabRequest.splice(index, 1)
+
+                }else {
+                    this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+                }
+            
+
+        },
+        async switchStateProject() {
+
+            let projectLocal = this.getCurrentProject
+            let valueChange = projectLocal.stateProject === "En cours" ? "Terminé" : "En cours"
+
+            let res = await AdminAPI.setStateProject(projectLocal._id,valueChange)
+            const { modified } = res.data
+            
+            if(modified === 1) {
+
+                projectLocal.stateProject = valueChange
+                this.notifs = {type: 'success', message:`Statut du projet : ${valueChange}.`}
+
+            }else{
+                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+            }
+        
         },
         removeNotif() {
             this.notifs = null
@@ -347,7 +415,7 @@ export default {
     .project-ctn{
         position: relative;
         flex:4;
-        background-color: #252525;
+        
         border: 1px solid lighten($color: #252525, $amount: 15);
         height:100%;
         display:flex;
@@ -356,6 +424,14 @@ export default {
         gap: 2rem;
         @include responsive('xl-desktop'){
             flex-direction: row
+        }
+
+        &.open {
+            background-color: #252525;
+        }
+
+        &.close {
+            background-color: rgba(245, 151, 151, 0.3);
         }
     }
 
@@ -532,12 +608,76 @@ export default {
         }
     }
 
+    /**Notification panel */
     .notif-section{
         position: fixed;
         right: 1rem;
         top: 5rem;
+        z-index:17;
     }
  
+    /**Request collab panel */
+    .btn-requests-collabs {
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        background-color: red;
+        border-radius: 50%;
+        padding: 0 0.2rem;
+        font-size: 1rem;
+        border : 1.5px solid red;
+        z-index: 15;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &:active {
+            background-color: #BF0000;
+        }
+
+    }
+
+    .requests-collabs {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: unset;
+        align-items: unset;
+        background-color: #252525;
+        border : 1px solid lighten($color: #252525, $amount: 15);
+        padding: 0.5rem;
+        width: max-content;
+        top: 0;
+        right: 0;
+        z-index:2;
+        gap: 0.5rem;
+        max-height: 800px;
+        overflow-y: auto;
+        &__request {
+            @include flex(column, unset, unset);
+            font-size: 0.9rem;
+            background-color: #202120;
+            border : 1px solid lighten($color: #252525, $amount: 15);
+            padding: 0.5rem;
+
+            &__response {
+                @include flex(row, space-evenly, unset)
+
+            }
+        }
+
+        button {
+                    
+            border: none;
+            @include btn_component(0.5,5,2);
+            margin: 10px auto;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+
+    }
  
 
 
