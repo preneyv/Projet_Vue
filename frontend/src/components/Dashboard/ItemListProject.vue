@@ -1,5 +1,5 @@
 <template>
-	<div @click="switchProject(project._id)" :class="[{'item-list-ctn__isSelected' : isSelected }, 'item-list-ctn']">
+	<div @click="switchProject(project._id)" :class="[{'item-list-ctn__isSelected' : isSelected}, project.stateProject!=='En cours' ? 'close' : 'open', 'item-list-ctn']">
 		<div class="head-ctn">
 			<span>{{project.title}}</span>
 			<span :class="[project.stateUser==='Admin' ? 'userAdmin':'userCollab', 'sp-tag']">{{project.stateUser}}</span>
@@ -63,7 +63,7 @@ export default {
 <style lang="scss" scoped>
 
 	.item-list-ctn{
-		width:100%;
+		width: 100%;
 		height: auto;
 		display: flex;
 		flex-direction: column;
@@ -77,27 +77,35 @@ export default {
 		&__isSelected{
 			background-color: #202120;
 		}
+		&.close {
+			background-color: rgba(245, 151, 151, 0.3);;
+		}
 	}
 
-	.item-list-ctn:last-child{
+	.item-list-ctn:last-child {
 		border:none
 	}
 
-	.head-ctn,.foot-ctn,.tag-ctn{
+	.head-ctn,.foot-ctn,.tag-ctn {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		flex-wrap: wrap;
+		row-gap: 6px;
 
 	}
-	.foot-ctn,.short-sumup{color: #969595;font-size: 0.7rem;padding: 4px 0;}
-	.tag{background-color: #202120;}
-	.sp-tag{
+	.foot-ctn,.short-sumup {color: #969595;font-size: 0.7rem;padding: 4px 0;}
+
+	.tag {background-color: #202120;}
+
+	.sp-tag {
 		padding:5px;
 		border-radius: 3px;
 		font-size: 0.8rem;
 	}
-	.userAdmin{background-color: #f44a4a;}
-	.userCollab{background-color: #121284;}
+
+	.userAdmin {background-color: #f44a4a;}
+	
+	.userCollab {background-color: #121284;}
 
 </style>

@@ -37,13 +37,15 @@ export default {
     },
     methods: {
         /**
-         * Récupère lee name associé à la clef dans profilTypes
+         * Récupère le name associé à la clef dans profilTypes
          */
         getTypeCollab(val) {
             return profilTypes[val].name     
         },
+        /**
+         * Permet de gérer le clique sur le bouton de modification (le symbole du crayon)
+         */
         handleClickRemove(type){
-            console.log(this.collab)
             type !== undefined ? this.method(this.collab.id, this.collab.name, type) : this.method(this.collab.id, this.collab.name)
         }
     }  

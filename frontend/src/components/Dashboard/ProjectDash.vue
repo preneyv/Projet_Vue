@@ -41,10 +41,10 @@
         <div class="section right-section">
             <BasicCtn headTitle="Etat du projet">
                 <div class="btn-requests-collabs" v-if=" (getCurrentProject.collabRequest)?.length > 0 " @click="requestPanelOpen = !requestPanelOpen"><i class="bi bi-exclamation"></i></div>
-                <div class="requests-collabs" v-if="requestPanelOpen">
+                <div class="requests-collabs" v-if="requestPanelOpen &&  (getCurrentProject.collabRequest)?.length > 0">
                     <div v-for="(req, index) in getCurrentProject.collabRequest" :key="index" class="requests-collabs__request">
-                        <span>{{req.name}} veut se joindre au projet en tant que {{req.type}}</span>
-                        <div class="requests-collabs__request__response"><button @click="acceptCollabRequest(req, index)">Valider</button><button>Refuser</button></div>
+                        <span>{{req.name}} veut se joindre au projet en tant que {{getTypeCollab(req.type).toLowerCase()}}.</span>
+                        <div class="requests-collabs__request__response"><button @click="acceptCollabRequest(req, index)">Valider</button><button @click="refuseCollabRequest(req._id, index)">Refuser</button></div>
                     </div>
                 </div>
                 <template v-slot:btnHead><input class="btn-head-stateproject" type="button" :value="getCurrentProject.stateUser=== 'Admin' ? 'Supprimer le projet' : 'Se retirer du projet'"/></template>
@@ -100,8 +100,9 @@ import HandlingNotif from "@/components/HandlingNotif.vue"
 
 //Files Import
 
-import AdminAPI from './AdminAPI.js'
+import AdminAPI from '../../utils/AdminAPI.js'
 import {categories, officialLinkTypes} from '../../constants/project.js'
+import {profilTypes} from '../../constants/contributor.js'
 
 //Librairies Import
 import { markRaw } from 'vue'
@@ -187,6 +188,12 @@ export default {
         },
     },
     methods:{
+        /**
+         * Récupère le name associé à la clef dans profilTypes
+         */
+        getTypeCollab(val) {
+            return profilTypes[val].name     
+        },
         /**
          * Récupère le name associé à la clef dans le tableau  categories
          */
@@ -343,7 +350,7 @@ export default {
 
         },
         /**
-         * Répond à une demande de collaboration - Accepte ou refuse.
+         * Accepte  une demande de collaboration.
          */
         async acceptCollabRequest(collab, index) {
             let isMissing = true
@@ -366,6 +373,7 @@ export default {
             if (isMissing === false) return
 
             let res = await AdminAPI.addCollabToProject(projectLocal._id, collab)
+            
             const {modified} = res.data ?? ""
 
                 if(modified === 1) {
@@ -381,6 +389,25 @@ export default {
             
 
         },
+        /**
+         * Refuse une demande de collaboration
+         */
+        async refuseCollabRequest(id, index) {
+            let projectLocal = this.getCurrentProject
+            let res = await AdminAPI.removeFromCollabRequest(projectLocal._id, id)
+            const {modified} = res.data ?? ""
+
+                if(modified === 1) {
+                    
+                    projectLocal.collabRequest.splice(index, 1)
+
+                }else {
+                    this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+                }
+        },
+        /**
+         * Change l'état du projet
+         */
         async switchStateProject() {
 
             let projectLocal = this.getCurrentProject
@@ -399,6 +426,9 @@ export default {
             }
         
         },
+        /**
+         * Retire la notification du tableau de notification
+         */
         removeNotif() {
             this.notifs = null
         }
@@ -412,15 +442,14 @@ export default {
 <style lang="scss" scoped>
 
 /*MAIN CONFIG*/
-    .project-ctn{
+    .project-ctn {
         position: relative;
         flex:4;
-        
         border: 1px solid lighten($color: #252525, $amount: 15);
-        height:100%;
-        display:flex;
+        height: 100%;
+        display: flex;
         flex-direction: column;
-        padding:1rem;
+        padding: 1rem;
         gap: 2rem;
         @include responsive('xl-desktop'){
             flex-direction: row
@@ -442,33 +471,34 @@ export default {
 
 
     .left-section{
-        flex:3;
+        flex: 3;
         padding: 1rem 0 0rem 1.5rem;
     }
 
     .middle-section,.right-section{
-        flex:2;
-        gap:2rem;
+        flex: 2;
+        gap: 2rem;
     }
 
     .add-btn:hover{
         cursor: pointer;
-        color:#181818;
+        color: #181818;
     }
 
 /*LEFT PART*/
     .title-ctn{
-        font-size:3rem;
+        font-size: 3rem;
         flex: 1;
     }
 
 
-    .state-collab-ctn{
+    .state-collab-ctn {
         flex: 5;
         @include flex(column, unset, unset);
         font-size: 1.5rem;
-        gap:1rem;
+        gap: 1rem;
         overflow-y: auto;
+
         &__head{
             @include flex(row, space-between, unset);
             border-bottom: 1px solid lighten($color: #252525, $amount: 15);
@@ -476,7 +506,7 @@ export default {
 
         }
 
-        &__main{
+        &__main {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
             grid-template-rows: repeat(auto-fit, 150px);
@@ -488,39 +518,40 @@ export default {
 
 /*MIDDLE PART*/
 
-    .middle-section{
-        .basic-ctn:first-child, .basic-ctn:nth-child(2){
+    .middle-section {
+        .basic-ctn:first-child, .basic-ctn:nth-child(2) {
             flex: 2 0 200px;
             overflow-y: auto;
         }
 
-        .basic-ctn:last-child{
-            flex:1
+        .basic-ctn:last-child {
+            flex: 1
         }
     }
 
     /*Decription subpart*/
-    .description{
+    .description {
         display: flex;
-        width:100%;
+        width: 100%;
         font-size: 0.9rem;
         overflow-y: auto;
     }
-    .no-desc{  
+
+    .no-desc {  
         justify-content: center;
         align-items: center;
-        color:#181818;
+        color: #181818;
     }
 
     /*Tag subpart*/
-    .tag-ctn{
+    .tag-ctn {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(40%, 1fr));
         width: 100%;
         font-size: 0.9rem;
         grid-gap: 1rem;
 
-        span{
+        span {
             padding: 0.5rem;
             background-color: #313131;
             height: min-content;
@@ -530,18 +561,18 @@ export default {
     }
 
 /*RIGHT SECTION*/
-    .right-section{
-        .basic-ctn:first-child{
-            flex:1
+    .right-section {
+        .basic-ctn:first-child {
+            flex: 1
         }
 
-        .basic-ctn:last-child, .basic-ctn:nth-child(2){
-            flex:3
+        .basic-ctn:last-child, .basic-ctn:nth-child(2) {
+            flex: 3
         }
     }
 
     /*state project subpart*/
-    .btn-head-stateproject, .btn-end-project{
+    .btn-head-stateproject, .btn-end-project {
         padding: 0.5rem 5px;
         border: none;
         font-size: 0.8rem;
@@ -552,68 +583,71 @@ export default {
         }
     }
 
-    .btn-head-stateproject{background-color: #f44a4a;}
-    .btn-end-project{background-color: #121284;}
+    .btn-head-stateproject {background-color: #f44a4a;}
 
-    .stateproject-ctn{
+    .btn-end-project {background-color: #121284;}
+
+    .stateproject-ctn {
         @include flex(column, space-between, flex-start);
         width: 100%;
         gap: 0.9rem;
 
-        &__firstline, &__lastline{
+        &__firstline, &__lastline {
             display: flex;
             justify-content: space-between;
             align-items: center;
             @include flex(row, space-between, center);
-            width:100%;
+            width: 100%;
         }
-        &__firstline{font-size: 0.8rem;}
+        &__firstline {font-size: 0.8rem;}
 
-        &__lastline{
-            color: #969595;font-size: 0.7rem;
+        &__lastline {
+            color: #969595;
+            font-size: 0.7rem;
         }
     }
 
     /*Collabs subpart*/
-    .collabs-ctn{
+    .collabs-ctn {
         @include flex(column, unset, unset);
         font-size: 1.1rem;
-        gap:0.2rem;
-        width:100%;
+        gap: 0.2rem;
+        width: 100%;
     }
 
     /*links subpart*/
-    .links-ctn{
+    .links-ctn {
         @include flex(column, flex-start, flex-start);
         font-size: 1.2rem;
-        width:100%;
-        gap:0.5rem;
+        width: 100%;
+        gap: 0.5rem;
     }
 
-    .link-item{
+    .link-item {
         @include flex(row);
-        width:100%;
-        span:first-child{
+        width: 100%;
+
+        span:first-child {
             background-color: #4b4b4b;
-            border-radius:3px 0 0 3px;
+            border-radius: 3px 0 0 3px;
             padding: 5px 10px;
-            flex:1;
+            flex: 1;
         };
 
-        span:last-child{
+        span:last-child {
             border: 1px solid lighten($color: #252525, $amount: 15);
             border-radius:0 3px 3px 0;
             padding: 4px 10px;
-            flex:3;
+            flex: 3;
         }
     }
 
     /**Notification panel */
-    .notif-section{
+    .notif-section {
         position: fixed;
         right: 1rem;
-        top: 5rem;
-        z-index:17;
+        bottom: 1rem;
+        z-index: 17;
     }
  
     /**Request collab panel */
@@ -650,10 +684,11 @@ export default {
         width: max-content;
         top: 0;
         right: 0;
-        z-index:2;
+        z-index: 2;
         gap: 0.5rem;
         max-height: 800px;
         overflow-y: auto;
+
         &__request {
             @include flex(column, unset, unset);
             font-size: 0.9rem;

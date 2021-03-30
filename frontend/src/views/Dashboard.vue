@@ -23,7 +23,7 @@
 import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
 
-import AdminAPI from '../components/Dashboard/AdminAPI.js'
+import AdminAPI from '../utils/AdminAPI.js'
 
 export default {
     name:"Dashboard",

@@ -85,7 +85,7 @@ export default {
 
 <style lang="scss" scoped>
 
-    .main-ctn{
+    .main-ctn {
         position:absolute;
         background-color:changeOpacity($black, 0.8);;
         left:0;
@@ -94,25 +94,27 @@ export default {
         bottom:0;
         @include flex(row);
         z-index: 19;
-        .form-handling-add{
+
+        .form-handling-add {
             min-width: 500px;
             padding: 12px;
             background-color: #252525;
             position: relative;
+
             &__ctn{
 
                 min-width: 500px;
                 padding: 12px;
                 background-color: #252525;
-                border-radius:5px;
+                border-radius: 5px;
                 height: fit-content;
                 text-align: center;
-                padding-top:2rem;
+                padding-top: 2rem;
                 @include flex(column,center,unset);
 
-                form{
+                form {
                     @include flex(column,center, unset);
-                    gap:1rem;
+                    gap: 1rem;
                     margin-top: 1rem;
                     text-align: left;
                 }

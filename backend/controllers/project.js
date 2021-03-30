@@ -95,7 +95,7 @@ export async function updateOne(req, res) {
 	const filter = req.body.filter ? { _id: id, ...req.body.filter} : {_id: id}
 	const body = req.body.body ?? req.body
 	const tail = req.body.tail ? {...req.body.tail} : {}
-	console.log(filter)
+
 	
 
 	if(req.body.options?.changeToObjId) changeToObjId(req.body.body)
@@ -119,18 +119,17 @@ export async function deleteOneById(req, res) {
 	})
 }
 
+/**
+ * Sert à modifier les identifiants en ObjectID
+ * @param {*} request La requête dont il faut modifier les identifiants en ObjectID
+ */
 function changeToObjId(request) {
 
 	const { Types } = mongoose
 	const el = request['$pull'] ?? request['$push']
-	/*for (const item in el) {
-		console.log(el[item])
-		if (el[item]._collab)
-			 el[item]._collab = Types.ObjectId(el[item]._collab)
-	}*/
 
 	for (const item in el) {
-		console.log(el[item])
+
 		for (const line in el[item]) {
 			if(line.startsWith('_')) el[item][line] = Types.ObjectId(el[item][line])
 		}
