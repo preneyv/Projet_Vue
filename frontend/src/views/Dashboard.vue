@@ -13,10 +13,10 @@
             <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
         </div>
         <!--<transition name="project-change" mode="out-in">-->
-            <ProjectDash  :project="currentProject"/>
+            <ProjectDash v-if="currentProject !== null" :project="currentProject"/>
         <!--</transition>-->
     </section>
-    <section v-else>Une erreur est survenue lors du chargement du Dashboard. Veuillez réessayez plus tard.</section>
+    <section v-else class="errorDowloadAPI"><div>Une erreur réseau est survenue lors du chargement du Dashboard. Veuillez réessayez plus tard.</div></section>
 </template>
 
 <script>
@@ -57,6 +57,22 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.errorDowloadAPI {
+    width: 100%;
+    height:100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 2rem;
+    
+
+    div {
+        background-color: #252525;
+        border: 1px solid #4b4b4b;
+        padding: 0.5rem;
+    }
+}
 .dashboard {
 	&__container {
 		display: flex;
