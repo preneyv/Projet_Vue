@@ -10,9 +10,7 @@ export default {
 		removeNotif: Function
 	},
 	mounted(){
-
 		this.startTimer()
-	
 	},
 	updated() {
 
@@ -39,7 +37,7 @@ export default {
 		margin-top: 0.5rem;
 		@include flex(column);
 		span {
-			width:100%;
+			width: 100%;
 			padding: 0.5rem 1rem;
 
 			border-radius: 3px;

@@ -26,7 +26,7 @@ export default {
         /**
          * Permet à chaque donnée de newValues d'être réactive au changement de valeur du champ associé
          */
-        handleChange(e){
+        handleChange(e) {
             this.newValues.tags = e.target.value
         }
     }

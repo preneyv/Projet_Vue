@@ -13,7 +13,7 @@ const router = Router()
 
 //  GET /api/v1/project
 router.get("/", getAll)
-router.get("/projects/:id", getAllByUserId)
+router.get("/user/:id", getAllByUserId)
 router.get("/debug", populate)
 router.get("/:id", getOneById)
 router.delete("/:id", authenticateToken, deleteOneById)

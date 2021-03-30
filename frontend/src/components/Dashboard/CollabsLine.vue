@@ -37,13 +37,16 @@ export default {
     },
     methods: {
         /**
-         * Récupère lee name associé à la clef dans profilTypes
+         * Récupère le name associé à la clef dans profilTypes
          */
         getTypeCollab(val) {
             return profilTypes[val].name     
         },
+        /**
+         * Permet de gérer le clique sur le bouton de modification (le symbole du crayon)
+         */
         handleClickRemove(type){
-            type !== undefined ? this.method(this.collab.name, type) : this.method(this.collab.name)
+            type !== undefined ? this.method(this.collab.id, this.collab.name, type) : this.method(this.collab.id, this.collab.name)
         }
     }  
 }
@@ -51,12 +54,12 @@ export default {
 <style lang="scss" scoped>
 
     .head-collab {
-        @include flex(row, space-between)
-    }
-    .name-person {
-        font-size: 1rem;
-        &:hover {
-            cursor: pointer;
+        @include flex(row, space-between);
+        .name-person {
+            font-size: 1rem;
+            &:hover {
+                cursor: pointer;
+            }
         }
     }
     .option-panel{
@@ -69,6 +72,9 @@ export default {
         float: right;
 
         .list-type {
+            &__line {
+
+            }
             @include flex(column, flex-start, flex-start);
             width: 100%;
             &__line {
@@ -90,15 +96,15 @@ export default {
         }
     }
 
+
 /*Transition*/
-    .growup-div-enter-active, .growup-div-leave-active{
-        transition : opacity .5s ease;
-    }
+.growup-div-enter-active,
+.growup-div-leave-active {
+	transition: opacity 0.5s ease;
+}
 
-    .growup-div-enter, .growup-div-leave-to{
-        opacity:0;
-    }
-    
-
-
+.growup-div-enter,
+.growup-div-leave-to {
+	opacity: 0;
+}
 </style>

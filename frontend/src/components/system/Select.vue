@@ -125,12 +125,10 @@ export default {
 			dataItems : this.items
 		}
 	},
-	computed:{
+	computed: {
 		dataItemsChange : function(){
-			console.log(this)
-			return  this.size === undefined  ? this.items : this.items.slice(0 , this.size)
-		},
-		
+			return  this.size === null ? this.dataItems : this.dataItems.slice(0 , this.size)
+		}
 	},
 	methods: {
 		handleItemClick(item) {

@@ -29,8 +29,8 @@ export default {
 
 <style lang="scss" scoped>
 
-    .tile-ctn{
-        width:100%;
+    .tile-ctn {
+        width: 100%;
         height: 100%;
         background-color: #202120;
         display: flex;
@@ -40,17 +40,17 @@ export default {
         padding-bottom: 0.5rem;
 
         & span:first-child{
-            flex:2;
+            flex: 2;
             font-size: 4.5rem;
         }
 
-        & span:last-child{
-            flex:1;
+        & span:last-child {
+            flex: 1;
             font-size: 1rem;
             text-align: center;
         }
 
-        &:hover{
+        &:hover {
             cursor: pointer;
             background-color: #121284;
         }

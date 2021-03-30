@@ -9,17 +9,13 @@
 			<div @click="toggleMenu" class="navbar__burger" ref="button"></div>
 			<div class="navbar__links" ref="links">
 				<ul class="navbar__links-inner">
-					<li class="navbar__link">
-						<router-link to="/projects">
-							Projet
-						</router-link>
+					<li class="navbar__link" @click="toggleMenu">
+						<router-link to="/projects">Projets</router-link>
 					</li>
-					<li class="navbar__link">
-						<router-link to="/about">
-							A propos
-						</router-link>
+					<li class="navbar__link" @click="toggleMenu">
+						<router-link to="/about">A propos</router-link>
 					</li>
-					<li class="navbar__link">
+					<li class="navbar__link" @click="toggleMenu">
 						<router-link to="/projects/submit" class="button">
 							Soumettre un projet
 						</router-link>
@@ -41,16 +37,16 @@ export default {
 	data() {
 		return {
 			menuOpened: false,
-		}
+		};
 	},
 	methods: {
 		toggleMenu() {
-			this.menuOpened = !this.menuOpened
-			this.$refs.links.classList.toggle("open")
-			this.$refs.button.classList.toggle("open")
+			this.menuOpened = !this.menuOpened;
+			this.$refs.links.classList.toggle("open");
+			this.$refs.button.classList.toggle("open");
 		},
 	},
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -96,7 +92,7 @@ export default {
 				@include flex();
 				margin: 0;
 				& > * + * {
-					@include gap(4);
+					margin-left: space(4);
 				}
 			}
 		}

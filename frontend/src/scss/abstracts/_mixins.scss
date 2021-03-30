@@ -17,17 +17,13 @@
 		$j: $j - 1;
 	}
 }
-@mixin gap($i, $direction: margin-left, $gap: both) {
-	#{$direction}: space($i);
-	@supports (gap: #{$i}) {
-		#{$direction}: 0;
-		@if $gap == col {
-			gap-col: space($i);
-		} @else if $gap == row {
-			gap-row: space($i);
-		} @else {
-			gap: space($i);
-		}
+@mixin gap($i, $gap: both) {
+	@if $gap == col {
+		gap-col: space($i);
+	} @else if $gap == row {
+		gap-row: space($i);
+	} @else {
+		gap: space($i);
 	}
 }
 @mixin responsive($breakpoint) {

@@ -1,22 +1,33 @@
 <template>
-	<div @click="selectProject(project._id)" :class="[{'item-list-ctn__isSelected' : isSelected }, 'item-list-ctn']">
-		<div class="head-ctn">
-			<span>{{project.title}}</span>
-			<span :class="[project.stateUser==='Admin' ? 'userAdmin':'userCollab', 'sp-tag']">{{project.stateUser}}</span>
+	<div
+		@click="switchProject(project._id)"
+		:class="[
+				{ 'selected': isSelected },
+				project.stateProject!=='En cours' ? 'close' : 'open',
+				'item-project']"
+	>
+		<div class="item-project__header">
+			<span>{{ project.title }}</span>
+			<span
+				:class="[
+					project.stateUser === 'Admin' ? 'userAdmin' : 'userCollab',
+					'sp-tag',
+				]"
+				>{{ project.stateUser }}</span
+			>
 		</div>
-		<div class="short-sumup">
-			{{project.sumup}}
+		<div class="item-project__summary">
+			{{ project.sumup }}
 		</div>
-		<div class="tag-ctn">
-			<span class="tag sp-tag"
-				v-for="(tag) in project.tags"
-				:key="tag"
-			>{{getNameTag(tag)}}</span>
+		<div class="item-project__tags">
+			<span class="tag sp-tag" v-for="tag in project.tags" :key="tag">{{
+				getNameTag(tag)
+			}}</span>
 		</div>
-		<div class="foot-ctn">
-			<span>{{project.licence}}</span>
-			<span>{{formatedDate(project.lastUpdate)}}</span>
-			<span>{{formatedDate(project.startedDate)}}</span>
+		<div class="item-project__footer">
+			<span>{{ project.licence }}</span>
+			<span>{{ formatedDate(project.lastUpdate) }}</span>
+			<span>{{ formatedDate(project.startedDate) }}</span>
 		</div>
 	</div>
 </template>
@@ -32,7 +43,8 @@ export default {
 	name: 'ItemListProject',
 	props: {
 		project: Object,
-		nbSelectedProject: String
+		nbSelectedProject: String,
+		switchProject: Function
 	},
 	methods: {
 		/**
@@ -41,13 +53,6 @@ export default {
 		getNameTag(val) {
             return categories.find(({value}) => val === value).name   
         },
-		/**
-		 * Emet un évènement vers Dashboard pour informer qu'il faut modifier le projet
-		 * actuellement en cours de visionnage.
-		 */
-		selectProject(id) {
-			this.bus.emit('handleChangeProject', id)
-		},
 		/**
 		 * Formate la date à l'aide de la librairie 'format'
 		 */
@@ -68,42 +73,53 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-	.item-list-ctn{
-		width:100%;
+	.item-project{
+		width: 100%;
 		height: auto;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
+		@include flex(column, normal, normal);
+		padding: space(4);
 		border-bottom: 1px solid lighten($color: #252525, $amount: 15);
-		&:hover{
+		&:hover {
 			cursor: pointer;
 			background-color: #202120;
 		}
-
-		&__isSelected{
+		&:last-child {
+			border: none;
+		}
+		&.selected {
 			background-color: #202120;
 		}
-	}
+		&.close {
+			background-color: rgba(245, 151, 151, 0.3);;
+		}
 
-	.item-list-ctn:last-child{
-		border:none
+		&__header,
+		&__footer,
+		&__tags {
+			@include flex(row, space-between, center);
+			flex-wrap: wrap;
+		}
+		&__footer,
+		&__summary {
+			color: #969595;
+			font-size: 0.7rem;
+			padding: 4px 0;
+		}
 	}
-
-	.head-ctn,.foot-ctn,.tag-ctn{
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
-
+	.tag {
+		background-color: #202120;
 	}
-	.foot-ctn,.short-sumup{color: #969595;font-size: 0.7rem;padding: 4px 0;}
-	.tag{background-color: #202120;}
-	.sp-tag{
-		padding:5px;
+	.sp-tag {
+		padding: space(1);
 		border-radius: 3px;
 		font-size: 0.8rem;
 	}
-	.userAdmin{background-color: #f44a4a;}
-	.userCollab{background-color: #121284;}
+	.userAdmin {
+		background-color: #f44a4a;
+	}
+	.userCollab {
+		background-color: #121284;
+	}
+	
 
 </style>
