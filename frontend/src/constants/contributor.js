@@ -1,5 +1,5 @@
 export const profilTypes = {
-	developer: {
+	'developer': {
 		name: "Développeur",
 		skills: [
 			// Java
@@ -50,7 +50,7 @@ export const profilTypes = {
 			{ value: "branding", name: "Charte graphique" },
 		],
 	},
-	webmestre: {
+	'webmestre': {
 		name: "Webmestre",
 		skills: [{ value: "", name: "" }],
 	},
@@ -69,7 +69,7 @@ export const profilTypes = {
 			{ value: "mongodb", name: "MongoDB", color: "#13AA52" },
 		],
 	},
-	translator: {
+	'translator': {
 		name: "Traducteur",
 		skills: [
 			{ value: "english", name: "Anglais", color: "#C1121F" },
