@@ -76,8 +76,8 @@
                         v-for="(link,index) in getCurrentProject.links"
                         :key="index"
                     >
-                        <span>{{getNameLink(index)}}</span>
-                        <span>{{link}}</span>
+                        <span>{{getNameLink(link.title)}}</span>
+                        <span>{{link.value}}</span>
                     </div>
                 </div>
             </BasicCtn>
@@ -205,7 +205,7 @@ export default {
          */
         getNameLink(val) {
             console.log(val)
-            return officialLinkTypes.find(({value}) => val === value).name
+            return officialLinkTypes.find(({value}) => val === value)?.name
         },
         /**
          * Ferme le formulaire d'ajout de collab, de lien, de catégories ou de modification de la description
@@ -278,19 +278,19 @@ export default {
          */
         async newLink({valueSelect, valueInput}) {
             let projectLocal = this.getCurrentProject
-            console.log(valueSelect)
-            console.log(valueInput)
-            let item = projectLocal.links[valueSelect]
+            let item = projectLocal.links.find((el) => { 
+                if(el.title === valueSelect || el.value ===valueInput) return el
+                   
+                return
+            })
 
-            if(item !== undefined) return ({type: 'error', message: `Vous possèdez déjà un lien ${valueSelect}.`})
-            if(Object.values(projectLocal.links).includes(valueInput)) return ({type: 'error', message: `L'adresse ${valueInput} est déjà présente.`})      
+            if(item !== undefined && item.title === valueSelect) return ({type: 'error', message: `Vous possèdez déjà un lien ${valueSelect}.`})
+            if(item !== undefined && item.value === valueInput) return ({type: 'error', message: `L'adresse ${valueInput} est déjà présente.`})      
             if(!valueInput.match(/(https?|ftp|ssh|mailto):\/\/[a-z0-9/:%_+.,#?!@&=-]+/gi)) return ({type:'error', message: "L'adresse saisie n'est pas valide."})
 
 
-            console.log(valueSelect)
-            console.log(valueInput)
-            console.log(item)
-            let res = await AdminAPI.addLinkToProject(projectLocal._id,{type:valueSelect,value:valueInput})
+            
+            let res = await AdminAPI.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
             const { modified } = res.data
             if(modified === 1) {
                 projectLocal.links = [...projectLocal.links,{title:valueSelect,value:valueInput}]
