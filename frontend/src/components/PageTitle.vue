@@ -13,7 +13,7 @@ export default {
 
 <style lang="scss" scoped>
 .page-title {
-	color: $primaryColor;
+	color: $primaryTextColor;
 	font-size: 2rem;
 	padding: 1rem 0 2rem 0;
 }

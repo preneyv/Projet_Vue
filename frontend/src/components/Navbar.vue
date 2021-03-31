@@ -16,7 +16,7 @@
 						<router-link to="/about">A propos</router-link>
 					</li>
 					<li class="navbar__link" @click="toggleMenu">
-						<router-link to="/projects/submit" class="button">
+						<router-link to="/projects/submit" class="btn btn-secondary">
 							Soumettre un projet
 						</router-link>
 					</li>
@@ -46,9 +46,15 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-	position: relative;
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background-color: var(--color-primary);
+	z-index: 1000;
+
 	&__container {
-		padding-top: space(2);
+		padding: space(2) 0;
 		width: width(10);
 		@include flex(row, space-between);
 		@extend .mx-auto;
@@ -111,7 +117,7 @@ export default {
 		display: block;
 		width: space(7);
 		height: space(7);
-		background-color: var(--color-primary);
+		background-color: var(--color-text-primary);
 		border-radius: 50%;
 		transition: border-radius 0.3s ease, transform 0.15s ease;
 		&:hover {

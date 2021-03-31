@@ -13,8 +13,10 @@ $colors: (
 
 $black: #181818;
 $white: white;
-$primaryColor: $white;
-$secondaryColor: #999999;
+$primaryTextColor: $white;
+$secondaryTextColor: #999999;
+$primaryColor: #42b983;
+$secondaryColor: $white;
 $errorColor: rgb(255, 90, 90);
 $successColor: rgb(156, 255, 137);
 $typoTitle: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",

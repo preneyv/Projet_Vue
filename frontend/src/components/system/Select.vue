@@ -43,7 +43,7 @@
 			<div v-show="focused" class="select-wrapper__dropdown">
 				<!-- Select searcher -->
 				<div v-if="allowSearch" class="select-wrapper__dropdown__search-wrapper">
-					<input class="select-wrapper__dropdown__search" @input="updateDisplayedItems"/>
+					<input class="select-wrapper__dropdown__search" v-model="research" @input="updateDisplayedItems"/>
 				</div>
 				<!-- /Select searcher -->
 
@@ -51,7 +51,7 @@
 				<ul class="select-wrapper__options">
 					<!-- Select option -->
 					<li
-						v-for="item, i in dataItemsChange"
+						v-for="item, i in displayedItems"
 						:key="i"
 						class="select-wrapper__option"
 						@click="() => handleItemClick(item)"
@@ -83,7 +83,7 @@
 			@focus="onFocus"
 			@focusout="onFocusout"
 		>
-		<!--<option value="" :selected="multiple ? selected.length === 0 : selected !== null"></option>-->
+			<option value="" :selected="multiple ? selected.length === 0 : selected !== null"></option>
 			<option v-for="item, i in items" :key="i" :value="item.value" :selected="multiple ? selected.includes(item) : selected === item">
 				{{ item.name }}
 			</option>
@@ -111,6 +111,7 @@ export default {
 		items: Array,
 		error: String,
 		allowSearch: Boolean,
+		initialValue: Object || Array,
 		// Events
 		onChange: Function,
 		onClick: Function,
@@ -120,16 +121,26 @@ export default {
 	data () {
 		return {
 			focused: this.autofocus,
-			selected: this.multiple ? [] : null,
-			select: null,
-			dataItems : this.items
+			selected: this.initialValue ? this.initialValue : this.multiple ? [] : null,
+			dataItems: this.items,
+			research: null,
+			select: null
 		}
 	},
 	computed: {
-		dataItemsChange : function(){
-			return  this.size === null ? this.dataItems : this.dataItems.slice(0 , this.size)
+		displayedItems() {
+			return this.size === null ? this.dataItems : this.dataItems.slice(0 , this.size)
 		}
 	},
+	watch: {
+    '$props': {
+      handler: function (props) {
+        this.dataItems = props.items
+				this.research = null
+      },
+      deep: true
+    }
+  },
 	methods: {
 		handleItemClick(item) {
 			if (this.multiple) {
@@ -179,7 +190,7 @@ export default {
 			const matchingItems = this.searchItems(research)
 			this.dataItems = this.size === null ? matchingItems : matchingItems.slice(0, this.size)
 		},
-		
+
 
 		searchItems(research) {
 			if (research.trim().length === 0) return this.items
