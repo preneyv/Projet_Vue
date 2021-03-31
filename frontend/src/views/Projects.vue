@@ -6,9 +6,9 @@
 			{{ projects.length > 1 ? "disponibles" : "disponible" }}
 		</p>
 	</div>
-	<div class="project">
+	<div class="projects">
 		<router-link
-			class="project__card"
+			class="projects__card"
 			v-for="project in projects"
 			:key="project._id"
 			:to="{
@@ -18,11 +18,11 @@
 				},
 			}"
 		>
-			<h2 class="project__title">{{ project.title }}</h2>
-			<p v-if="project.description" class="project__description">
+			<h2 class="projects__title">{{ project.title }}</h2>
+			<p v-if="project.description" class="projects__description">
 				{{ project.description.substring(0, 150) + "..." }}
 			</p>
-			<div v-if="project.tags > '0'" class="project__tags">
+			<div v-if="project.tags > '0'" class="projects__tags">
 				<h3>tags</h3>
 				<ul>
 					<li v-for="(tag, index) in project.tags" :key="`key-${index}`">
@@ -67,18 +67,20 @@ export default {
 		font-size: 1.5rem;
 	}
 }
-.project {
+.projects {
 	margin-top: space(8);
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(space(64), 1fr));
 	gap: space(3);
 	&__card {
+		color: var(--color-black);
 		display: grid;
-		grid-template-rows: 3rem 4.5rem auto;
+		grid-template-rows: space(12) space(24) auto;
 		gap: space(2);
-		padding: space(2);
+		padding: space(3);
 		border-radius: space(2);
-		border: 1px solid lighten($black, 20%);
+		background-color: var(--color-white);
+		// border: 1px solid lighten($black, 20%);
 		h2 {
 			text-align: center;
 			font-size: 1rem;
@@ -102,7 +104,6 @@ export default {
 				display: inline-block;
 				padding: space(1);
 				border-radius: space(2);
-				background-color: lighten($black, 20%);
 				border: 1px solid lighten($black, 20%);
 			}
 		}

@@ -52,6 +52,9 @@ export default {
 	left: 0;
 	background-color: var(--color-black);
 	z-index: 1000;
+	@media screen and (min-width: 768px) {
+		position: static;
+	}
 
 	&__container {
 		padding: space(2) 0;

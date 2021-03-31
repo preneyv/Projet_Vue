@@ -5,7 +5,7 @@
 				<div class="hero-section__text">
 					<h1>Le Marché de <span>l'Open Source</span></h1>
 					<h2>
-						Participer à des projets Open-Source proposé par la communauté
+						Propulser des projets Open-Source en y participant
 					</h2>
 					<router-link to="projects">Voir l'ensemble des projets</router-link>
 				</div>
@@ -46,7 +46,13 @@ export default {
 </script>
 
 <style lang="scss">
+.home {
+	padding-bottom: space(8);
+}
 .hero-section {
+	min-height: 80vh;
+	display: grid;
+	place-items: center;
 	&__container {
 		margin: space(8) auto 0;
 		width: 80%;
