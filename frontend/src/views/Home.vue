@@ -20,7 +20,19 @@
 				<p>
 					Cette idée est venue d'un constat simple: si des gens veulent
 					participer à des projets open-source, il n'y a pas de site sur lequel
-					ils sont référencés.
+					ils sont référencés. <br />
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
+					tempora amet unde pariatur ad molestias, ea sunt veritatis fugiat!
+					Repudiandae possimus fugiat voluptatum nam reprehenderit est esse
+					commodi quis perspiciatis nihil aperiam tenetur, hic unde suscipit!
+					Repudiandae quidem, aperiam ea corporis sequi id eligendi quasi in
+					ipsa accusantium, impedit numquam pariatur exercitationem dolore
+					nesciunt aspernatur voluptas laudantium. Nobis sapiente omnis eveniet
+					fuga alias saepe tenetur voluptas, fugit soluta quos repellat laborum
+					eligendi natus aliquam architecto. Temporibus officia provident error
+					assumenda. Assumenda quo commodi eveniet expedita, debitis nulla quos
+					quaerat ab et. Id cum, in sunt voluptatum delectus eligendi enim
+					quisquam!
 				</p>
 			</div>
 		</div>

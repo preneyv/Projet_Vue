@@ -50,7 +50,7 @@ export default {
 	width: 100%;
 	top: 0;
 	left: 0;
-	background-color: var(--color-primary);
+	background-color: var(--color-black);
 	z-index: 1000;
 
 	&__container {

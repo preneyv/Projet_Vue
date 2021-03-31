@@ -139,7 +139,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-	content: '';
+	content: "";
 	content: none;
 }
 table {
@@ -169,4 +169,7 @@ hr {
 }
 *:focus:not(:focus-visible) {
 	outline: none;
+}
+p {
+	line-height: 1.5;
 }
