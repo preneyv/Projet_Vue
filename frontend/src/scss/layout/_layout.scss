@@ -5,7 +5,7 @@
 	width: 100%;
 	grid-template-rows: min-content auto min-content;
 	grid-template-columns: 1fr;
-	gap: 1rem;
+	gap: space(4);
 
 	::-webkit-scrollbar {
 		width: 5px;
@@ -13,7 +13,7 @@
 	}
 	::-webkit-scrollbar-thumb {
 		background: #181818;
-		border-radius: 9px;
+		border-radius: space(2);
 	}
 	::-webkit-scrollbar-thumb:hover{
 		background: #7a787a;

@@ -24,7 +24,7 @@ const port = process.env.PORT || 8800
 
 //CORS config
 let corsOption = {
-    origin: "http://localhost:8080",
+    origin: "*",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     optionsSuccessStatus: 200,
 }

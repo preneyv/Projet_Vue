@@ -15,8 +15,8 @@ yarn lint // Lints and fixes files
 -   Mixins in [mixins file](./src/scss/abstracts/_mixins.scss) [How to use it](https://sass-lang.com/documentation/at-rules/mixin)
 
 ## TODO
--   [ ] Page Projets - MOI
--   [ ] Page Accueil - MOI
+-   [x] Page Projets - MOI
+-   [x] Page Accueil - MOI
 -   [ ] Clean de l'architecture - PLUS TARD
 -   [ ] JSDoc - MOI
 -   [ ] Connexion / redirection login - AURÉ
