@@ -1,7 +1,16 @@
-.button {
+.btn {
 	@include flex(row, center, center);
-	background-color: var(--color-primary);
-	border-radius: space(2);
-	color: var(--color-black);
-	padding: space(1) space(3);
+	border-radius: space(1);
+	padding: space(3) space(5);
 }
+
+.btn.btn-primary {
+	background-color: var(--color-primary);
+	color: var(--color-text-primary);
+}
+
+.btn.btn-secondary {
+	background-color: var(--color-secondary);
+	color: var(--color-black);
+}
+

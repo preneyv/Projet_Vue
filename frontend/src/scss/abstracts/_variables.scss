@@ -2,8 +2,10 @@ $fontBase: 1rem;
 $space: 0.25rem;
 $black: #181818;
 $white: white;
-$primaryColor: $white;
-$secondaryColor: #999999;
+$primaryTextColor: $white;
+$secondaryTextColor: #999999;
+$primaryColor: #42b983;
+$secondaryColor: $white;
 $errorColor: rgb(255, 90, 90);
 $successColor: rgb(156, 255, 137);
 $typoTitle: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -31,6 +33,8 @@ $breakpoints: (
 	--color-white: #{$white};
 	--color-primary: #{$primaryColor};
 	--color-secondary: #{$secondaryColor};
+	--color-text-primary: #{$primaryTextColor};
+	--color-text-secondary: #{$secondaryTextColor};
 	--color-error: #{$errorColor};
 	--color-success: #{$successColor};
 	--space: #{$space};
