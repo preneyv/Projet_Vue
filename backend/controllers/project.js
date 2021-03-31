@@ -56,9 +56,11 @@ export async function getOneById(req, res) {
 
 // Done
 export async function insertOne(req, res) {
+	const user = req.user
+	console.log(req.body)
 	const {
 		title,
-		author,
+		sumup,
 		description,
 		tags,
 		licence,
@@ -66,10 +68,12 @@ export async function insertOne(req, res) {
 		links,
 		jobs,
 	} = req.body
+
 	try {
 		const project = new Project({
 			title,
-			author,
+			sumup,
+			author: user._id,
 			description,
 			tags,
 			licence,
