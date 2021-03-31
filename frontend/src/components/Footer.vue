@@ -18,11 +18,7 @@
 						:key="creator.github"
 						class="footer__creator"
 					>
-						<a
-							:href="creator.github"
-							rel="noopener"
-							target="_blank"
-						>
+						<a :href="creator.github" rel="noopener" target="_blank">
 							<h5>{{ creator.name }}</h5>
 							<i class="bi bi-github"></i>
 						</a>
@@ -34,7 +30,7 @@
 </template>
 
 <script>
-import "bootstrap-icons/font/bootstrap-icons.css"
+import "bootstrap-icons/font/bootstrap-icons.css";
 export default {
 	name: "Footer",
 	data() {
@@ -53,9 +49,9 @@ export default {
 					github: "https://github.com/preneyv",
 				},
 			],
-		}
+		};
 	},
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -71,8 +67,8 @@ export default {
 		width: 100%;
 		@include flex();
 		flex-wrap: wrap;
-		& > * + * {
-			@include gap(6);
+		& > *+* {
+			margin-left: space(3);
 		}
 	}
 	&__creators {
@@ -88,7 +84,7 @@ export default {
 		display: inline-flex;
 		opacity: 0.65;
 		& > * + * {
-			@include gap(2);
+			margin-left: space(2);
 		}
 	}
 	&__legals {
@@ -97,7 +93,7 @@ export default {
 		}
 		display: inline-flex;
 		& > * + * {
-			@include gap(3);
+			margin-left: space(3);
 		}
 	}
 }

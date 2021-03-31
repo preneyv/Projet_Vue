@@ -1,10 +1,28 @@
 <template>
-	<h1>{{ $route.params.id }}</h1>
-	<h1>{{ $route.params }}</h1>
+	<div class="project">
+		<div v-if="project.error">{{ project.error }}</div>
+		<div v-else class="project__container">
+			<h1 class="project__title">{{ project.title }}</h1>
+		</div>
+	</div>
 </template>
 
 <script>
+import config from "@/config.js";
+import axios from "axios";
 export default {
-	props: ["project"],
+	data() {
+		return {
+			project: {
+				error: "test"
+			},
+		};
+	},
+	mounted() {
+		axios
+			.get(`${config.API_URL}project/${this.$route.params.id}`)
+			.then((res) => (this.project = res.data))
+			.then((res) => console.log(res));
+	},
 };
 </script>

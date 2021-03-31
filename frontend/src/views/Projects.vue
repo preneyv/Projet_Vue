@@ -15,13 +15,6 @@
 				name: 'Project',
 				params: {
 					id: project._id,
-					title: project.title,
-					author: project.author,
-					description: project.description,
-					contact: project.ontact,
-					tags: project.tags,
-					jobs: projects.jobs,
-					licence: project.licence,
 				},
 			}"
 		>
@@ -81,7 +74,7 @@ export default {
 	gap: space(3);
 	&__card {
 		display: grid;
-		grid-template-rows: repeat(3, auto);
+		grid-template-rows: 3rem 4.5rem auto;
 		gap: space(2);
 		padding: space(2);
 		border-radius: space(2);

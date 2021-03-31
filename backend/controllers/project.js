@@ -50,7 +50,7 @@ export async function getOneById(req, res) {
 		const project = await Project.findOne({ _id: id })
 		res.json(project)
 	} catch (e) {
-		res.json({ error: e })
+		res.json({ error: "Le project n'existe pas" })
 	}
 }
 
@@ -89,8 +89,8 @@ export async function insertOne(req, res) {
 // Done
 export async function updateOne(req, res) {
 	const { id } = req.params
-    console.log(req.body)
-    try {
+	console.log(req.body)
+	try {
 		const project = await Project.updateOne({ _id: id }, req.body)
 		res.json({ found: project.n, modified: project.nModified })
 	} catch (e) {

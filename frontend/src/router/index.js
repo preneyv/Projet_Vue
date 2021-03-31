@@ -1,31 +1,24 @@
 import { createRouter, createWebHistory } from "vue-router"
-import Home from "../views/Home.vue"
-import Entering from "../views/Entering.vue"
-import SubmitProject from "../views/projects/Submit.vue"
-import Dashboard from "../views/Dashboard.vue"
 
 const routes = [
 	{
 		path: "/",
 		name: "Home",
-		component: Home,
+		component: () => import("../views/Home.vue"),
 	},
 	{
-		path: "/entering",
+		path: "/login",
 		name: "LogPages",
-		component: Entering,
+		component: () => import("../views/Entering.vue"),
 	},
 	{
 		path: "/dashboard",
 		name: "Dashboard",
-		component: Dashboard,
+		component: () => import("../views/Dashboard.vue"),
 	},
 	{
 		path: "/about",
 		name: "About",
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
 		component: () => import("../views/About.vue"),
 	},
 	{
@@ -36,16 +29,12 @@ const routes = [
 	{
 		path: "/project/:id",
 		name: "Project",
-		props: (route) => ({
-			...route.params,
-		}),
 		component: () => import("../views/SingleProject.vue"),
 	},
-	// Projects
 	{
 		path: "/projects/submit",
 		name: "SubmitProject",
-		component: SubmitProject,
+		component: () => import("../views/projects/Submit.vue"),
 	},
 ]
 
