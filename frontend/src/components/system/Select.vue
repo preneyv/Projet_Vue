@@ -69,7 +69,7 @@
 		</div>
 		<!-- /Select wrapper -->
 
-		<small class="input-wrapper__error" v-if="error">{{ error }}</small>
+		<small class="select-wrapper__error" v-if="error">{{ error }}</small>
 
 		<!-- Real select (not shown)-->
 		<select
@@ -340,6 +340,11 @@ export default {
 			height: 1em;
 			margin-right: 1em;
 		}
+	}
+
+	&__error {
+		color: var(--color-error);
+		font-size: 12px;
 	}
 }
 </style>
