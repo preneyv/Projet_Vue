@@ -23,7 +23,7 @@
 import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
 
-import AdminAPI from '../utils/AdminAPI.js'
+import AdminAPI from '../services/projects.js'
 
 export default {
     name:"Dashboard",
@@ -32,7 +32,7 @@ export default {
         ProjectDash
     },
     beforeMount(){
-        AdminAPI.getListProject("603c08ff76c5cf37b82d2ba3").then(res=>{
+        AdminAPI.getAuthorProjects("603c08ff76c5cf37b82d2ba3").then(res=>{
             this.listOfProject = res.data
             this.currentProject = this.listOfProject[0]
         }).catch(() => {
