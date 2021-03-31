@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Home from "../views/Home.vue"
-import Entering from "../views/Entering.vue"
 import SubmitProject from "../views/projects/Submit.vue"
-import Dashboard from "../views/Dashboard.vue"
 
 const routes = [
 	{
@@ -13,12 +11,12 @@ const routes = [
 	{
 		path: "/entering",
 		name: "LogPages",
-		component: Entering,
+		component: () => import("../views/Entering.vue"),
 	},
 	{
 		path: "/dashboard",
 		name: "Dashboard",
-		component: Dashboard,
+		component: () => import("../views/Dashboard.vue"),
 	},
 	{
 		path: "/about",

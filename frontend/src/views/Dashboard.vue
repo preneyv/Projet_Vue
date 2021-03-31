@@ -86,19 +86,19 @@ export default {
     /*List Projects Part*/
     
     .list-ctn{
-        transform: translateX(-274px);
+        margin-left: -274px;
 		flex:1;
 		display: flex;
         position: relative;
         transition: .5s ease;
 
         &.isOpen {
-            transform: translateX(0);
+            margin-left: 0;
         }
 
         @include responsive("laptop"){
             transition: .5s ease;
-            transform: translateX(0);
+            margin-left: 0;
         }
 
         &__main{
