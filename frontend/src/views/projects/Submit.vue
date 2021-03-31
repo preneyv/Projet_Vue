@@ -244,7 +244,7 @@ export default {
 
 			if (!this.hasErrors()) {
 				ProjectsService.createProject(this.formData)
-					.then(res => window.location.href = `/project/${res._id}`)
+					.then(res => this.$router.push({ path: `/project/${res._id}` }))
 			}
 		}
 	}
