@@ -17,7 +17,7 @@
 					</li>
 					<li class="navbar__link" @click="toggleMenu">
 						<router-link to="/projects/submit" class="btn btn-secondary">
-							Soumettre un projet
+							Créer un projet
 						</router-link>
 					</li>
 				</ul>
@@ -53,7 +53,7 @@ export default {
 	background-color: var(--color-black);
 	z-index: 1000;
 	@media screen and (min-width: 768px) {
-		position: static;
+		position: relative;
 	}
 
 	&__container {
@@ -111,6 +111,9 @@ export default {
 			font-size: space(4.5);
 			text-transform: initial;
 		}
+		.btn {
+			color: var(--color-white);
+		}
 	}
 	&__burger {
 		display: block;
@@ -118,11 +121,11 @@ export default {
 		position: relative;
 		z-index: 900;
 		display: block;
-		width: space(7);
-		height: space(7);
-		background-color: var(--color-text-primary);
+		width: space(8);
+		height: space(8);
+		background-color: var(--color-primary);
 		border-radius: 50%;
-		transition: border-radius 0.3s ease, transform 0.15s ease;
+		transition: border-radius 0.3s ease-in-out, transform 0.15s ease;
 		&:hover {
 			transform: scale(1.2);
 		}

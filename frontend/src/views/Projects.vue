@@ -35,8 +35,7 @@
 </template>
 
 <script>
-import axios from "axios";
-import config from "@/config.js";
+import ProjectsService from "@/services/projects.js";
 export default {
 	name: "Projects",
 	data() {
@@ -44,11 +43,9 @@ export default {
 			projects: [],
 		};
 	},
-	mounted() {
-		axios
-			.get(`${config.API_URL}project`)
-			.then((response) => (this.projects = response.data))
-			.then((response) => console.log(response));
+	async mounted() {
+		const { data } = await ProjectsService.getAllProjects();
+		this.projects = data;
 	},
 };
 </script>

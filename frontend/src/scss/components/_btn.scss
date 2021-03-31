@@ -1,7 +1,8 @@
 .btn {
 	@include flex(row, center, center);
 	border-radius: space(1);
-	padding: space(3) space(5);
+	padding: space(2) space(2);
+	color: inherit;
 }
 
 .btn.btn-primary {

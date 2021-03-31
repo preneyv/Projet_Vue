@@ -18,7 +18,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-main {
-	padding-top: 67px;
+@media screen and (max-width: 767px) {
+	main {
+		padding-top: space(24);
+	}
 }
 </style>

@@ -1,40 +1,47 @@
 import { createRouter, createWebHistory } from "vue-router"
+import Home from "@/views/Home.vue";
+import Entering from "@/views/Entering.vue";
+import Dashboard from "@/views/Dashboard.vue";
+import Projects from "@/views/Projects.vue";
+import SingleProject from "@/views/SingleProject.vue";
+import About from "@/views/About.vue";
+import Submit from "@/views/projects/Submit.vue";
 
 const routes = [
 	{
 		path: "/",
 		name: "Home",
-		component: () => import("../views/Home.vue"),
+		component: Home,
 	},
 	{
 		path: "/login",
 		name: "LogPages",
-		component: () => import("../views/Entering.vue"),
+		component: Entering,
 	},
 	{
 		path: "/dashboard",
 		name: "Dashboard",
-		component: () => import("../views/Dashboard.vue"),
+		component: Dashboard,
 	},
 	{
 		path: "/about",
 		name: "About",
-		component: () => import("../views/About.vue"),
+		component: About,
 	},
 	{
 		path: "/projects",
 		name: "Projects",
-		component: () => import("../views/Projects.vue"),
+		component: Projects,
 	},
 	{
 		path: "/project/:id",
 		name: "Project",
-		component: () => import("../views/SingleProject.vue"),
+		component: SingleProject,
 	},
 	{
 		path: "/projects/submit",
 		name: "SubmitProject",
-		component: () => import("../views/projects/Submit.vue"),
+		component: Submit,
 	},
 ]
 

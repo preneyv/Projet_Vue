@@ -17,7 +17,7 @@
 				</svg>
 				<span>Retourner à la liste des projets</span></a
 			>
-			<div v-if="project.error">{{ project.error }}</div>
+			<div v-if="project?.error">{{ project.error }}</div>
 			<div v-else class="project__wrapper">
 				<div class="project__main">
 					<h1 class="project__title">{{ project.title }}</h1>
@@ -25,7 +25,6 @@
 				<ul class="project__sidebar">
 					<li v-for="(url, name) in project.links" :key="name">
 						<a :href="url">
-							
 							<font-awesome-icon :icon="['fab', `${name}`]" />
 							{{ name }}
 						</a>
@@ -37,22 +36,19 @@
 </template>
 
 <script>
-import config from "@/config.js";
+import ProjectsService from "@/services/projects.js";
 
-import axios from "axios";
 export default {
 	data() {
 		return {
-			project: {
-				error: "test",
-			},
+			project: Object,
 		};
 	},
-	mounted() {
-		axios
-			.get(`${config.API_URL}project/${this.$route.params.id}`)
-			.then((res) => (this.project = res.data))
-			.then((res) => console.log(res));
+	async mounted() {
+		const { data } = await ProjectsService.getProjectById(
+			this.$route.params.id
+		);
+		this.project = data;
 	},
 };
 </script>

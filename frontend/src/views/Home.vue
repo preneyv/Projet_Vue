@@ -4,9 +4,7 @@
 			<div class="hero-section__container">
 				<div class="hero-section__text">
 					<h1>Le Marché de <span>l'Open Source</span></h1>
-					<h2>
-						Propulser des projets Open-Source en y participant
-					</h2>
+					<h2>Propulser des projets Open-Source en y participant</h2>
 					<router-link to="projects">Voir l'ensemble des projets</router-link>
 				</div>
 				<div class="hero-section__img">
@@ -58,12 +56,21 @@ export default {
 		width: 80%;
 		max-width: space(440);
 		@include flex();
+		flex-direction: column-reverse;
+		@media screen and (min-width: 767px) {
+			flex-direction: row;
+		}
 	}
 	&__text {
 		flex: 1 0 auto;
 		width: 60%;
 		font: 900 space(20) / 1 var(--typo-title);
+		@media screen and (max-width: 767px) {
+			width: 100%;
+		}
 		h1 {
+			font-size: clamp(#{space(8)}, 5vmax, #{space(20)});
+
 			margin-bottom: space(5);
 			span {
 				color: var(--color-primary);
@@ -80,19 +87,31 @@ export default {
 			}
 		}
 		h2 {
+			@media screen and (max-width: 767px) {
+				width: 100%;
+			}
+			font-size: clamp(#{space(5)}, 3vmax, #{space(8)});
 			width: 95%;
 			line-height: 1.25;
 			font-weight: 600;
-			font-size: space(8);
 		}
 		a {
+			@media screen and (max-width: 767px) {
+				width: 100%;
+			}
 			padding: space(3) space(4);
 			font: 600 space(5) / 1 var(--typo-text);
 			border-radius: space(2);
+			font-size: clamp(#{space(4)}, 1vmax, #{space(5)});
 			background: var(--color-secondary);
 		}
 	}
 	&__img {
+		@media screen and (max-width: 767px) {
+			margin-bottom: space(6);
+			max-width: space(80);
+		}
+		margin-bottom: 0;
 		margin-left: space(4);
 		padding: space(4);
 		border-radius: space(80);
