@@ -1,25 +1,20 @@
-import mongoose from 'mongoose'
-import dotenv from "dotenv"
-
-
+import mongoose from "mongoose"
 const db = {
+	initDatabase() {
+		const { DB_NAME, DB_PASSWORD, DB_USER } = process.env
 
-    initDatabase : function (){
-        dotenv.config()
-        this.password_db = process.env.DB_PASSWORD
-        this.login_db = process.env.DB_USER
-        this.db_name = process.env.DB_NAME
-
-        this.uri = `mongodb+srv://${this.login_db}:${this.password_db}@marche-libre.nkkht.mongodb.net/${this.db_name}?retryWrites=true&w=majority`
-        this.connect(this.uri)
-    },
-    connect : function (uri){
-        mongoose.connect(uri,{ useNewUrlParser: true, useUnifiedTopology: true })
-            .then(()=>console.log("Connexion réussie"))
-            .catch((error)=>console.log(error))
-    }
-
-
+		this.uri = `mongodb+srv://${DB_USER}:${DB_PASSWORD}@marche-libre.nkkht.mongodb.net/${DB_NAME}?retryWrites=true&w=majority`
+		this.connect()
+	},
+	connect() {
+		mongoose
+			.connect(this.uri, {
+				useNewUrlParser: true,
+				useUnifiedTopology: true,
+			})
+			.then(() => console.log("Connexion réussie"))
+			.catch((error) => console.log(error))
+	},
 }
 
 export default db

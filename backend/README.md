@@ -1,6 +1,6 @@
 # TODO
-- [ ] Document functions
-- [ ] Cleaning architecture
+- [x] Document functions
+- [-] Cleaning architecture
 - [ ] Optimize functions
 
 # Possible Improve

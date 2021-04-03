@@ -1,7 +1,11 @@
 import Project from "../models/Project.js"
 import mongoose from "mongoose"
 
-// Done
+/**
+ * Get all the Projects in the database
+ * @param {express.Response} req
+ * @param {express.Response} res
+ */
 export async function getAll(req, res) {
 	try {
 		const projects = await Project.find({})
@@ -11,6 +15,11 @@ export async function getAll(req, res) {
 	}
 }
 
+/**
+ * Get all the projects in the database by User Id
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 export async function getAllByUserId(req, res) {
 	const { id } = req.params
 	const { Types } = mongoose
@@ -43,7 +52,11 @@ export async function getAllByUserId(req, res) {
 	}
 }
 
-// Done
+/**
+ * Get One Project with a specified Id
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 export async function getOneById(req, res) {
 	const { id } = req.params
 	try {
@@ -54,7 +67,11 @@ export async function getOneById(req, res) {
 	}
 }
 
-// Done
+/**
+ * Insert a new Project in the Database
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 export async function insertOne(req, res) {
 	const user = req.user
 	console.log(req.body)
@@ -90,10 +107,13 @@ export async function insertOne(req, res) {
 	}
 }
 
-// Done
+/**
+ * Update a project with an Id specified
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 export async function updateOne(req, res) {
 	const { id } = req.params
-	console.log(req.body)
 	try {
 		const project = await Project.updateOne({ _id: id }, req.body)
 		res.json({ found: project.n, modified: project.nModified })
@@ -102,7 +122,11 @@ export async function updateOne(req, res) {
 	}
 }
 
-// Done
+/**
+ * Delete a Project with a specific Id
+ * @param {express.Request} req
+ * @param {express.Response} res
+ */
 export async function deleteOneById(req, res) {
 	const { id } = req.params
 	Project.deleteOne({ _id: id }, (err) => {

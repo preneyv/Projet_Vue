@@ -22,11 +22,11 @@ db.initDatabase()
 // Port Listening
 const port = process.env.PORT || 8800
 
-//CORS config
+// CORS config
 let corsOption = {
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    optionsSuccessStatus: 200,
+	origin: "*",
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	optionsSuccessStatus: 200,
 }
 
 // Global middlewares
@@ -40,11 +40,11 @@ app.use("/api/v1/project", cors(corsOption), projectRoutes)
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1", indexRoutes)
 app.all("*", (req, res, next) => {
-    res.status(404).json({ message: "Wrong route" })
-    next()
+	res.status(404).json({ message: "Wrong route" })
+	next()
 })
 
 // Start Server
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+	console.log(`Example app listening at http://localhost:${port}`)
 })
