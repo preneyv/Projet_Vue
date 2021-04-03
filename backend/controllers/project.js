@@ -38,11 +38,11 @@ export async function getAllByUserId(req, res) {
 			},
 		]).addFields({
 			stateUser: {
-				$cond: [
-					{ $eq: ["$author", Types.ObjectId(id)] },
-					"Admin",
-					"Collab",
-				],
+					$cond: [
+						{ $eq: ["$author", Types.ObjectId(id)] },
+						"Admin",
+						"Collab",
+					],
 			},
 		})
 
@@ -113,12 +113,23 @@ export async function insertOne(req, res) {
  * @param {express.Response} res
  */
 export async function updateOne(req, res) {
+
+    //res.json(req.body)
+	
 	const { id } = req.params
-	try {
-		const project = await Project.updateOne({ _id: id }, req.body)
+	const filter = req.body.filter ? { _id: id, ...req.body.filter} : {_id: id}
+	const body = req.body.body ?? req.body
+	const tail = req.body.tail ? {...req.body.tail} : {}
+
+	
+
+	if(req.body.options?.changeToObjId) changeToObjId(req.body.body)
+
+    try {
+		const project = await Project.updateOne(filter, body, tail)
 		res.json({ found: project.n, modified: project.nModified })
 	} catch (e) {
-		res.json({ error: e })
+		res.json({ error: e.errmsg })
 	}
 }
 
@@ -135,4 +146,22 @@ export async function deleteOneById(req, res) {
 			message: "Project deleted successfully",
 		})
 	})
+}
+
+/**
+ * Sert à modifier les identifiants en ObjectID
+ * @param {*} request La requête dont il faut modifier les identifiants en ObjectID
+ */
+function changeToObjId(request) {
+
+	const { Types } = mongoose
+	const el = request['$pull'] ?? request['$push']
+
+	for (const item in el) {
+
+		for (const line in el[item]) {
+			if(line.startsWith('_')) el[item][line] = Types.ObjectId(el[item][line])
+		}
+			 
+	}
 }

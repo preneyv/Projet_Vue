@@ -5,92 +5,88 @@
     
 </template>
 <script>
+//Components Imports
 import Select from '@/components/system/Select.vue'
 import Input from '@/components/system/Input.vue'
 
+//Files Import
 import {profilTypes} from '../../../constants/contributor.js'
 
 export default {
-    name:'AddCollabsForm',
-    components:{
+    name: 'AddCollabsForm',
+    components: {
         Select,
         Input
     },
-    data(){
-        return{
-            
-            selectType:{
-                id:'collab-type',
-                name:'selectType',
-                required:true,
-                label:"Choisir un type de collaboration",
+    data() {
+        return {    
+            selectType: {
+                id: 'collab-type',
+                name: 'selectType',
+                required: true,
+                label: "Choisir un type de collaboration",
                 items: []
             },
-            selectTechno:{
-                id:'collab-techno',
-                name:'selectTechno',
-                required:true,
-                multiple:true,
-                allowSearch:true,
-                label:'Choisir plusieurs technos',
+            selectTechno: {
+                id: 'collab-techno',
+                name: 'selectTechno',
+                required: true,
+                multiple: true,
+                label: 'Choisir plusieurs technos',
                 items: [],
             },
-            inputNb:{
-                id:'collab-nb',
-                type:'number',
-                name:'amount',
-                label:"Nombre demandé",
-                placeholder:'Combien ?',
-                required:true,
-                min:1,
-                max:50,
+            inputNb: {
+                id: 'collab-nb',
+                type: 'number',
+                name: 'amount',
+                label: "Nombre demandé",
+                placeholder: 'Combien ?',
+                required: true,
+                min: 1,
+                max: 50,
             },
-            newValues:{
-                valueType:'',
-                valueTechnos:[],
-                valueNb:0,
+            newValues: {
+                valueType: '',
+                valueTechnos: [],
+                valueNb: 0,
             }
-            
-
         }
     },
-    beforeMount(){
+    beforeMount() {
         this.assemblingType()
     },
-    watch:{
-        valueType : function(newOne){
-            console.log(newOne)
-            this.turnDynamicSelectTechno(newOne.valueType)
-        }
-    },
-    methods:{
-        assemblingType(){
+    methods: {
+        /**
+         * Permet de formatter le tableau des types pour que ce soit utilisable par le select
+         */
+        assemblingType() {
             let newArrayOfType = []
-            for(const profil in profilTypes){
+            for(const profil in profilTypes) {
                 newArrayOfType.push({value:profil,name:profilTypes[profil].name})
             }
             this.selectType.items = newArrayOfType
         },
-        turnDynamicSelectTechno(valueType){
-            console.log(valueType)
-            
+        /**
+         * Permet au Select des technos d'être modifié en fonction du choix du Select des types
+         */
+        turnDynamicSelectTechno(valueType) {
             let el = []
-            if(valueType !== "" && valueType !== undefined){
-                
+            if(valueType !== "" && valueType !== undefined) {
                 el = profilTypes[valueType].skills
             }
             this.selectTechno = Object.assign({}, this.selectTechno, {items:[...el]})
-            console.log(this.selectTechno)
         },
-        handleChange(e){
-
+        /**
+         * Permet à chaque donnée de newValues d'être réactive au changement de valeur du champ associé
+         */
+        handleChange(e) {
             if(e.target.name === 'amount')
                 this.newValues.valueNb = e.target.value
 
             if(e.target.name === 'selectTechno')
-                this.newValues.valueTechnos = e.target.value
+                this.newValues.valueTechnos = e.target.getValues()
 
-            if(e.target.name === 'selectType'){
+            if(e.target.name === 'selectType') {
                 this.newValues.valueType = e.target.value
                 this.turnDynamicSelectTechno(this.newValues.valueType)
             }

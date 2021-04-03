@@ -9,64 +9,74 @@
                     <input type="submit" @click.prevent="submit" value="Valider"/>
                 </form>
             </div>
-            <HandlingError v-if="errors.length > 0" :errors="errors" :removeError="removeError"/>
+            <HandlingNotif v-if="error !== null" :notifs="error" :removeNotif="removeError"/>
         </div>
     </div>
 </template>
 <script>
+//Components Import
+import HandlingNotif from '@/components/HandlingNotif.vue'
 
-import HandlingError from '@/components/HandlingErrors.vue'
 export default {
-    name:"FormHandlingAdd",
-    components:{
-        HandlingError
+    name: "FormHandlingAdd",
+    components: {
+        HandlingNotif
     },
-    props:{
-        title:String,
-        method:Function,
-        form:Object
+    props: {
+        title: String,
+        method: Function,
+        form: Object
     },
-    data(){
-        return{
-            errors: [],
-            valueToSend:{}
+    data() {
+        return {
+            error: null,
+            valueToSend: {}
         }
     },
-
-    methods:{
-        submit : function(){
+    methods: {
+        /**
+         * Permet de vérifier que le formulaire  est bien remplie et d'appeler 
+         * la méthode qui permettra la persitance des modifications.
+         */
+        submit(){
             this.valueToSend = this.$refs.child.newValues
-            
-            console.log(this.valueToSend)
-            this.checkValueToSendPromise().then(()=>{
-                let backResult = (this.method)(this.valueToSend)
+            this.checkValueToSendPromise().then(async ()=> {
+
+                let backResult = await (this.method)(this.valueToSend)
+                console.log(backResult)
                 if (backResult) throw backResult 
+
             }).catch((error) => {
-                this.errors.push(error)
+ 
+                this.error = error
             })
             
         },
-        checkValueToSendPromise(){
-            return new Promise((resolve,reject)=>{
+        /**
+         * Promesse pour vérifier que les champs ne sont pas vides
+         * (Oui c'était pour le kiff de faire une promesse)
+         */
+        checkValueToSendPromise() {
+            return new Promise((resolve,reject)=> {
                 let errors=0
-                for (const field in this.valueToSend){
+                for (const field in this.valueToSend) {
                     if(this.valueToSend[field]==="" || this.valueToSend[field] === undefined || (Array.isArray(this.valueToSend[field]) && this.valueToSend[field].length === 0)){
                         errors+=1
                     }
                 }
 
-                if(errors == 0){
+                if(errors == 0) {
                     resolve("OK")
                 }else{
-                    reject({message:'Veuillez remplir le formulaire correctement'})
+                    reject({type:'error', message:'Veuillez remplir le formulaire correctement'})
                 }
-            })
-            
+            }) 
         },
-
-//Errors Displaying functions
-        removeError(i) {
-			this.errors.splice(i, 1)
+        /**
+         * Supprime l'erreur du tableau d'erreur
+         */
+        removeError() {
+			this.error = null
 		},
 
     }
@@ -75,7 +85,7 @@ export default {
 
 <style lang="scss" scoped>
 
-    .main-ctn{
+    .main-ctn {
         position:absolute;
         background-color:changeOpacity($black, 0.8);;
         left:0;
@@ -83,25 +93,28 @@ export default {
         top:0;
         bottom:0;
         @include flex(row);
-        .form-handling-add{
+        z-index: 19;
+
+        .form-handling-add {
             min-width: 500px;
             padding: 12px;
             background-color: #252525;
             position: relative;
+
             &__ctn{
 
                 min-width: 500px;
                 padding: 12px;
                 background-color: #252525;
-                border-radius:5px;
+                border-radius: 5px;
                 height: fit-content;
                 text-align: center;
-                padding-top:2rem;
+                padding-top: 2rem;
                 @include flex(column,center,unset);
 
-                form{
+                form {
                     @include flex(column,center, unset);
-                    gap:1rem;
+                    gap: 1rem;
                     margin-top: 1rem;
                     text-align: left;
                 }

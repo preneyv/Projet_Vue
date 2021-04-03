@@ -1,7 +1,10 @@
 <template>
 	<div
-		@click="selectProject(project._id)"
-		:class="[{ selected: isSelected }, 'item-project__container']"
+		@click="switchProject(project._id)"
+		:class="[
+				{ 'selected': isSelected },
+				project.stateProject!=='En cours' ? 'close' : 'open',
+				'item-project']"
 	>
 		<div class="item-project__header">
 			<span>{{ project.title }}</span>
@@ -30,40 +33,47 @@
 </template>
 
 <script>
-import format from "date-format";
-import { categories } from "../../constants/project.js";
+//Import librairies
+import format from 'date-format'
+
+//Import Files
+import {categories} from '../../constants/project.js'
 
 export default {
-	name: "ItemListProject",
+	name: 'ItemListProject',
 	props: {
 		project: Object,
 		nbSelectedProject: String,
+		switchProject: Function
 	},
 	methods: {
-		getNameTag: function (val) {
-			return categories.find(({ value }) => val === value).name;
-		},
-		selectProject: function (id) {
-			this.bus.emit("handleChangeProject", id);
-		},
-
+		/**
+		 * Retourne le name associé à la clef dans categories
+		 */
+		getNameTag(val) {
+            return categories.find(({value}) => val === value).name   
+        },
+		/**
+		 * Formate la date à l'aide de la librairie 'format'
+		 */
 		formatedDate(date) {
-			return format("dd/MM/yyyy", new Date(date));
-		},
+			return format('dd/MM/yyyy',new Date(date))
+		}
 	},
 	computed: {
+		/**
+		 * Permet de savoir si le projet est séléctionné
+		 */
 		isSelected() {
-			return this.nbSelectedProject === this.project._id ? true : false;
+			return this.nbSelectedProject === this.project._id ? true : false
 		},
-	},
-};
+	}
+
+}
 </script>
 <style lang="scss" scoped>
-.item-project {
-	&.selected {
-		background-color: #202120;
-	}
-	&__container {
+
+	.item-project{
 		width: 100%;
 		height: auto;
 		@include flex(column, normal, normal);
@@ -75,6 +85,25 @@ export default {
 		}
 		&:last-child {
 			border: none;
+		}
+		&.selected {
+			background-color: #202120;
+		}
+		&.close {
+			background-color: rgba(245, 151, 151, 0.3);;
+		}
+
+		&__header,
+		&__footer,
+		&__tags {
+			@include flex(row, space-between, center);
+			flex-wrap: wrap;
+		}
+		&__footer,
+		&__summary {
+			color: #969595;
+			font-size: 0.7rem;
+			padding: 4px 0;
 		}
 	}
 	.tag {
@@ -91,17 +120,6 @@ export default {
 	.userCollab {
 		background-color: #121284;
 	}
-	&__header,
-	&__footer,
-	&__tags {
-		@include flex(row, space-between, center);
-		flex-wrap: wrap;
-	}
-	&__footer,
-	&__summary {
-		color: #969595;
-		font-size: 0.7rem;
-		padding: 4px 0;
-	}
-}
+	
+
 </style>

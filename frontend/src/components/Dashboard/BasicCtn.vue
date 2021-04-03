@@ -10,14 +10,16 @@
             
         </div>
 </template>
+
 <script>
 export default {
-    name:"BasicCtn",
-    props:{
+    name: "BasicCtn",
+    props: {
         headTitle:String,
     },
 }
 </script>
+
 <style lang="scss" scoped>
 
 .basic-ctn{
@@ -28,8 +30,10 @@ export default {
         gap: 0.5rem;
         background-color: #202120;
         border : 1px solid lighten($color: #252525, $amount: 15);
-        padding:1rem 1rem 0.5rem 1rem;
+        padding: 1rem 1rem 0.5rem 1rem;
         border-radius: 3px;
+        position: relative;
+
         &__head{
             border-bottom: 1px solid lighten($color: #252525, $amount: 15);
             flex:1;
@@ -39,9 +43,10 @@ export default {
             padding: 5px 0;
 
         }
+
         &__main{
             display: flex;
-            flex:6;   
+            flex: 6;   
         }
         
     }

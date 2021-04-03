@@ -20,35 +20,40 @@
 			</form>
 			<span @click="triggerBottomMessageClicked" class="switch-form">{{ bottomMessage }}</span>  
 		</div>
-		<HandlingErrors v-if="errors.length !== 0" :errors="errors" :removeError="removeError"/>
+		<HandlingNotif v-if="error !== null" :notifs="error" :removeNotif="removeError"/>
 	</div>
 </template>
 
 <script>
-import Axios from 'axios'
+//Components Import
 import BaseInput from '@/components/system/Input.vue'
-import HandlingErrors from '@/components/HandlingErrors.vue'
+import HandlingNotif from '@/components/HandlingNotif.vue'
+
+//Files Import
 import config from '@/config.js'
 
+//Librairies Import
+import Axios from 'axios'
+
 export default {
-	name:'AuthTemplate',
+	name: 'AuthTemplate',
 	inheritAttrs: false,
-	components:{
+	components: {
 		BaseInput,
-		HandlingErrors
+		HandlingNotif
 	},
 	data() {
 		return {
 			formData: {},
-			errors: []
+			error: null
 		}
 	},
-	props:{
+	props: {
 		inputs: Array,
 		bottomMessage: String,
 		typeOfAuth: String,
 	},
-	methods:{
+	methods: {
 		triggerBottomMessageClicked() {     
 			this.$emit('bottomMessageClicked') 
 		},
@@ -64,8 +69,8 @@ export default {
 			})
 		},
 
-		removeError(i) {
-			this.errors.splice(i, 1)
+		removeError() {
+			this.error = null
 		},
 
 		submitForm(e) {
@@ -80,11 +85,11 @@ export default {
 				if (error.response)
 					self.errors = error.response.data
 				else
-					self.errors = [{message: 'Erreur serveur'}]
+					self.errors = {'type': 'error',message: 'Erreur serveur'}
 			})
 		},
 	},
-	computed:{
+	computed: {
 		getActionURI : function() {
 			return `${config.API_URL}auth/${this.typeOfAuth}`
 		}
