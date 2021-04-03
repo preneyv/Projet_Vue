@@ -2,18 +2,18 @@
 	<div class="home">
 		<div class="hero-section">
 			<div class="hero-section__container">
-				<div class="hero-section__text">
+				<div class="hero-section__text" ref="text">
 					<h1>Le Marché de <span>l'Open Source</span></h1>
 					<h2>Propulser des projets Open-Source en y participant</h2>
 					<router-link to="projects">Voir l'ensemble des projets</router-link>
 				</div>
-				<div class="hero-section__img">
+				<div class="hero-section__img" ref="img">
 					<img src="@/assets/hero.png" alt="Rocket Woman ✨" />
 				</div>
 			</div>
 		</div>
 		<div class="about">
-			<div class="about__container">
+			<div class="about__container" ref="about">
 				<h2>Concept</h2>
 				<p>
 					Cette idée est venue d'un constat simple: si des gens veulent
@@ -38,8 +38,32 @@
 </template>
 
 <script>
+import gsap from "gsap";
 export default {
 	name: "Home",
+	mounted() {
+		const { text, img, about } = this.$refs;
+
+		const tl = gsap.timeline();
+		tl.to(text.children, {
+			y: 0,
+			opacity: 1,
+			stagger: 0.2,
+		})
+			.to(
+				img,
+				{
+					x: 0,
+					opacity: 1,
+				},
+				"-=.4"
+			)
+			.to(about.children, {
+				y: 0,
+				opacity: 1,
+				stagger: 0.2,
+			}, "+=1");
+	},
 };
 </script>
 
@@ -48,7 +72,11 @@ export default {
 	padding-bottom: space(8);
 }
 .hero-section {
-	min-height: 80vh;
+	height: 80vh;
+	max-height: space(200);
+	@include responsive("tablet") {
+		max-height: space(130);
+	}
 	display: grid;
 	place-items: center;
 	&__container {
@@ -105,12 +133,18 @@ export default {
 			font-size: clamp(#{space(4)}, 1vmax, #{space(5)});
 			background: var(--color-secondary);
 		}
+		& > * {
+			transform: translateY(20px);
+			opacity: 0;
+		}
 	}
 	&__img {
 		@media screen and (max-width: 767px) {
 			margin-bottom: space(6);
 			max-width: space(80);
 		}
+		transform: translateX(-50px);
+		opacity: 0;
 		margin-bottom: 0;
 		margin-left: space(4);
 		padding: space(4);
@@ -129,11 +163,15 @@ export default {
 	}
 }
 .about {
-	margin-top: space(16);
+	margin: space(16) 0;
 	&__container {
 		max-width: space(200);
 		margin-left: auto;
 		margin-right: auto;
+		& > * {
+			transform: translateY(20px);
+			opacity: 0;
+		}
 	}
 	h2 {
 		font: 900 space(15) var(--typo-title);

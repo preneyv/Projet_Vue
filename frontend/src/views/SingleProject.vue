@@ -17,20 +17,44 @@
 				</svg>
 				<span>Retourner à la liste des projets</span></a
 			>
-			<div v-if="project?.error">{{ project.error }}</div>
-			<div v-else class="project__wrapper">
+			<div v-if="project.error">{{ project.error }}</div>
+			<section v-else class="project__inner">
 				<div class="project__main">
-					<h1 class="project__title">{{ project.title }}</h1>
+					<h1 class="project__title h-1">{{ project.title }}</h1>
+					<div class="project__tags">
+						<span v-for="tag in project.tags" :key="tag">{{tag}}</span>
+					</div>
+					<div class="project__global-infos">
+						<h2 class="h-3">Informations globales du projet</h2>
+						<p>Projet lancé en
+							{{
+								getDate(project.startedDate).toLocaleDateString(lang, {
+									year: "numeric",
+									month: "long",
+								})
+							}}<span v-if="project.stateProject"> - {{project.stateProject}}</span>
+						</p>
+						<p><b>A la recherche de</b>
+							<ul>
+								<li v-for="job in project.jobs" :key="job.type">{{job.requiredNb}} {{job.type}}</li>
+							</ul>
+						</p>
+					</div>
+					<h3 class="h-3">Description du projet</h3>
+					<p>{{ project.description }}</p>
+					<a href="#" class="btn btn-secondary">Participer au Projet</a>
 				</div>
-				<ul class="project__sidebar">
-					<li v-for="(url, name) in project.links" :key="name">
-						<a :href="url">
-							<font-awesome-icon :icon="['fab', `${name}`]" />
-							{{ name }}
-						</a>
-					</li>
-				</ul>
-			</div>
+				<div v-if="project.links" class="project__sidebar">
+					<h4 class="h-3">Liens externes</h4>
+					<ul>
+						<li v-for="link in project.links" :key="link.value">
+							<a :href="link.value" target="_blank" rel="noopener noreferrer">
+								{{ link.title }}
+							</a>
+						</li>
+					</ul>
+				</div>
+			</section>
 		</div>
 	</div>
 </template>
@@ -41,14 +65,26 @@ import ProjectsService from "@/services/projects.js";
 export default {
 	data() {
 		return {
-			project: Object,
+			project: [],
+			lang: null,
 		};
 	},
 	async mounted() {
 		const { data } = await ProjectsService.getProjectById(
 			this.$route.params.id
 		);
+		data.startedDate = new Date(data.startedDate);
 		this.project = data;
+		console.log(data);
+		const { languages, language } = navigator;
+		this.lang = languages.filter(
+			(lang) => lang.includes(language) && lang.includes("-")
+		)[0];
+	},
+	methods: {
+		getDate(el) {
+			return new Date(el);
+		},
 	},
 };
 </script>
@@ -61,21 +97,52 @@ export default {
 		margin-left: auto;
 		margin-right: auto;
 	}
-
-	&__wrapper {
-		display: flex;
-		justify-content: space-between;
+	&__title {
+		font-weight: 900;
 	}
-
+	&__global-infos {
+		margin: space(8) 0;
+		& > p + p {
+			margin-top: space(4);
+		}
+	}
+	&__inner {
+		@media screen and (max-width: 768px) {
+			grid-template-columns: 1fr;
+		}
+		display: grid;
+		gap: space(3);
+		grid-template-columns: 1fr 10rem;
+		grid-auto-rows: auto;
+		grid-auto-flow: row;
+	}
 	&__main {
-		width: 80%;
+		width: 100%;
 	}
-
 	&__sidebar {
-		position: sticky;
-		top: space(4);
-		width: 15%;
-		height: auto;
+		h3 {
+			font-family: var(--typo-title);
+			font-weight: 700;
+		}
+		font-size: space(5);
+	}
+	&__tags {
+		margin-top: space(2);
+		@include flex($justify: flex-start, $wrap: wrap);
+		span {
+			margin-left: space(1);
+			margin-right: space(1);
+			padding: space(1) space(4);
+			border-radius: space(5);
+			background-color: var(--color-white);
+			color: var(--color-black);
+		}
+	}
+	.btn {
+		margin-top: space(12);
+		font-size: space(6);
+		font-weight: 700;
+		display: inline-block;
 	}
 }
 

@@ -2,7 +2,7 @@
 	<footer class="footer">
 		<div class="footer__container">
 			<div class="row">
-				<h3 class="footer__copyright heading-4">
+				<h3 class="footer__copyright h-4">
 					Tous droits réservés © {{ new Date().getFullYear() }}
 				</h3>
 				<ul class="footer__legals">
@@ -56,7 +56,7 @@ export default {
 
 <style lang="scss" scoped>
 .footer {
-	background-color: lighten($black, 5%);
+	background-color: lighten(map-get($colors, "black"), 5%);
 	padding: space(10) 0;
 	&__container {
 		width: width(10);

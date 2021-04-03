@@ -9,8 +9,18 @@
 			<div @click="toggleMenu" class="navbar__burger" ref="button"></div>
 			<div class="navbar__links" ref="links">
 				<ul class="navbar__links-inner">
-					<li class="navbar__link" @click="toggleMenu">
-						<router-link to="/projects">Projets</router-link>
+					<li
+						v-for="link in links"
+						:key="link.url"
+						class="navbar__link"
+						@click="toggleMenu"
+					>
+						<router-link :to="link.url" :class="{ cta: link.cta }">{{
+							link.name
+						}}</router-link>
+					</li>
+					<!-- <li class="navbar__link" @click="toggleMenu">
+						<router-link to="/projects">Liste de projets</router-link>
 					</li>
 					<li class="navbar__link" @click="toggleMenu">
 						<router-link to="/about">A propos</router-link>
@@ -19,7 +29,7 @@
 						<router-link to="/projects/submit" class="btn btn-secondary">
 							Créer un projet
 						</router-link>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 		</div>
@@ -31,6 +41,17 @@ export default {
 	name: "Navbar",
 	data() {
 		return {
+			links: [
+				{
+					url: "/projects",
+					name: "Liste des projets",
+				},
+				{
+					url: "/projects/submit",
+					name: "Créer un Projet",
+					cta: true,
+				},
+			],
 			menuOpened: false,
 		};
 	},
@@ -71,7 +92,7 @@ export default {
 		top: 0;
 		width: 100vw;
 		height: 100vh;
-		background-color: changeOpacity($black, 0.8);
+		background-color: changeOpacity(map-get($colors, "black"), 0.8);
 		transform: translateY(-100%);
 		transition: transform 0.5s ease-in-out;
 		@include flex(col, flex-start, flex-end);
@@ -106,10 +127,16 @@ export default {
 		font-weight: 700;
 		font-family: var(--typo-title);
 		text-transform: uppercase;
+		margin-top: space(4);
 		@include responsive("tablet") {
+			margin-top: 0;
 			font-weight: 600;
 			font-size: space(4.5);
 			text-transform: initial;
+		}
+		.cta {
+			@extend %btn;
+			@extend %btn-secondary;
 		}
 		.btn {
 			color: var(--color-white);

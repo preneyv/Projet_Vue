@@ -1,13 +1,14 @@
 $fontBase: 1rem;
 $space: 0.25rem;
 $colors: (
-	black: #2c2c2c,
-	white: rgb(236, 236, 236),
-	primary: #ffcc6e,
-	secondary: #f18d95,
-	secondaryColor: #999999,
-	error: rgb(255, 90, 90),
-	success: rgb(156, 255, 137),
+	"true-black": black,
+	"black": #2c2c2c,
+	"white": rgb(236, 236, 236),
+	"primary": #ffcc6e,
+	"secondary": #f18d95,
+	"secondaryColor": #999999,
+	"error": rgb(255, 90, 90),
+	"success": rgb(156, 255, 137),
 );
 
 $black: #181818;

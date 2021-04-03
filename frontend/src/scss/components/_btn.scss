@@ -1,17 +1,25 @@
-.btn {
+%btn {
 	@include flex(row, center, center);
 	border-radius: space(1);
 	padding: space(2) space(2);
 	color: inherit;
 }
 
-.btn.btn-primary {
+%btn-primary {
 	background-color: var(--color-primary);
 	color: var(--color-text-primary);
 }
-
-.btn.btn-secondary {
+%btn-secondary {
 	background-color: var(--color-secondary);
 	color: var(--color-black);
 }
 
+.btn {
+	@extend %btn;
+	&-primary {
+		@extend %btn-primary;
+	}
+	&-secondary {
+		@extend %btn-secondary;
+	}
+}

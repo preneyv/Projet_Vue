@@ -15,6 +15,7 @@
     "bootstrap-icons": "^1.4.0",
     "core-js": "^3.9.1",
     "date-format": "^3.0.0",
+    "gsap": "^3.6.1",
     "mitt": "^2.1.0",
     "sass-loader": "^10.1.1",
     "vue": "^3.0.7",

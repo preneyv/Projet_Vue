@@ -70,15 +70,15 @@ export default {
 	grid-template-columns: repeat(auto-fit, minmax(space(64), 1fr));
 	gap: space(3);
 	&__card {
+		overflow: hidden;
 		color: var(--color-black);
 		display: grid;
 		grid-template-rows: space(12) space(24) auto;
 		gap: space(2);
-		padding: space(3);
 		border-radius: space(2);
-		background-color: var(--color-white);
-		// border: 1px solid lighten($black, 20%);
+		background-color: darken(map-get($colors, "white"), 5%);
 		h2 {
+			margin: space(3) space(3) 0;
 			text-align: center;
 			font-size: 1rem;
 			font-weight: 600;
@@ -86,6 +86,9 @@ export default {
 		}
 	}
 	&__tags {
+		background-color: var(--color-true-black);
+		color: var(--color-white);
+		padding: space(3) space(3);
 		align-self: flex-end;
 		h3 {
 			text-transform: uppercase;
@@ -99,13 +102,15 @@ export default {
 			margin: space(1);
 			span {
 				display: inline-block;
-				padding: space(1);
-				border-radius: space(2);
-				border: 1px solid lighten($black, 20%);
+				padding: space(1) space(3);
+				border-radius: space(5);
+				background-color: var(--color-white);
+				color: var(--color-black);
 			}
 		}
 	}
 	&__description {
+		margin: 0 space(3);
 		align-self: flex-start;
 	}
 }
