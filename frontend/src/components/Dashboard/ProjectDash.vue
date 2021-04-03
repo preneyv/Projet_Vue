@@ -101,6 +101,14 @@ import HandlingNotif from "@/components/HandlingNotif.vue"
 //Files Import
 
 import AdminAPI from '../../services/projects.js'
+import {
+  addTag,
+  addLink,
+  setDescription,
+  removeOneCollab,
+  acceptNewCollab,
+  addNeededCollab
+} from "../../utils/dashboardLogic.js";
 import {categories, officialLinkTypes} from '../../constants/project.js'
 import {profilTypes} from '../../constants/contributor.js'
 
@@ -157,7 +165,7 @@ export default {
         /**
          * Récupère le nom, l'id et le type de collaboration.
          * Cela permet de mettre le tableau des collaborateurs dans un autre tableau
-         * formaté selon ce qui suit afin qu'aucune action se soit effectuée par le composant 
+         * formaté selon ce qui suit afin qu'aucune action ne soit effectuée par le composant
          * qui a besoin des noms des collaborateurs.
          */
         getAllCollabsNames() {
@@ -223,175 +231,48 @@ export default {
          * Formate les dates en utilisant la librairie 'format'
          */
         formatedDate(date) {
-			return format('dd/MM/yyyy',new Date(date))
-			
-		},
+          return format('dd/MM/yyyy',new Date(date))
+        },
         /**
-         * Ajoute un nouveau besoin de collaboration en base de donnée.
-         * Met à jour les données du projet. 
-         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         * Voir la méthode "addNeededCollab" dans dashboardLogic
          */
         async newCollab({valueType, valueTechnos, valueNb}) {
-            let projectLocal = this.getCurrentProject
-            let item =projectLocal.jobs.find((el) =>{ if(el.type === valueType) return el })
-
-            if (item !== undefined)  return ({type:'error', message:'Cette collaboration est déjà définie dans le projet.'})      
-
-
-            let res = await AdminAPI.addJobRequirement(projectLocal._id,{type:valueType,requiredNb:Number(valueNb),skills:[...valueTechnos],nameCollabPeople:[]})
-            const { modified } = res.data
-    
-            if(modified === 1) {
-                projectLocal.jobs = [...projectLocal.jobs,{type:valueType,requiredNb:Number(valueNb),skills:[...valueTechnos],nameCollabPeople:[]}]
-                return {type: 'success', message:`Vous venez d'ajouter un nouveau besoin de collaboration.`}
-
-            }else{
-                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
-            }
+          return await addNeededCollab(this.getCurrentProject, valueType, valueTechnos, valueNb)
         },
+
         /**
-         * Ajoute une nouvelle catégorie en base de donnée.
-         * Met à jour les données du projet.
-         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         * Voir la méthode "addTag" dans dashboardLogic
          */
         async newTag({tags}) {
-            let projectLocal = this.getCurrentProject
-            if(projectLocal.tags.includes(tags))
-                return ({type:'error', message:'Cette catégorie est déjà présente dans votre projet.'})
-
-            
-            let res = await AdminAPI.addTagToProject(projectLocal._id,tags)
-            const { modified } = res.data
-            if(modified === 1) {
-                projectLocal.tags = [...projectLocal.tags,tags]
-                return {type: 'success', message:`La catégorie ${tags} a bien été ajoutée.`}
-
-            }else{
-                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
-            }
-
+          return await addTag(this.getCurrentProject, tags)
         },
+
         /**
-         * Ajoute un nouveau lien en base de donnée.M
-         * Met et à jour les données du projet.
-         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         * Voir la méthode "addLink" dans dashboardLogic
          */
         async newLink({valueSelect, valueInput}) {
-            let projectLocal = this.getCurrentProject
-            let item = projectLocal.links.find((el) => { 
-                if(el.title === valueSelect || el.value ===valueInput) return el
-                   
-                return
-            })
-
-            if(item !== undefined && item.title === valueSelect) return ({type: 'error', message: `Vous possèdez déjà un lien ${valueSelect}.`})
-            if(item !== undefined && item.value === valueInput) return ({type: 'error', message: `L'adresse ${valueInput} est déjà présente.`})      
-            if(!valueInput.match(/(https?|ftp|ssh|mailto):\/\/[a-z0-9/:%_+.,#?!@&=-]+/gi)) return ({type:'error', message: "L'adresse saisie n'est pas valide."})
-
-
-            
-            let res = await AdminAPI.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
-            const { modified } = res.data
-            if(modified === 1) {
-                projectLocal.links = [...projectLocal.links,{title:valueSelect,value:valueInput}]
-                return ({type: 'success', message: `La lien ${valueSelect} a bien été ajouté.`})
-
-            }else{
-                return  ({type: 'error', message: `Un problème s'est produit. Réessayez plus tard.`})
-            }
+            return await addLink(this.getCurrentProject, valueSelect, valueInput)
         },
+
         /**
-         * Change la description en base de donnée. Et met à jour les données du projet.
-         * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+         * Voir la méthode "setDescription" dans dashboardLogic
          */
         async changeDesc({valueInput}) {
-
-            let projectLocal = this.getCurrentProject
-            
-            let res = await AdminAPI.setDescription(projectLocal._id,valueInput)
-            const { modified } = res.data
-            
-            if(modified === 1) {
-                projectLocal.description = valueInput
-                return {type: 'success', message:`La description a bien été modifiée.`}
-
-            }else{
-                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
-            }
+          return await setDescription(this.getCurrentProject, valueInput)
         },
+
         /**
-         * Retire un collaborateur du projet ou simplement une collaboration sur laquelle il est présent.
+         * Voir la méthode "removeOneCollab" dans dashboardLogic
          */
         async removeCollabFromProject(id,name, type) {
-            let projectLocal = this.getCurrentProject
-            
-            let res = await AdminAPI.removeCollabFromProject(projectLocal._id, id, type)
-            const { modified } = res.data
-
-            if(modified === 1) {
-                
-                if(type !== undefined) {
-                    let obj = projectLocal.jobs.find((el) => el.type === type)
-                    let person = obj.nameCollabPeople.findIndex((p) => p._collab === id)
-                    obj.nameCollabPeople.splice(person,1)
-                    this.notifs = {type: 'success', message:`${name} n'est plus ${type} sur le projet.`}
-
-                }else{
-                    projectLocal.jobs.forEach((el) => {
-                        let person = el.nameCollabPeople.findIndex((p) => p._collab === id)
-                        if(person !== -1) el.nameCollabPeople.splice(person,1)
-                    })
-                    this.notifs = {type: 'success', message:`${name} a été retiré du projet.`}
-                }
-                
-
-            }else{
-                this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
-            }
-
+          removeOneCollab(this.getCurrentProject, id, name, type).then(res => this.notifs = res)
         },
+
         /**
-         * Accepte  une demande de collaboration.
+         * Voir la méthode "accepteNewCollab" dans dashboardLogic
          */
         async acceptCollabRequest(collab, index) {
-            let isMissing = true
-            let projectLocal = this.getCurrentProject
-            let obj = projectLocal.jobs.find((el) => el.type === collab.type)
-            console.log(obj)
-
-
-            if(obj?.nameCollabPeople.length +1 > obj?.requiredNb) {
-                this.notifs = {type: 'error', message:`Vous ne pouvez pas ajouter plus de ${collab.type}`}
-                return
-            }
-
-            if(obj !== undefined) {
-                obj.nameCollabPeople.forEach((el) => {
-                    if(el._collab === collab._id) {
-                        this.notifs = {type: 'error', message:`${collab.name} est déjà ${collab.type} sur le projet`}
-                        isMissing = false
-                    }
-                    
-                })
-            }
-            
-            if (isMissing === false) return
-
-            let res = await AdminAPI.addCollabToProject(projectLocal._id, collab)
-            
-            const {modified} = res.data ?? ""
-
-                if(modified === 1) {
-                    
-                    obj.nameCollabPeople = [...obj.nameCollabPeople, {name: collab.name, _collab: collab._id}]
-                    this.notifs = {type: 'success', message:`Vous avez ajouté ${collab.name} au projet.`}
-
-                    projectLocal.collabRequest.splice(index, 1)
-
-                }else {
-                    this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
-                }
-            
+          acceptNewCollab(this.getCurrentProject, collab, index).then(res => this.notifs = res)
 
         },
         /**
@@ -401,14 +282,11 @@ export default {
             let projectLocal = this.getCurrentProject
             let res = await AdminAPI.removeFromCollabRequest(projectLocal._id, id)
             const {modified} = res.data ?? ""
-
-                if(modified === 1) {
-                    
-                    projectLocal.collabRequest.splice(index, 1)
-
-                }else {
-                    this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
-                }
+            if(modified === 1) {
+                projectLocal.collabRequest.splice(index, 1)
+            }else {
+                this.notifs = {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+            }
         },
         /**
          * Change l'état du projet
@@ -419,7 +297,7 @@ export default {
             let valueChange = projectLocal.stateProject === "En cours" ? "Terminé" : "En cours"
 
             let res = await AdminAPI.setStateProject(projectLocal._id,valueChange)
-            const { modified } = res.data
+            const { modified } = res?.data ?? 0
             
             if(modified === 1) {
 
@@ -427,7 +305,7 @@ export default {
                 this.notifs = {type: 'success', message:`Statut du projet : ${valueChange}.`}
 
             }else{
-                return  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+              this.notifs =  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
             }
         
         },
@@ -439,38 +317,7 @@ export default {
         }
 
     },
-    closeForm() {
-        this.requiredForm = null;
-    },
-    changeFormAndOpen: function (el) {
-        this.requiredForm = el;
-    },
-    formatedDate(date) {
-        return format("dd/MM/yyyy", new Date(date));
-    },
-    newCollab() {},
-    newTag({ valueTag }) {
-        if (this.projectLocal.tags.includes(valueTag))
-            return {
-                message: "Cette catégorie est déjà présente dans votre projet.",
-            };
 
-        this.projectLocal.tags = [...this.projectLocal.tags, valueTag];
-        AdminAPI.addTagToProject(this.projectLocal._id, valueTag).then((res) => {
-            console.log(res);
-        });
-    },
-    newLink({ valueSelect, valueInput }) {
-        this.projectLocal.links.forEach((el) => {
-            if (el.title === valueSelect && el.value === valueInput)
-                return { message: "Ce lien est déjà présent dans votre projet." };
-        });
-
-        this.projectLocal.links = [
-            ...this.projectLocal.links,
-            { title: valueSelect, value: valueInput },
-        ];
-    },
 };
 </script>
 <style lang="scss" scoped>
@@ -509,7 +356,7 @@ export default {
 
     .left-section{
         flex: 3;
-        padding: 1rem 0 0rem 1.5rem;
+        padding: 1rem 0 0 1.5rem;
     }
 
     .middle-section,.right-section{

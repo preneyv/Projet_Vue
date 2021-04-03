@@ -13,8 +13,7 @@
 				<span v-if="$parent.$parent.getCurrentProject.stateUser === 'Admin'" class="remove-from-project" @click="handleClickRemove(type)" :title="collab.name"><i class="bi bi-x"></i></span>
 				</span>
 			</div>
-			
-			
+
 		</div>
 	</transition>
 </template>
@@ -57,24 +56,19 @@ export default {
 		cursor: pointer;
 	}
 }
-.option-panel {
-	font-size: 0.8rem;
-	@include flex(row, space-between, unset);
-	color: #969595;
-	border-bottom: 1px solid lighten($color: #252525, $amount: 15);
-	padding-top: 5px;
-	width: 90%;
-	float: right;
 
 	.head-collab {
-		@include flex(row, space-between);
-		.name-person {
-			font-size: 1rem;
-			&:hover {
-				cursor: pointer;
-			}
-		}
-	}
+    @include flex(row, space-between);
+
+    .name-person {
+      font-size: 1rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
 	.option-panel{
 		font-size: 0.8rem;
 		@include flex(row, space-between, unset);
@@ -87,6 +81,7 @@ export default {
 		.list-type {
 			@include flex(column, flex-start, flex-start);
 			width: 100%;
+
 			&__line {
 				@include flex(row,space-between);
 				gap: 0.2rem;
@@ -98,12 +93,13 @@ export default {
 	.remove-from-project {
 		font-size: 0.8rem;
 		color: #969595;
+
 		&:hover {
 			cursor: pointer;
 			text-decoration: underline;
 		}
 	}
-}
+
 
 
 /*Transition*/
