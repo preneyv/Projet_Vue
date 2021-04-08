@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import store from './store'
+import AuthService from './services/auth'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
@@ -18,4 +20,9 @@ const Vue = createApp(App)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-Vue.use(router).mount('#app')
+Vue.use(store)
+
+AuthService.updateStoreFromToken()
+
+Vue.use(router)
+Vue.mount('#app')

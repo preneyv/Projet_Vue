@@ -47,7 +47,12 @@ export default {
     },
 	data() {
 		return {
-			items: [
+			menuOpened: false
+		}
+	},
+	computed: {
+		items() {
+			return [
 				{
 					type: "link",
 					url: "/projects",
@@ -55,29 +60,28 @@ export default {
 				},
 				{
 					type: "dropdown",
-					name: AuthService.getUser()?.name,
+					name: this.$store.state.auth.user?.name,
 					items: [
 						{ label: "Mon compte", url: "/account" },
 						{ label: "Dashboard", url: "/dashboard" },
-						{ label: "Déconnexion", action: this.signout }
+						{ label: "Déconnexion", action: () => this.signout() }
 					],
-					hide: !AuthService.isSignedIn()
+					hide: !this.$store.state.auth.authenticated
 				},
 				{
 					type: "callToAction",
 					url: "/projects/submit",
 					name: "Créer un Projet",
-					hide: !AuthService.isSignedIn()
+					hide: !this.$store.state.auth.authenticated
 				},
 				{
 					type: "callToAction",
 					url: "/login",
 					name: "Connexion",
-					hide: AuthService.isSignedIn()
+					hide: this.$store.state.auth.authenticated
 				},
-			],
-			menuOpened: false
-		};
+			]
+		}
 	},
 	methods: {
 		toggleMenu() {
