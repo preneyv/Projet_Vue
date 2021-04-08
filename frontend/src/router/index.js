@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Home from "@/views/Home.vue";
+import PageNotFound from "@/views/PageNotFound.vue";
 import Entering from "@/views/Entering.vue";
 import Projects from "@/views/Projects.vue";
 import SingleProject from "@/views/SingleProject.vue";
@@ -42,6 +43,11 @@ const routes = [
 		name: "SubmitProject",
 		component: Submit,
 	},
+	{
+		path: "/:catchAll(.*)",
+		name: "PageNotFound",
+		component: PageNotFound
+	}
 ]
 
 const router = createRouter({
