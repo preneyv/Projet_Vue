@@ -25,12 +25,6 @@ const AuthService = {
         store.commit("setUser", null)
     },
 
-    getUserFromToken: () => {
-        const token = localStorage.getItem("token")
-        if (!token) return null
-        return jwt.decode(token)
-    },
-
     updateStoreFromToken: () => {
         const token = localStorage.getItem("token")
         if (!token) {
