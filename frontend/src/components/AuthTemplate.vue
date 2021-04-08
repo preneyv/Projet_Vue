@@ -100,8 +100,9 @@ export default {
 		},
 
 		handleSuccess() {
-			this.$router.push("/account")
-			window.location.reload()
+			const queryString = window.location.search
+			const params = new URLSearchParams(queryString)
+			this.$router.replace({ name : params.get("redirectTo") ? params.get("redirectTo") : 'Dashboard' })
 		}
 	}
 }

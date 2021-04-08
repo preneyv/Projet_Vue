@@ -6,6 +6,7 @@ import Projects from "@/views/Projects.vue";
 import SingleProject from "@/views/SingleProject.vue";
 import About from "@/views/About.vue";
 import Submit from "@/views/projects/Submit.vue";
+import { authGuard, guestGuard } from "./guards";
 
 const routes = [
 	{
@@ -17,11 +18,13 @@ const routes = [
 		path: "/login",
 		name: "LogPages",
 		component: Entering,
+		beforeEnter: guestGuard
 	},
 	{
 		path: "/dashboard",
 		name: "Dashboard",
 		component: () => import("../views/Dashboard.vue"),
+		beforeEnter: authGuard
 	},
 	{
 		path: "/about",
@@ -42,6 +45,7 @@ const routes = [
 		path: "/projects/submit",
 		name: "SubmitProject",
 		component: Submit,
+		beforeEnter: authGuard
 	},
 	{
 		path: "/:catchAll(.*)",
