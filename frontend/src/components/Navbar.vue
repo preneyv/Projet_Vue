@@ -10,7 +10,7 @@
 			<div class="navbar__links" ref="links">
 				<ul class="navbar__links-inner">
 					<li
-						v-for="link in links"
+						v-for="link in links.filter(link => !link.hide)"
 						:key="link.url"
 						class="navbar__link"
 						@click="toggleMenu"
@@ -19,17 +19,13 @@
 							link.name
 						}}</router-link>
 					</li>
-					<!-- <li class="navbar__link" @click="toggleMenu">
-						<router-link to="/projects">Liste de projets</router-link>
+
+					<li v-if="isSignedIn" class="navbar__link">
+						<BaseDropdown
+							:label="accountDropdown.label"
+							:items="accountDropdown.items"
+						/>
 					</li>
-					<li class="navbar__link" @click="toggleMenu">
-						<router-link to="/about">A propos</router-link>
-					</li>
-					<li class="navbar__link" @click="toggleMenu">
-						<router-link to="/projects/submit" class="btn btn-secondary">
-							Créer un projet
-						</router-link>
-					</li> -->
 				</ul>
 			</div>
 		</div>
@@ -37,8 +33,14 @@
 </template>
 
 <script>
+import AuthService from '@/services/auth.js'
+import BaseDropdown from '@/components/system/Dropdown.vue'
+
 export default {
 	name: "Navbar",
+	components: {
+        BaseDropdown
+    },
 	data() {
 		return {
 			links: [
@@ -51,8 +53,27 @@ export default {
 					name: "Créer un Projet",
 					cta: true,
 				},
+				{
+					url: "/login",
+					name: "Connexion",
+					cta: true,
+					hide: AuthService.isSignedIn()
+				},
 			],
+			accountDropdown: {
+				label: AuthService.getUser()?.name,
+				items: [
+					{ label: "Mon compte", url: "/account" },
+					{ label: "Dashboard", url: "/dashboard" },
+					{ label: "Déconnexion", action: () => {
+						AuthService.signout()
+						this.$router.push("/")
+						window.location.reload()
+					}}
+				]
+			},
 			menuOpened: false,
+			isSignedIn: AuthService.isSignedIn()
 		};
 	},
 	methods: {
