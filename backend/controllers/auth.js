@@ -13,23 +13,18 @@ export async function signin(req, res) {
 	if (!email || !password) {
 		return res
 			.status(403)
-			.json([{ message: `Veuillez remplir le formulaire correctement` }])
+			.json({ message: `Formulaire invalide` })
 	}
 
-	try {
-		const user = await User.findOne({ email })
-		// TODO: dehash the password to compare
-		if (!user.password === password) {
-			return res
-				.status(403)
-				.json({ message: `Email ou mot de passe invalide` })
-		}
-
-		const token = user.generateAccessToken()
-		return res.json({ token })
-	} catch (e) {
-		return res.status(500).json({ message: `Error: ${e}` })
+	const user = await User.findOne({ email })
+	if (!user || !passwordHash.verify(password, user.password)) {
+		return res
+			.status(403)
+			.json({ message: `Email ou mot de passe invalide` })
 	}
+
+	const token = user.generateAccessToken()
+	return res.json({ token })
 }
 
 /**
@@ -44,7 +39,7 @@ export async function signup(req, res) {
 	if (!name || !email || !password) {
 		return res
 			.status(403)
-			.json([{ message: `Veuillez remplir le formulaire correctement` }])
+			.json([{ message: `Formulaire invalide` }])
 	}
 
 	const isEmailTaken = (await User.find({ email })).length !== 0
@@ -63,13 +58,13 @@ export async function signup(req, res) {
 			externals,
 		})
 
-		user.save((err) => {
-			if (err) throw new Error(err)
+		user.save((error) => {
+			if (error) throw new Error(error)
 
 			const token = user.generateAccessToken()
 			return res.status(200).json({ token })
 		})
-	} catch (e) {
-		return res.status(500).json({ message: `Error: ${e}` })
+	} catch (error) {
+		return res.status(500).json({ message: `${error}` })
 	}
 }
