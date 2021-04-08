@@ -1,5 +1,5 @@
 <template>
-    <div :class="[getCurrentProject.stateProject==='En cours' ? 'open' : 'close', 'project-ctn']">
+    <div v-if="getCurrentProject" :class="[getCurrentProject.stateProject==='En cours' ? 'open' : 'close', 'project-ctn']">
         
         <transition  name="list-notif"  mode="out-in" appear>
             <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
@@ -126,7 +126,7 @@ export default {
         FormHandlingAdd,
         HandlingNotif
     },
-    updated() {
+    created() {
         console.log(this.project)
     },
     data() {

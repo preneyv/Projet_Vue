@@ -35,6 +35,7 @@ export async function signin(req, res) {
  */
 export async function signup(req, res) {
 	const { name, email, password, externals } = req.body
+	console.log(req.body)
 
 	if (!name || !email || !password) {
 		return res
@@ -44,12 +45,13 @@ export async function signup(req, res) {
 
 	const isEmailTaken = (await User.find({ email })).length !== 0
 
+
 	if (isEmailTaken) {
 		return res
 			.status(403)
-			.json([{ message: `Email déjà associé à un compte` }])
+			.json({ message: `Email déjà associé à un compte` })
 	}
-
+	console.log(isEmailTaken)
 	try {
 		const user = new User({
 			name,
@@ -57,14 +59,17 @@ export async function signup(req, res) {
 			password: passwordHash.generate(password),
 			externals,
 		})
+		console.log(user)
 
 		user.save((error) => {
+			console.log(error)
 			if (error) throw new Error(error)
 
 			const token = user.generateAccessToken()
 			return res.status(200).json({ token })
 		})
 	} catch (error) {
+
 		return res.status(500).json({ message: `${error}` })
 	}
 }

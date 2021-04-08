@@ -1,10 +1,10 @@
-import AdminAPI from "./AdminAPI.js";
+import ProjectsService from "../services/projects.js";
 
 
 /**
  * Ajoute une nouvelle catégorie en base de donnée.
  * Met à jour les données du projet.
- * Passe par AdminAPI pour qu'une requête Axios soit effectuée.
+ * Passe par ProjectsService pour qu'une requête Axios soit effectuée.
  * @param project projet à modifer
  * @param tags catégorie à ajouter
  * @returns {Promise<{type: string, message: string}>}
@@ -16,8 +16,8 @@ export async function addTag(project, tags) {
         return ({type:'error', message:'Cette catégorie est déjà présente dans votre projet.'})
 
 
-    let res = await AdminAPI.addTagToProject(projectLocal._id,tags)
-    const { modified } = res.data
+    let res = await ProjectsService.addTagToProject(projectLocal._id,tags)
+    const { modified } = res?.data ?? 0
     if(modified === 1) {
         projectLocal.tags = [...projectLocal.tags,tags]
         return {type: 'success', message:`La catégorie ${tags} a bien été ajoutée.`}
@@ -43,8 +43,8 @@ export async function addNeededCollab(project, typeOfCollab, arrayOfTechno, requ
     if (item !== undefined)  return ({type:'error', message:'Cette collaboration est déjà définie dans le projet.'})
 
 
-    let res = await AdminAPI.addJobRequirement(projectLocal._id,{type:typeOfCollab,requiredNb:Number(requiredNb),skills:[...arrayOfTechno],nameCollabPeople:[]})
-    const { modified } = res.data
+    let res = await ProjectsService.addJobRequirement(projectLocal._id,{type:typeOfCollab,requiredNb:Number(requiredNb),skills:[...arrayOfTechno],nameCollabPeople:[]})
+    const { modified } = res?.data ?? 0
 
     if(modified === 1) {
         projectLocal.jobs = [...projectLocal.jobs,{type:typeOfCollab,requiredNb:Number(requiredNb),skills:[...arrayOfTechno],nameCollabPeople:[]}]
@@ -73,8 +73,8 @@ export async function addLink(project, valueSelect, valueInput) {
     if(!valueInput.match(/(https?|ftp|ssh|mailto):\/\/[a-z0-9/:%_+.,#?!@&=-]+/gi)) return ({type:'error', message: "L'adresse saisie n'est pas valide."})
 
 
-    let res = await AdminAPI.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
-    const { modified } = res.data
+    let res = await ProjectsService.addLinkToProject(projectLocal._id,{title:valueSelect,value:valueInput})
+    const { modified } = res?.data ?? 0
     if(modified === 1) {
         projectLocal.links = [...projectLocal.links,{title:valueSelect,value:valueInput}]
         return ({type: 'success', message: `La lien ${valueSelect} a bien été ajouté.`})
@@ -94,8 +94,9 @@ export async function setDescription(project, valueInput) {
 
     let projectLocal = project
 
-    let res = await AdminAPI.setDescription(projectLocal._id,valueInput)
-    const { modified } = res.data
+    let res = await ProjectsService.setDescription(projectLocal._id,valueInput)
+    console.log(res)
+    const { modified } = res?.data ?? 0
 
     if(modified === 1) {
         projectLocal.description = valueInput
@@ -118,8 +119,8 @@ export async function removeOneCollab(project, idCollab, nameCollab, typeCollab)
 
     let projectLocal = project
 
-    let res = await AdminAPI.removeCollabFromProject(projectLocal._id, idCollab, typeCollab)
-    const { modified } = res.data
+    let res = await ProjectsService.removeCollabFromProject(projectLocal._id, idCollab, typeCollab)
+    const { modified } = res?.data ?? 0
 
     if(modified === 1) {
 
@@ -172,8 +173,8 @@ export async function acceptNewCollab(project, collab, index) {
 
     if (isMissing === false) return {type: 'error', message:`${collab.name} est déjà ${collab.type} sur le projet`}
 
-    let res = await AdminAPI.addCollabToProject(projectLocal._id, collab)
-    const {modified} = res.data ?? ""
+    let res = await ProjectsService.addCollabToProject(projectLocal._id, collab)
+    const { modified } = res?.data ?? 0
 
     if(modified === 1) {
 

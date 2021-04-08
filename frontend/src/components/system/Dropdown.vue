@@ -7,15 +7,15 @@
 		</button>
 
 		<ul v-if="openned" class="dropdown__items">
-		    <li
+      <li
                 v-for="item in items"
                 :key="item"
                 class="dropdown__item"
                 @click="() => redirectTo(item.url)"
-            >
+      >
                 <a v-if="item.url" :href="item.url">{{ item.label }}</a>
                 <span v-if="item.action" @click="item.action">{{ item.label }}</span>
-            </li>
+      </li>
 		</ul>
 	</div>
 </template>
@@ -68,7 +68,6 @@ export default {
         position: absolute;
         padding: 0.5rem;
         background-color: var(--color-dark-black);
-        width: 100%;
         border-radius: 5px;
         box-shadow: 0 0 5px black;
         top: 30px;
