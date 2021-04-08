@@ -20,7 +20,7 @@
 			</form>
 			<span @click="triggerBottomMessageClicked" class="switch-form">{{ bottomMessage }}</span>  
 		</div>
-		<HandlingNotif v-if="error !== null" :notifs="error" :removeNotif="removeError"/>
+		<HandlingNotif v-if="error" :notifs="error" :removeNotif="removeError"/>
 	</div>
 </template>
 
@@ -30,10 +30,7 @@ import BaseInput from '@/components/system/Input.vue'
 import HandlingNotif from '@/components/HandlingNotif.vue'
 
 //Files Import
-import config from '@/config.js'
-
-//Librairies Import
-import Axios from 'axios'
+import AuthService from '@/services/auth.js'
 
 export default {
 	name: 'AuthTemplate',
@@ -42,16 +39,16 @@ export default {
 		BaseInput,
 		HandlingNotif
 	},
+	props: {
+		inputs: Array,
+		bottomMessage: String,
+		typeOfAuth: String,
+	},
 	data() {
 		return {
 			formData: {},
 			error: null
 		}
-	},
-	props: {
-		inputs: Array,
-		bottomMessage: String,
-		typeOfAuth: String,
 	},
 	methods: {
 		triggerBottomMessageClicked() {     
@@ -75,23 +72,36 @@ export default {
 
 		submitForm(e) {
 			e.preventDefault()
-			const self = this
+			const data = this.formData
 
-			Axios.post(this.getActionURI, this.formData)
-			.then(res => {
-				console.log(res) // TODO
-			})
-			.catch(error => {
-				if (error.response)
-					self.errors = error.response.data
-				else
-					self.errors = {'type': 'error',message: 'Erreur serveur'}
-			})
+			if (this.typeOfAuth === "signin") {
+				AuthService.signin(
+					data.email,
+					data.password
+				)
+				.then(this.handleSuccess)
+				.catch(error => this.handleError(error))
+			}
+			else {
+				AuthService.signup(
+					data.name,
+					data.email,
+					data.password,
+					data.externals
+				)
+				.then(this.handleSuccess)
+				.catch(error => this.handleError(error))
+			}
 		},
-	},
-	computed: {
-		getActionURI : function() {
-			return `${config.API_URL}auth/${this.typeOfAuth}`
+
+		handleError(error) {
+			this.error = { type: "error" }
+			this.error.message = error.response?.data?.message || "Erreur serveur"
+		},
+
+		handleSuccess() {
+			this.$router.push("/account")
+			window.location.reload()
 		}
 	}
 }
