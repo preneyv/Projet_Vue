@@ -7,23 +7,27 @@
 				</router-link>
 			</div>
 			<div @click="toggleMenu" class="navbar__burger" ref="button"></div>
-			<div class="navbar__links" ref="links">
-				<ul class="navbar__links-inner">
+			<div class="navbar__items" ref="items">
+				<ul class="navbar__items-inner">
 					<li
-						v-for="link in links.filter(link => !link.hide)"
-						:key="link.url"
-						class="navbar__link"
+						v-for="item in items.filter(item => !item.hide)"
+						:key="item.url"
+						class="navbar__item"
 						@click="toggleMenu"
 					>
-						<router-link :to="link.url" :class="{ cta: link.cta }">{{
-							link.name
-						}}</router-link>
-					</li>
+						<router-link
+							v-if="item.type === 'link' || item.type === 'callToAction'"
+							:to="item.url"
+							:class="{ cta: item.type === 'callToAction' }"
+						>
+							{{ item.name }}
+						</router-link>
 
-					<li v-if="isSignedIn" class="navbar__link">
 						<BaseDropdown
-							:label="accountDropdown.label"
-							:items="accountDropdown.items"
+							v-if="item.type === 'dropdown'"
+							:label="item.name"
+							:items="item.items"
+							:forNavbar="true"
 						/>
 					</li>
 				</ul>
@@ -43,45 +47,49 @@ export default {
     },
 	data() {
 		return {
-			links: [
+			items: [
 				{
+					type: "link",
 					url: "/projects",
 					name: "Liste des projets",
 				},
 				{
-					url: "/projects/submit",
-					name: "Créer un Projet",
-					cta: true,
+					type: "dropdown",
+					name: AuthService.getUser()?.name,
+					items: [
+						{ label: "Mon compte", url: "/account" },
+						{ label: "Dashboard", url: "/dashboard" },
+						{ label: "Déconnexion", action: this.signout }
+					],
+					hide: !AuthService.isSignedIn()
 				},
 				{
+					type: "callToAction",
+					url: "/projects/submit",
+					name: "Créer un Projet",
+					hide: !AuthService.isSignedIn()
+				},
+				{
+					type: "callToAction",
 					url: "/login",
 					name: "Connexion",
-					cta: true,
 					hide: AuthService.isSignedIn()
 				},
 			],
-			accountDropdown: {
-				label: AuthService.getUser()?.name,
-				items: [
-					{ label: "Mon compte", url: "/account" },
-					{ label: "Dashboard", url: "/dashboard" },
-					{ label: "Déconnexion", action: () => {
-						AuthService.signout()
-						this.$router.push("/")
-						window.location.reload()
-					}}
-				]
-			},
-			menuOpened: false,
-			isSignedIn: AuthService.isSignedIn()
+			menuOpened: false
 		};
 	},
 	methods: {
 		toggleMenu() {
 			this.menuOpened = !this.menuOpened;
-			this.$refs.links.classList.toggle("open");
+			this.$refs.items.classList.toggle("open");
 			this.$refs.button.classList.toggle("open");
 		},
+
+		signout() {
+			AuthService.signout()
+			this.$router.replace({ name : 'Home' })
+		}
 	},
 };
 </script>
@@ -107,7 +115,7 @@ export default {
 	&__logo {
 		max-width: space(12);
 	}
-	&__links {
+	&__items {
 		position: absolute;
 		left: 0;
 		top: 0;
@@ -143,7 +151,7 @@ export default {
 			}
 		}
 	}
-	&__link {
+	&__item {
 		font-size: space(8);
 		font-weight: 700;
 		font-family: var(--typo-title);

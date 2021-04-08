@@ -1,5 +1,5 @@
 <template>
-	<div class="dropdown">
+	<div :class="`dropdown ${forNavbar ? 'dropdown-navbar' : ''}`">
 		<button class="dropdown__label" @click="toggle">
 			{{ label }}
             <font-awesome-icon icon="caret-down" v-if="!openned"/>
@@ -26,6 +26,7 @@ export default {
 	props: {
 		label: String,
 		items: Array,
+        forNavbar: Boolean
 	},
     data() {
         return {
@@ -48,7 +49,22 @@ export default {
     position: relative;
     font-size: 1rem;
 
-    .dropdown__items {
+    &.dropdown-navbar {
+        font-size: space(8);
+		font-weight: 700;
+		font-family: var(--typo-title);
+		text-transform: uppercase;
+		margin-top: space(4);
+        
+		@include responsive("tablet") {
+			margin-top: 0;
+			font-weight: 600;
+			font-size: space(4.5);
+			text-transform: initial;
+		}
+    }
+
+    &__items {
         position: absolute;
         padding: 0.5rem;
         background-color: var(--color-dark-black);
@@ -58,14 +74,14 @@ export default {
         top: 30px;
     }
 
-    .dropdown__item {
+    &__item {
         padding: 0.25rem 0.5rem;
         border-radius: 3px;
         transition: all 150ms ease-in-out;
         cursor: pointer;
     }
 
-    .dropdown__item:hover {
+    &__item:hover {
         background-color: var(--color-primary);
         color: var(--color-black);
     }
