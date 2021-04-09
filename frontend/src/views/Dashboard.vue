@@ -25,7 +25,7 @@
 import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
 
-import AdminAPI from '../services/projects.js'
+import ProjectsService from '../services/projects.js'
 
 export default {
     name:"Dashboard",
@@ -35,7 +35,7 @@ export default {
     },
     beforeMount(){
         const { _id } = this.$store.state.auth.user
-        AdminAPI.getAuthorProjects(_id).then(res=>{
+        ProjectsService.getAuthorProjects(_id).then(res=>{
           console.log(res.request.onprogress)
           if(res.request.onprogress){
             this.isLoading = true
