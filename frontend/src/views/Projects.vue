@@ -69,6 +69,7 @@ export default {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(space(64), 1fr));
 	gap: space(3);
+	padding: 0 8vw;
 	&__card {
 		overflow: hidden;
 		color: var(--color-black);
