@@ -1,6 +1,6 @@
 
 import Axios from 'axios'
-import config from '@/config.js'
+import config from '@/config/config.js'
 const AdminAPI={
 
         //Grab all project matching the id (the author's one)
