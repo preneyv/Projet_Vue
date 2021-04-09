@@ -41,7 +41,6 @@ export default {
             justify-content: space-between;
             font-size: 1.3rem;
             padding: 5px 0;
-
         }
 
         &__main{

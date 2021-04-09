@@ -212,7 +212,6 @@ export default {
          * Récupère le name associé à la clef dans le tableau links
          */
         getNameLink(val) {
-            console.log(val)
             return officialLinkTypes.find(({value}) => val === value)?.name
         },
         /**

@@ -34,7 +34,8 @@
 								})
 							}}<span v-if="project.stateProject"> - {{project.stateProject}}</span>
 						</p>
-						<p><b>A la recherche de</b>
+						<p>
+              <b>A la recherche de</b>
 							<ul>
 								<li v-for="job in project.jobs" :key="job.type">{{job.requiredNb}} {{job.type}}</li>
 							</ul>
