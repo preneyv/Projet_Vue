@@ -78,6 +78,11 @@ export default {
 		gap: space(2);
 		border-radius: space(2);
 		background-color: darken(map-get($colors, "white"), 5%);
+		box-shadow: 0 0 2px white;
+		transition: box-shadow 100ms ease-in-out;
+		&:hover {
+			box-shadow: 0 0 5px white;
+		}
 		h2 {
 			margin: space(3) space(3) 0;
 			text-align: center;
@@ -87,7 +92,7 @@ export default {
 		}
 	}
 	&__tags {
-		background-color: var(--color-true-black);
+		background-color: var(--color-dark-black);
 		color: var(--color-white);
 		padding: space(3) space(3);
 		align-self: flex-end;
