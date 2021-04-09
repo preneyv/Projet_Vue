@@ -23,7 +23,7 @@ export async function getAll(req, res) {
 export async function getAllByUserId(req, res) {
 	const { id } = req.params
 	const { Types } = mongoose
-	console.log(id)
+	console.log(req)
 	try {
 		const project = await Project.aggregate([
 			{
@@ -115,6 +115,7 @@ export async function insertOne(req, res) {
 export async function updateOne(req, res) {
 
     //res.json(req.body)
+	console.log(req)
 	
 	const { id } = req.params
 	const filter = req.body.filter ? { _id: id, ...req.body.filter} : {_id: id}

@@ -87,7 +87,7 @@ export default {
 					data.name,
 					data.email,
 					data.password,
-					data.externals
+					[]
 				)
 				.then(this.handleSuccess)
 				.catch(error => this.handleError(error))
@@ -96,6 +96,7 @@ export default {
 
 		handleError(error) {
 			this.error = { type: "error" }
+      console.log(error)
 			this.error.message = error.response?.data?.message || "Erreur serveur"
 		},
 

@@ -37,7 +37,7 @@ app.use(json())
 // Routes
 app.use("/api/v1/auth", cors(corsOption), authRoutes)
 app.use("/api/v1/project", cors(corsOption), projectRoutes)
-app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/user", cors(corsOption), userRoutes)
 app.use("/api/v1", indexRoutes)
 app.all("*", (req, res, next) => {
 	res.status(404).json({ message: "Wrong route" })

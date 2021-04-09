@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { dd } from "../controllers/user.js"
+import { getOneById } from "../controllers/user.js"
 const router = Router()
 
 //  GET /api/v1/user
-router.get("/", dd)
+router.get("/:id", getOneById)
 
 export default router

@@ -1,6 +1,7 @@
 import api from "../config/api"
 
 const ProjectsService = {
+
 	createProject: (data) => {
 		return api.post(`/project`, data).then((res) => res)
 	},
@@ -17,94 +18,53 @@ const ProjectsService = {
 	},
 
 	// Get all projects of an author
-	getAuthorProjects: (authorId) => {
-		return api.get(`/project/user/${authorId}`).then((res) => res)
+	getAuthorProjects: async (authorId) => {
+		return await api.get(`/project/user/${authorId}`)
 	},
 
-    addTagToProject: function(id, tag) {
-        return api.put(`/project/${id}`, {$set:{lastUpdate:Date()},$push:{tags:tag}})
-            .then(res => res)
+    addTagToProject: async function(id, tag) {
+        return await api.put(`/project/${id}`, {$set:{lastUpdate:Date()},$push:{tags:tag}})
+
     },
 
     //TODO : Add job requirement matching the id (project id)
-    addJobRequirement: function(id, job) {
-        return api.put(`/project/${id}`,{$set:{lastUpdate:Date()},$push:{jobs:job}})
-                            .then((res)=> {
-                                return res
-                            }).catch((error)=> {
-                                console.log(error)
-                            })
-
+    addJobRequirement: async function(id, job) {
+        return await api.put(`/project/${id}`,{$set:{lastUpdate:Date()},$push:{jobs:job}})
     },
 
 
     //TODO : Add link into the matching project(project id)
-    addLinkToProject: function(id, link) {
-        return api.put(`/project/${id}`,{$set:{lastUpdate:Date()},$push:{links:link}})
-                .then((res)=> {
-                    return res
-                }).catch((error)=> {
-                    console.log(error)
-                })
-
+    addLinkToProject: async function(id, link) {
+        return await api.put(`/project/${id}`,{$set:{lastUpdate:Date()},$push:{links:link}})
     },
 
 
-    setDescription: function(id, value) {
-        return api.put(`/project/${id}`,{$set:{description:value,lastUpdate:Date()}})
-                .then((res)=> {
-                    return res
-                }).catch((error)=> {
-                    console.log(error)
-                })
+    setDescription: async function(id, value) {
+        return await api.put(`/project/${id}`,{$set:{description:value,lastUpdate:Date()}})
     },
-    setStateProject: function(id, value) {
-        return api.put(`/project/${id}`,{$set:{stateProject:value,lastUpdate:Date()}})
-                .then((res)=> {
-                    return res
-                }).catch((error)=> {
-                    console.log(error)
-                })
+    setStateProject: async function(id, value) {
+        return await api.put(`/project/${id}`,{$set:{stateProject:value,lastUpdate:Date()}})
     },
 
-    removeCollabFromProject(idProject, id, typeValue) {
+    removeCollabFromProject: async function(idProject, id, typeValue) {
         console.log(typeValue)
-        let reqBody = typeValue === undefined ? {body:{$pull:{'jobs.$[].nameCollabPeople':{_collab:id}}}, tail:{multi:true}, options:{changeToObjId:true}}  : {filter : { 'jobs.type': typeValue}, body: {$pull:{'jobs.$.nameCollabPeople':{_collab:id}}}, options:{changeToObjId:true}} ;
-        return api.put(`/project/${idProject}`, reqBody )
-                .then((res)=> {
-                    console.log(res)
-                    return res
-                }).catch((error)=> {
-                    return error
-                })
+        let reqBody = typeValue === undefined ?
+            {body:{$pull:{'jobs.$[].nameCollabPeople':{_collab:id}}}, tail:{multi:true}, options:{changeToObjId:true}}  :
+            {filter : { 'jobs.type': typeValue}, body: {$pull:{'jobs.$.nameCollabPeople':{_collab:id}}}, options:{changeToObjId:true}} ;
 
+        return await api.put(`/project/${idProject}`, reqBody )
     },
 
-    addCollabToProject(idProject, {_id, type, name}) {
+    addCollabToProject: async function(idProject, {_id, type, name}) {
         
         let reqBody = {filter : { 'jobs.type': type}, body: {$push:{'jobs.$.nameCollabPeople':{name:name, _collab:_id}}}, options:{changeToObjId:true}}
-
-        return api.put(`/project/${idProject}`, reqBody )
-                .then( async(res)=> {
-                    let response = await this.removeFromCollabRequest(idProject, _id)
-                    console.log(response)
-                    if(!response.data.modified) throw 'error'
-                    return res 
-                }).catch((error)=> {
-                    return error
-                })
-
+        return await api.put(`/project/${idProject}`, reqBody )
     },
 
-    removeFromCollabRequest(idProject, idCollab) {
+    removeFromCollabRequest: async function(idProject, idCollab) {
 
         let reqBody = {body:{$pull:{'collabRequest':{_id:idCollab}}},options:{changeToObjId:true}}
-        return api.put(`/project/${idProject}`, reqBody )
-                .then((res)=> {
-                    return res
-                }).catch((error)=> {
-                    return error
-                })
+        return await api.put(`/project/${idProject}`, reqBody )
     }
 
 }

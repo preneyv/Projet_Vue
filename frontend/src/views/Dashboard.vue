@@ -1,7 +1,7 @@
 <template>
     <section class="dashboard__container" v-if="dowloadError === false">
-        <div :class="[{'isOpen' : isListOpened } ,'list-ctn']">
-            <div v-if="listOfProject.length > 0" class="list-ctn__main">
+        <div :class="[{'isOpen' : isListOpened } ,'list-ctn']" v-if="listOfProject.length > 0">
+            <div  class="list-ctn__main" >
                 <ItemListProject 
                     v-for="pr in listOfProject"
                     :key="pr._id"
@@ -12,11 +12,13 @@
             </div>
             <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
         </div>
+      <section v-else class="errorDowloadAPI"><div>Aucun projet n'a été trouvé. <router-link to="/projects/submit">Créez en un !</router-link></div></section>
         <!--<transition name="project-change" mode="out-in">-->
-            <ProjectDash v-if="currentProject !== null" :project="currentProject"/>
+            <ProjectDash v-if="currentProject" :project="currentProject"/>
         <!--</transition>-->
     </section>
     <section v-else class="errorDowloadAPI"><div>Une erreur réseau est survenue lors du chargement du Dashboard. Veuillez réessayez plus tard.</div></section>
+  <span v-if="isLoading">Chargement</span>
 </template>
 
 <script>
@@ -32,9 +34,17 @@ export default {
         ProjectDash
     },
     beforeMount(){
-        AdminAPI.getAuthorProjects("603c08ff76c5cf37b82d2ba3").then(res=>{
+        const { _id } = this.$store.state.auth.user
+        AdminAPI.getAuthorProjects(_id).then(res=>{
+          console.log(res.request.onprogress)
+          if(res.request.onprogress){
+            this.isLoading = true
+          } else {
             this.listOfProject = res.data
             this.currentProject = this.listOfProject[0]
+            this.isLoading = false;
+          }
+
         }).catch(() => {
             this.dowloadError = true
         })  
@@ -45,7 +55,8 @@ export default {
             listOfProject:[],
             currentProject:null,
             isListOpened: false,
-            dowloadError: false
+            dowloadError: false,
+            isLoading: false
         }
     },
     methods:{

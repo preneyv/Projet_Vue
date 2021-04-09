@@ -144,8 +144,8 @@
 						:id="`project-needed-profil-skills-${i}`"
 						:name="`needed-profil-skills-${i}`"
 						:items="profilTypes[profil.type]?.skills || []"
-						:initialValue="profil.skillsNeeded"
-						@change="(e) => (profil.skillsNeeded = e.target.getValues())"
+						:initialValue="profil.skills"
+						@change="(e) => (profil.skills = e.target.getValues())"
 						allowSearch
 						multiple
 						required
@@ -226,7 +226,7 @@ export default {
 			this.formData.jobs.push({
 				type: "developer",
 				requiredNb: 1,
-				skillsNeeded: [],
+				skills: [],
 			});
 		},
 
@@ -256,7 +256,7 @@ export default {
 					!job.type ||
 					!job.requiredNb ||
 					job.requiredNb < 1 ||
-					job.skillsNeeded.length === 0
+					job.skills.length === 0
 				) {
 					this.errors.jobs =
 						"Veuillez compléter tous les champs de tous les profils";
