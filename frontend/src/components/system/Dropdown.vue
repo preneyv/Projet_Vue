@@ -13,7 +13,7 @@
                 class="dropdown__item"
                 @click="() => redirectTo(item.url)"
       >
-                <a v-if="item.url" :href="item.url">{{ item.label }}</a>
+                <router-link v-if="item.url" :to="item.url">{{ item.label }}</router-link>
                 <span v-if="item.action" @click="item.action">{{ item.label }}</span>
       </li>
 		</ul>

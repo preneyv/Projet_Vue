@@ -6,6 +6,8 @@ import Projects from "@/views/Projects.vue";
 import SingleProject from "@/views/SingleProject.vue";
 import About from "@/views/About.vue";
 import Submit from "@/views/projects/Submit.vue";
+import Account from "@/views/Account.vue";
+import Dashboard from "@/views/Dashboard.vue";
 import { authGuard, guestGuard } from "./guards";
 
 const routes = [
@@ -23,7 +25,13 @@ const routes = [
 	{
 		path: "/dashboard",
 		name: "Dashboard",
-		component: () => import("../views/Dashboard.vue"),
+		component: Dashboard,
+		beforeEnter: authGuard
+	},
+	{
+		path: "/account",
+		name: "Account",
+		component: Account,
 		beforeEnter: authGuard
 	},
 	{

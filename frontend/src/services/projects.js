@@ -1,6 +1,7 @@
 import api from "../api"
 
 const ProjectsService = {
+
 	createProject: (data) => {
 		return api.post(`/project`, data).then((res) => res)
 	},
