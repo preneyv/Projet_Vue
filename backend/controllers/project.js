@@ -115,7 +115,7 @@ export async function insertOne(req, res) {
 export async function updateOne(req, res) {
 
     //res.json(req.body)
-	console.log(req)
+
 	
 	const { id } = req.params
 	const filter = req.body.filter ? { _id: id, ...req.body.filter} : {_id: id}
@@ -125,11 +125,11 @@ export async function updateOne(req, res) {
 	
 
 	if(req.body.options?.changeToObjId) changeToObjId(req.body.body)
-
     try {
 		const project = await Project.updateOne(filter, body, tail)
 		res.json({ found: project.n, modified: project.nModified })
 	} catch (e) {
+
 		res.json({ error: e.errmsg })
 	}
 }

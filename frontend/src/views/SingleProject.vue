@@ -35,15 +35,28 @@
               }}<span v-if="project.stateProject"> - {{ project.stateProject }}</span>
             </p>
             <div>
-              <span>A la recherche de</span>
+              <span>A la recherche de :</span>
               <ul>
-                <li v-for="job in project.jobs" :key="job.type">{{ job.requiredNb }} {{ job.type }}</li>
+                <li v-for="job in project.jobs" :key="job.type">{{ job.requiredNb }} {{ getTypeCollab(job.type) }}</li>
               </ul>
             </div>
           </div>
           <h3 class="h-3">Description du projet</h3>
           <p>{{ project.description }}</p>
-          <a href="#" class="btn btn-secondary">Participer au Projet</a>
+          <div class="project__subscribe">
+            <h3 class="h-3">Collaborer sur le projet</h3>
+            <div v-if="isConnected" class="add-to-project">
+              <span>Pour apporter son aide au projet, veuillez sélectionner le type de collaboration souhaitée dans la liste ci-dessous :</span>
+              <div class="select-collab"><Select v-bind="select" :onChange="handleChangeSelectCollab"/></div>
+              <div class="btn-div"><button href="#" class="btn btn-secondary" @click="sendRequestCollab">Participer au Projet</button></div>
+              <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
+            </div>
+            <div v-else>
+              <span>Vous souhaitez participer à ce projet ? <router-link to="/login">Connectez-vous.</router-link></span>
+            </div>
+          </div>
+
+
         </div>
         <div v-if="project.links" class="project__sidebar">
           <h4 class="h-3">Liens externes</h4>
@@ -62,12 +75,29 @@
 
 <script>
 import ProjectsService from "@/services/projects.js";
+import {profilTypes} from "../constants/contributor";
+
+import Select from '@/components/system/Select.vue'
+import HandlingNotif from "@/components/HandlingNotif.vue"
+
 
 export default {
+  components: {
+    Select,
+    HandlingNotif
+  },
   data() {
     return {
       project: [],
       lang: null,
+      selectedCollab: null,
+      select: {
+        id: 'link',
+        name: 'selectTypeCollab',
+        items: [],
+        required: true,
+      },
+      notifs:null
     };
   },
   async mounted() {
@@ -75,16 +105,89 @@ export default {
         this.$route.params.id
     );
     data.startedDate = new Date(data.startedDate);
+
     this.project = data;
     const { languages, language } = navigator;
     this.lang = languages.filter(
         (lang) => lang.includes(language) && lang.includes("-")
     )[0];
+
+    this.select.items = data.jobs.map( el => { return ({value: el.type, name: this.getTypeCollab(el.type)})})
+
+  },
+  computed: {
+    isConnected() {
+      console.log(this.$store.state.auth.authenticated)
+      return this.$store.state.auth.authenticated
+    }
   },
   methods: {
+    /**
+     * Récupère le name associé à la clef dans profilTypes
+     */
+    getTypeCollab(val) {
+      return profilTypes[val].name
+    },
+    /**
+     * Permet de formater la date
+     */
     getDate(el) {
       return new Date(el);
     },
+    /**
+     * Permet de récupèrer le contenu du select
+     * @Param (e) évènement déclenché
+     */
+    handleChangeSelectCollab(e) {
+        this.selectedCollab = e.target.value
+    },
+    /**
+     * Envoie une demande de collaboration à l'administrateur du projet
+     */
+    async sendRequestCollab() {
+
+      const {_id, name} = this.$store.state.auth.user
+
+      if(!this.selectedCollab) {
+        this.notifs = {type: 'error', message:`Veuillez selectionner un type de collaboration.`}
+        return
+      }
+
+      if(this.project.author === _id) {
+        this.notifs = {type: 'error', message:`Vous êtes l'administrateur du projet, vous ne pouvez pas vous ajouter en tant que collaborateur.`}
+        return
+      }
+
+      let tempCollabObject = this.project.jobs.find(el => el.type === this.selectedCollab)
+      let tempPersonCollab = tempCollabObject.nameCollabPeople.findIndex(el => el._collab === _id)
+
+      if(tempPersonCollab !== -1) {
+        this.notifs = {type: 'error', message:`Vous êtes déjà sur le projet en tant que ${this.getTypeCollab(this.selectedCollab)}.`}
+        return
+      }
+
+      let collab = {
+        _id: _id,
+        name: name,
+        type: this.selectedCollab
+      }
+      let res = await ProjectsService.addToCollabRequest(this.project._id, collab)
+      const { modified } = res?.data ?? 0
+
+      if(modified === 1) {
+
+        this.$router.push({path: '/dashboard'})
+
+      }else{
+        this.notifs =  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}
+      }
+    },
+    /**
+     * Retire la notification du tableau de notification
+     */
+    removeNotif() {
+      this.notifs = null
+    }
   },
 };
 </script>
@@ -147,6 +250,24 @@ export default {
       background-color: var(--color-white);
       color: var(--color-black);
     }
+  }
+
+  &__subscribe {
+    margin-top: 4rem;
+    .add-to-project {
+      @include flex(column, center, unset);
+
+
+      .select-collab {
+        width: 40%;
+        margin-top: 2rem;
+      }
+
+      .notif-section {
+        width: max-content;
+      }
+    }
+
   }
 
   .btn {
