@@ -34,16 +34,10 @@ export default {
         ProjectDash
     },
     beforeMount(){
-        const { _id } = this.$store.state.auth.user
-        ProjectsService.getAuthorProjects(_id).then(res=>{
-          console.log(res.request.onprogress)
-          if(res.request.onprogress){
-            this.isLoading = true
-          } else {
+        //const { _id } = this.$store.state.auth.user
+        ProjectsService.getAuthorProjects().then(res=>{
             this.listOfProject = res.data
             this.currentProject = this.listOfProject[0]
-            this.isLoading = false;
-          }
 
         }).catch(() => {
             this.dowloadError = true

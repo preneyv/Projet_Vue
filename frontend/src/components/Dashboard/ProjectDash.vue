@@ -40,7 +40,7 @@
         </div>
         <div class="section right-section">
             <BasicCtn headTitle="Etat du projet">
-                <div class="btn-requests-collabs" v-if=" (getCurrentProject.collabRequest)?.length > 0 " @click="requestPanelOpen = !requestPanelOpen"><i class="bi bi-exclamation"></i></div>
+                <div class="btn-requests-collabs" v-if=" getCurrentProject.stateUser=== 'Admin' && (getCurrentProject.collabRequest)?.length > 0 " @click="requestPanelOpen = !requestPanelOpen"><i class="bi bi-exclamation"></i></div>
                 <div class="requests-collabs" v-if="requestPanelOpen &&  (getCurrentProject.collabRequest)?.length > 0">
                     <div v-for="(req, index) in getCurrentProject.collabRequest" :key="index" class="requests-collabs__request">
                         <span>{{req.name}} veut se joindre au projet en tant que {{getTypeCollab(req.type).toLowerCase()}}.</span>

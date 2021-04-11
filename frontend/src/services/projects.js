@@ -18,8 +18,8 @@ const ProjectsService = {
 	},
 
 	// Get all projects of an author
-	getAuthorProjects: async (authorId) => {
-		return await api.get(`/project/user/${authorId}`)
+	getAuthorProjects: async () => {
+		return await api.get(`/project/user`)
 	},
 
     /**
