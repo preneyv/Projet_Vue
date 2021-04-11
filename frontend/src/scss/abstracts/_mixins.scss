@@ -12,7 +12,6 @@
 	flex-wrap: $wrap;
 }
 
-
 @mixin heading() {
 	$j: 4;
 	$multiplier: 1.22;
@@ -46,7 +45,7 @@
 	}
 }
 
-@mixin btn_component($radius, $rl-pad, $tb-pad) {
+@mixin btnStyle($radius, $rl-pad, $tb-pad) {
 	@include flex(row, center, center);
 	background-color: var(--color-primary);
 	border-radius: space($radius);

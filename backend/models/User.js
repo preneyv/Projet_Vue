@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
 import passwordHash from "password-hash"
-// import dotenv from "dotenv"
+import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
+
 const { Schema, model } = mongoose
 
 const userSchema = new Schema(
@@ -16,7 +17,7 @@ const userSchema = new Schema(
 
 userSchema.methods = {
 	/**
-	 * Verfifies the password with the hash
+	 * Verify the password with the hash
 	 * @param {string} password
 	 * @returns
 	 */
@@ -26,7 +27,7 @@ userSchema.methods = {
 
 	/**
 	 * Create the JWT
-	 * @returns {JsonWebKey}
+	 * @returns {string}
 	 */
 	generateAccessToken: function () {
 		// dotenv.config()
