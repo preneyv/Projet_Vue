@@ -89,11 +89,13 @@ export default {
 	justify-content: center;
 	align-items: center;
 }
+
 .form-change {
 	&-enter-active,
 	&-leave-active {
 		transition: all 0.3s ease-in-out;
 	}
+
 	&-enter,
 	&-leave-to {
 		opacity: 0;

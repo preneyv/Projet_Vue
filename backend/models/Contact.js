@@ -3,11 +3,9 @@ import mongoose from "mongoose"
 const { Schema, model } = mongoose
 
 const contactSchema = new Schema({
-	name: String,
-	email: String,
-	message: String
+	name: { type: String, required: true },
+	email: { type: String, required: true },
+	message: String,
 })
 
 export default model("contact", contactSchema)
-
-

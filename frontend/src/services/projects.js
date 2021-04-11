@@ -22,7 +22,7 @@ const ProjectsService = {
 		return await api.get(`/project/user/${authorId}`)
 	},
 
-    addTagToProject: async function(id, tag) {
+    addTagToProject: async (id, tag) => {
         return await api.put(`/project/${id}`, {$set:{lastUpdate:Date()},$push:{tags:tag}})
 
     },

@@ -1,19 +1,21 @@
 <template>
 	<div class="input-wrapper">
 		<label v-if="label" :for="id" class="input-wrapper__input-label">
-			{{ label }}<span v-if="required"> *</span>
+			{{ label }}
+			<span v-if="required">*</span>
 		</label>
 
 		<div class="input-wrapper__input-row">
 			<div v-if="prefix" class="input-wrapper__input-row__input-prefix">{{ prefix }}</div>
-			<input :class="`${error ? 'invalid' : ''}`"
+			<input
+				:class="`${error ? 'invalid' : ''}`"
 				v-bind="propsForInput"
 				:invalid="error"
 				@input="onInput"
 				@change="onChange"
 				@click="onChange"
 				@focus="onFocus"
-		/>
+			/>
 		</div>
 
 		<small class="input-wrapper__error" v-if="error">{{ error }}</small>
@@ -22,7 +24,7 @@
 
 <script>
 export default {
-	name: 'BaseInput',
+	name: "BaseInput",
 	props: {
 		// Basic
 		type: String,
@@ -66,25 +68,29 @@ export default {
 				readonly: this.readonly,
 				autocomplete: this.autocomplete,
 				autofocus: this.autofocus,
-				...(this.type === 'text' || this.type === 'password' ? {
-					minlength: this.minlength,
-					maxlength: this.maxlength,
-					pattern: this.pattern
-				} : this.type === 'number' ? {
-					min: this.min,
-					max: this.max,
-					step: this.step
-				} : {})
+				...(this.type === "text" || this.type === "password"
+					? {
+							minlength: this.minlength,
+							maxlength: this.maxlength,
+							pattern: this.pattern
+					  }
+					: this.type === "number"
+					? {
+							min: this.min,
+							max: this.max,
+							step: this.step
+					  }
+					: {})
 			}
-		}
+		};
 	}
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .input-wrapper {
 	position: relative;
-	font-size: .8rem;
+	font-size: 0.8rem;
 
 	&__input-label {
 		display: block;
@@ -131,9 +137,9 @@ export default {
 				box-shadow: none;
 			}
 		}
-  }
+	}
 
-  &__error {
+	&__error {
 		color: var(--color-error);
 		font-size: 12px;
 	}
