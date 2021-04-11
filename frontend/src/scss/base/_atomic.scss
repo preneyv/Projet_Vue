@@ -10,3 +10,12 @@
 	width: auto;
 	height: auto;
 }
+
+.container {
+	width: 80%;
+	@extend %mx-auto;
+}
+%mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}

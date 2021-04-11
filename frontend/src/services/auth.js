@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
-import api from "../config/api"
-import store from "../store"
+import api from "@/config/api"
+import store from "@/store"
 
 const AuthService = {
     signin: (email, password) => {

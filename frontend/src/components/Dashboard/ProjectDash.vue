@@ -589,7 +589,7 @@ export default {
         button {
                     
             border: none;
-            @include btn_component(0.5,5,2);
+            @include btnStyle(0.5,5,2);
             margin: 10px auto;
             &:hover{
                 cursor: pointer;

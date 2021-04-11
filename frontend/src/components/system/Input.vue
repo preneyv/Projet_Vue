@@ -84,7 +84,7 @@ export default {
 <style lang="scss" scoped>
 .input-wrapper {
 	position: relative;
-	font-size: 14px;
+	font-size: .8rem;
 
 	&__input-label {
 		display: block;

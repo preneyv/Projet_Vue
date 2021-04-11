@@ -1,20 +1,21 @@
 <template>
-	<h1 class="page-title">{{ text }}</h1>
+  <h1 class="page-title">{{ text }}</h1>
 </template>
 
 <script>
 export default {
-	name: 'PageTitle',
-	props: {
-		text: String
-	}
+  name: 'PageTitle',
+  props: {
+    text: String
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .page-title {
-	color: $primaryTextColor;
-	font-size: 2rem;
-	padding: 1rem 0 2rem 0;
+  //color: $primaryTextColor;
+  color: map-get($colors, "white");
+  font-size: 2rem;
+  padding: 1rem 0 2rem 0;
 }
 </style>

@@ -6,6 +6,7 @@
 					Tous droits réservés © {{ new Date().getFullYear() }}
 				</h3>
 				<ul class="footer__legals">
+					<li><router-link to="/contact">Contact</router-link></li>
 					<li><a href="#">Politique de confidentialité</a></li>
 					<li><a href="#">Mentions légales</a></li>
 				</ul>
@@ -89,7 +90,7 @@ export default {
 	}
 	&__legals {
 		a {
-			font-weight: light;
+			font-weight: lighter;
 		}
 		display: inline-flex;
 		& > * + * {
