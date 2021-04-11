@@ -100,7 +100,7 @@ import HandlingNotif from "@/components/HandlingNotif.vue"
 
 //Files Import
 
-import AdminAPI from '../../services/projects.js'
+import ProjectsService from '../../services/projects.js'
 import {
   addTag,
   addLink,
@@ -279,7 +279,7 @@ export default {
          */
         async refuseCollabRequest(id, index) {
             let projectLocal = this.getCurrentProject
-            let res = await AdminAPI.removeFromCollabRequest(projectLocal._id, id)
+            let res = await ProjectsService.removeFromCollabRequest(projectLocal._id, id)
             const {modified} = res.data ?? ""
             if(modified === 1) {
                 projectLocal.collabRequest.splice(index, 1)
@@ -295,7 +295,7 @@ export default {
             let projectLocal = this.getCurrentProject
             let valueChange = projectLocal.stateProject === "En cours" ? "Terminé" : "En cours"
 
-            let res = await AdminAPI.setStateProject(projectLocal._id,valueChange)
+            let res = await ProjectsService.setStateProject(projectLocal._id,valueChange)
             const { modified } = res?.data ?? 0
             
             if(modified === 1) {

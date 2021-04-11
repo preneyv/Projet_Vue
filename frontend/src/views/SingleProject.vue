@@ -279,11 +279,11 @@ export default {
 }
 
 .go-back {
-  cursor: pointer;
-  @include flex($type: inline-flex);
+	cursor: pointer;
+	@include flex($type: inline-flex);
 
-  span {
-    margin-left: space(2);
-  }
+	span {
+		margin-left: space(2);
+	}
 }
 </style>
