@@ -11,10 +11,10 @@
                 v-for="item in items"
                 :key="item"
                 class="dropdown__item"
-                @click="() => redirectTo(item.url)"
+                @click="() => item.url ? redirectTo(item.url) : item.action()"
       >
                 <router-link v-if="item.url" :to="item.url">{{ item.label }}</router-link>
-                <span v-if="item.action" @click="item.action">{{ item.label }}</span>
+                <span v-if="item.action">{{ item.label }}</span>
       </li>
 		</ul>
 	</div>

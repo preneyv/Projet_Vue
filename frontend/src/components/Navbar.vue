@@ -64,7 +64,7 @@ export default {
 					items: [
 						{ label: "Mon compte", url: "/account" },
 						{ label: "Dashboard", url: "/dashboard" },
-						{ label: "Déconnexion", action: () => this.signout() }
+						{ label: "Déconnexion", action: this.signout }
 					],
 					hide: !this.$store.state.auth.authenticated
 				},
@@ -92,7 +92,7 @@ export default {
 
 		signout() {
 			AuthService.signout()
-			this.$router.replace({ name : 'Home' })
+			this.$router.replace({ name: "Home" })
 		}
 	},
 };
