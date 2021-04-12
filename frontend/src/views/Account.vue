@@ -35,9 +35,15 @@
       </BasicCtn>
 
     </div>
-    <div v-if="userInfo.isSuperAdmin" class="user-info__messages">
-
-    </div>
+    <BasicCtn headTitle="Messages" v-if="userInfo.isSuperAdmin">
+      <div class="user-info__messages">
+        <div v-for="message in messages" :key="message._id" class="user-info__message-card">
+          <h1 class="user-info__message-title">{{ message.name }} <span class="user-info__message-email">- {{ message.email }}</span>
+          </h1>
+          <div class="user-info__message-body">{{ message.message }}</div>
+        </div>
+      </div>
+    </BasicCtn>
   </div>
   <FormHandlingAdd v-if="addLinksOpen" v-bind="formAddLinks"/>
 </template>
@@ -55,7 +61,8 @@ import {markRaw} from "vue";
 
 /*Files import*/
 import UserService from '../services/user.js'
-import {officialLinkTypes} from "../constants/project";
+import ContactService from '../services/contact.js'
+import {officialLinkTypes} from "../constants/project"
 
 
 export default {
@@ -67,10 +74,12 @@ export default {
   beforeMount() {
     const { _id } = this.$store.state.auth.user
     UserService.getUserInfoById(_id).then(res =>  this.userInfo = res.data)
+    ContactService.getAll().then(res => this.messages = res.data)
   },
   data(){
     return{
       userInfo:{},
+      messages: [],
       addLinksOpen: false,
       formAddLinks: {
         title: 'Ajouter un autre lien',
@@ -179,8 +188,29 @@ export default {
     }
   }
 
-  &__messages {
+  &__message-card {
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.25);
+    border : 1px solid lighten($color: #252525, $amount: 15);
+    border-radius: 3px;
 
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
   }
+
+  &__message-title {
+    font-size: 1.15rem;
+  }
+
+  &__message-email {
+    font-size: 1rem;
+    opacity: 0.5;
+  }
+
+  &__message-body {
+    font-size: 0.9rem;
+  }
+
 }
 </style>
