@@ -47,7 +47,7 @@
             <h3 class="h-3">Collaborer sur le projet</h3>
             <div v-if="isConnected" class="add-to-project">
               <span>Pour apporter son aide au projet, veuillez sélectionner le type de collaboration souhaitée dans la liste ci-dessous :</span>
-              <div class="select-collab"><Select v-bind="select" :onChange="handleChangeSelectCollab"/></div>
+              <div class="select-collab"><BaseSelect v-bind="select" :onChange="handleChangeSelectCollab"/></div>
               <div class="btn-div"><button href="#" class="btn btn-secondary" @click="sendRequestCollab">Participer au Projet</button></div>
               <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
             </div>
@@ -75,15 +75,15 @@
 
 <script>
 import ProjectsService from "@/services/projects.js";
-import {profilTypes} from "../constants/contributor";
+import { profilTypes } from "@/constants/contributor.js";
 
-import Select from '@/components/system/Select.vue'
+import BaseSelect from '@/components/system/Select.vue'
 import HandlingNotif from "@/components/HandlingNotif.vue"
 
 
 export default {
   components: {
-    Select,
+    BaseSelect,
     HandlingNotif
   },
   data() {
@@ -112,12 +112,16 @@ export default {
         (lang) => lang.includes(language) && lang.includes("-")
     )[0];
 
-    this.select.items = data.jobs.map( el => { return ({value: el.type, name: this.getTypeCollab(el.type)})})
+    this.select.items = data.jobs.map(el => {
+      return {
+        value: el.type,
+        name: this.getTypeCollab(el.type)
+      }
+    })
 
   },
   computed: {
     isConnected() {
-      console.log(this.$store.state.auth.authenticated)
       return this.$store.state.auth.authenticated
     }
   },
@@ -126,7 +130,7 @@ export default {
      * Récupère le name associé à la clef dans profilTypes
      */
     getTypeCollab(val) {
-      return profilTypes[val].name
+      return profilTypes[val]?.name
     },
     /**
      * Permet de formater la date

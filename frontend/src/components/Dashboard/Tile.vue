@@ -1,6 +1,6 @@
 <template>
     <div class="tile-ctn">
-        <span>{{nameCollabPeople.length}}/{{requiredNb}}</span>
+        <span>{{nameCollabPeople?.length}}/{{requiredNb}}</span>
         <span>{{getTypeCollab(type)}}</span>
     </div>
 </template>

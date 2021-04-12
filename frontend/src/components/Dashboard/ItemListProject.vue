@@ -37,7 +37,7 @@
 import format from 'date-format'
 
 //Import Files
-import {categories} from '../../constants/project.js'
+import { categories } from '@/constants/project.js'
 
 export default {
 	name: 'ItemListProject',
@@ -51,7 +51,8 @@ export default {
 		 * Retourne le name associé à la clef dans categories
 		 */
 		getNameTag(val) {
-            return categories.find(({value}) => val === value).name   
+			console.log(val)
+            return categories.find(({value}) => val === value)?.name   
         },
 		/**
 		 * Formate la date à l'aide de la librairie 'format'
