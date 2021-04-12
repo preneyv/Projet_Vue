@@ -82,6 +82,7 @@ import HandlingNotif from "@/components/HandlingNotif.vue"
 
 
 export default {
+  name: "ShowProject",
   components: {
     BaseSelect,
     HandlingNotif

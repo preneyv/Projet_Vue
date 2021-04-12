@@ -70,7 +70,7 @@ export default {
 				},
 				{
 					type: "callToAction",
-					url: "/projects/submit",
+					url: "/projects/create",
 					name: "Créer un Projet",
 					hide: !this.$store.state.auth.authenticated
 				},

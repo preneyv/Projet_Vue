@@ -184,7 +184,7 @@ import { profilTypes } from "@/constants/contributor.js";
 import ProjectsService from "@/services/projects.js";
 
 export default {
-	name: "SubmitProject",
+	name: "CreateProject",
 	components: {
 		PageTitle,
 		BaseInput,

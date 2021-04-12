@@ -2,33 +2,30 @@ import { createRouter, createWebHistory } from "vue-router"
 import Home from "@/views/Home.vue"
 import PageNotFound from "@/views/PageNotFound.vue"
 import Entering from "@/views/Entering.vue"
-import Projects from "@/views/Projects.vue"
-import SingleProject from "@/views/SingleProject.vue"
+import ListProjects from "@/views/projects/List.vue"
+import ShowProject from "@/views/projects/Show.vue"
 import About from "@/views/About.vue"
-import Submit from "@/views/projects/Submit.vue"
-import Account from "@/views/Account.vue"
+import CreateProject from "@/views/projects/Create.vue"
+import Account from "@/views/users/Account.vue"
 import Contact from "@/views/Contact.vue"
-import Dashboard from "@/views/Dashboard.vue"
+import Dashboard from "@/views/users/Dashboard.vue"
 import { authGuard, guestGuard } from "./guards"
 
 const routes = [
+	// Home
 	{
 		path: "/",
 		name: "Home",
 		component: Home,
 	},
+	// Authentication
 	{
 		path: "/login",
 		name: "LogPages",
 		component: Entering,
 		beforeEnter: guestGuard,
 	},
-	{
-		path: "/dashboard",
-		name: "Dashboard",
-		component: Dashboard,
-		beforeEnter: authGuard,
-	},
+	// Users
 	{
 		path: "/account",
 		name: "Account",
@@ -36,31 +33,40 @@ const routes = [
 		beforeEnter: authGuard,
 	},
 	{
-		path: "/about",
-		name: "About",
-		component: About,
+		path: "/dashboard",
+		name: "Dashboard",
+		component: Dashboard,
+		beforeEnter: authGuard,
 	},
+	// Projects
 	{
 		path: "/projects",
-		name: "Projects",
-		component: Projects,
+		name: "ProjectList",
+		component: ListProjects,
 	},
 	{
 		path: "/project/:id",
 		name: "Project",
-		component: SingleProject,
+		component: ShowProject,
+	},
+	{
+		path: "/projects/create",
+		name: "CreateProject",
+		component: CreateProject,
+		beforeEnter: authGuard,
+	},
+	// General informations
+	{
+		path: "/about",
+		name: "About",
+		component: About,
 	},
 	{
 		path: "/contact",
 		name: "Contact",
 		component: Contact,
 	},
-	{
-		path: "/projects/submit",
-		name: "SubmitProject",
-		component: Submit,
-		beforeEnter: authGuard,
-	},
+	// Errors
 	{
 		path: "/:catchAll(.*)",
 		name: "PageNotFound",
