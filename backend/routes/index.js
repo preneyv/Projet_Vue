@@ -21,4 +21,9 @@ router.post("/contact", async (req, res) => {
 	return res.json({ error: true, result: "Une erreur est survenue" })
 })
 
+router.get("/contact", async (req, res) => {
+	const data = await Contact.find({})
+	return res.json(data)
+})
+
 export default router
