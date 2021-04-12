@@ -52,7 +52,7 @@
               <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
             </div>
             <div v-else>
-              <span>Vous souhaitez participer à ce projet ? <router-link to="/login">Connectez-vous.</router-link></span>
+              <span>Vous souhaitez participer à ce projet ? <router-link to="/login?redirectTo=back">Connectez-vous.</router-link></span>
             </div>
           </div>
 
