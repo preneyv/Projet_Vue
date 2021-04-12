@@ -40,7 +40,7 @@
                 <li v-for="job in project.jobs" :key="job.type">{{ (job.requiredNb - job.nameCollabPeople?.length) || job.requiredNb }} {{ getTypeCollab(job.type) }}</li>
               </ul>
             </div>
-            <div>
+            <div v-else>
               <span>Nous ne recherchons plus pour le moment.</span>
             </div>
 

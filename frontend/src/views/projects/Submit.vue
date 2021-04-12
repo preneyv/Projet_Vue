@@ -290,7 +290,7 @@ export default {
       console.log(this.errors)
 			if (!this.hasErrors()) {
 				ProjectsService.createProject(this.formData).then((res) =>
-					this.$router.push({ path: `/project/${res._id}` })
+					this.$router.push({ path: `/project/${res.data._id}` })
 				);
         console.log('pas derreur')
 			}

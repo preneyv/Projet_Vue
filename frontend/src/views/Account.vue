@@ -3,16 +3,16 @@
      <BasicCtn headTitle="Mes infos">
        <div class="user-info__basics">
           <div>
-            <span>Nom :</span>
+            <span>Nom : </span>
             <span>{{userInfo.name}}</span>
           </div>
           <div>
-            <span>Email :</span>
+            <span>Email : </span>
             <span>{{userInfo.email}}</span>
           </div>
           <div>
-            <span>Date d'inscription :</span>
-            <span>Inscrit sur notre plateforme depuis le {{formatedDate(userInfo.created_at)}}</span>
+            <span>Inscrit sur notre plateforme depuis le : </span>
+            <span>{{formatedDate(userInfo.created_at)}}</span>
           </div>
        </div>
     </BasicCtn>
@@ -141,7 +141,12 @@ export default {
     @include flex(column, center, unset);
 
     div {
-      @include flex(column, center, unset);
+      @include flex(row, unset, center);
+      gap: 1rem;
+      span:first-child {
+        color: grey;
+        font-size: 1rem;
+      }
     }
   }
 
