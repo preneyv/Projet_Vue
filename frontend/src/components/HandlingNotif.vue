@@ -22,7 +22,6 @@ export default {
 				this.removeNotif()
 				clearTimeout(timer)
 			},3000)
-			
 		}
 	}
 

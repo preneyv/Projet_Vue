@@ -25,7 +25,7 @@
 import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
 
-import AdminAPI from '../services/projects.js'
+import ProjectsService from '../services/projects.js'
 
 export default {
     name:"Dashboard",
@@ -34,16 +34,10 @@ export default {
         ProjectDash
     },
     beforeMount(){
-        const { _id } = this.$store.state.auth.user
-        AdminAPI.getAuthorProjects(_id).then(res=>{
-          console.log(res.request.onprogress)
-          if(res.request.onprogress){
-            this.isLoading = true
-          } else {
+        //const { _id } = this.$store.state.auth.user
+        ProjectsService.getAuthorProjects().then(res=>{
             this.listOfProject = res.data
             this.currentProject = this.listOfProject[0]
-            this.isLoading = false;
-          }
 
         }).catch(() => {
             this.dowloadError = true
@@ -97,57 +91,57 @@ export default {
     /*List Projects Part*/
     
     .list-ctn{
-        margin-left: -274px;
-		flex:1;
-		display: flex;
-        position: relative;
+      margin-left: -274px;
+      flex:1;
+      display: flex;
+      position: relative;
+      transition: .5s ease;
+
+      &.isOpen {
+        margin-left: 0;
+      }
+
+      @include responsive("laptop"){
         transition: .5s ease;
+        margin-left: 0;
+      }
 
-        &.isOpen {
-            margin-left: 0;
+      &__main{
+        background-color: #252525;
+        border: 1px solid #4b4b4b;
+        height: 100%;
+        width: 100%;
+        overflow-y: auto;
+        min-width: 260px;
+        max-width: 380px;
+        max-height: 100vh;
+        position: sticky;
+        top: 4rem;
+      }
+
+      .btn-open{
+        display:block;
+        font-size: 2rem;
+        padding-left: 0.5rem;
+        position: sticky;
+        top: 4rem;
+        max-height: 100vh;
+        &:hover{
+          cursor: pointer;
         }
 
+        i{
+          transition: .5s ease;
+          display: block;
+          &.isOpen {
+            transform: rotate(90deg);
+
+          }
+        }
         @include responsive("laptop"){
-            transition: .5s ease;
-            margin-left: 0;
+            display: none;
         }
-
-        &__main{
-            background-color: #252525;
-            border: 1px solid #4b4b4b;
-            height: 100%;
-            width: 100%;
-            overflow-y: auto;
-            min-width: 260px;
-            max-width: 380px;
-            max-height: 100vh;
-            position: sticky;
-            top: 0;
-        }
-
-        .btn-open{
-            display:block;
-            font-size: 2rem;
-            padding-left: 0.5rem;
-            position: sticky;
-            top: 0;
-            max-height: 100vh;
-            &:hover{
-                cursor: pointer;
-            }
-
-            i{
-                transition: .5s ease;
-                display: block;
-                &.isOpen {
-                    transform: rotate(90deg);
-                    
-                }
-            }
-            @include responsive("laptop"){
-                display: none;
-            }
-        }
+      }
 		
 	}
 }

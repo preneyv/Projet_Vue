@@ -21,7 +21,7 @@ export async function getAll(req, res) {
  * @param {express.Response} res
  */
 export async function getAllByUserId(req, res) {
-	const { id } = req.params
+	const { _id } = req.user
 	const { Types } = mongoose
 	console.log(req)
 	try {
@@ -29,9 +29,9 @@ export async function getAllByUserId(req, res) {
 			{
 				$match: {
 					$or: [
-						{ author: Types.ObjectId(id) },
+						{ author: Types.ObjectId(_id) },
 						{
-							"jobs.nameCollabPeople._collab": Types.ObjectId(id),
+							"jobs.nameCollabPeople._collab": Types.ObjectId(_id),
 						},
 					],
 				},
@@ -39,7 +39,7 @@ export async function getAllByUserId(req, res) {
 		]).addFields({
 			stateUser: {
 					$cond: [
-						{ $eq: ["$author", Types.ObjectId(id)] },
+						{ $eq: ["$author", Types.ObjectId(_id)] },
 						"Admin",
 						"Collab",
 					],
@@ -115,7 +115,7 @@ export async function insertOne(req, res) {
 export async function updateOne(req, res) {
 
     //res.json(req.body)
-	console.log(req)
+
 	
 	const { id } = req.params
 	const filter = req.body.filter ? { _id: id, ...req.body.filter} : {_id: id}
@@ -125,11 +125,11 @@ export async function updateOne(req, res) {
 	
 
 	if(req.body.options?.changeToObjId) changeToObjId(req.body.body)
-
     try {
 		const project = await Project.updateOne(filter, body, tail)
 		res.json({ found: project.n, modified: project.nModified })
 	} catch (e) {
+
 		res.json({ error: e.errmsg })
 	}
 }

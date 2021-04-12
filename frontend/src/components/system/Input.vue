@@ -73,13 +73,13 @@ export default {
 							minlength: this.minlength,
 							maxlength: this.maxlength,
 							pattern: this.pattern
-					  }
+            }
 					: this.type === "number"
 					? {
 							min: this.min,
 							max: this.max,
 							step: this.step
-					  }
+            }
 					: {})
 			}
 		};

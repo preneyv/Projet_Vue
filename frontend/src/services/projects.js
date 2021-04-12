@@ -18,26 +18,24 @@ const ProjectsService = {
 	},
 
 	// Get all projects of an author
-	getAuthorProjects: async (authorId) => {
-		return await api.get(`/project/user/${authorId}`)
+	getAuthorProjects: async () => {
+		return await api.get(`/project/user`)
 	},
 
-    addTagToProject: async (id, tag) => {
+    /**
+     * Toutes les méthodes qui suivent sont définies dans le fichier dashboardLogic.js, ProjectDash.vue ou SingleProject.vue
+     */
+    addTagToProject: async function(id, tag) {
         return await api.put(`/project/${id}`, {$set:{lastUpdate:Date()},$push:{tags:tag}})
-
     },
 
-    //TODO : Add job requirement matching the id (project id)
     addJobRequirement: async function(id, job) {
         return await api.put(`/project/${id}`,{$set:{lastUpdate:Date()},$push:{jobs:job}})
     },
 
-
-    //TODO : Add link into the matching project(project id)
     addLinkToProject: async function(id, link) {
         return await api.put(`/project/${id}`,{$set:{lastUpdate:Date()},$push:{links:link}})
     },
-
 
     setDescription: async function(id, value) {
         return await api.put(`/project/${id}`,{$set:{description:value,lastUpdate:Date()}})
@@ -65,7 +63,14 @@ const ProjectsService = {
 
         let reqBody = {body:{$pull:{'collabRequest':{_id:idCollab}}},options:{changeToObjId:true}}
         return await api.put(`/project/${idProject}`, reqBody )
+    },
+
+    addToCollabRequest: async function(idProject, {_id, name, type}) {
+
+        let reqBody = {body: {$push:{collabRequest:{_id:_id, name:name, type:type}}}, options:{changeToObjId:true}}
+        return await api.put(`/project/${idProject}`, reqBody)
     }
+
 
 }
 

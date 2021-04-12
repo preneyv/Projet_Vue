@@ -40,7 +40,7 @@
         </div>
         <div class="section right-section">
             <BasicCtn headTitle="Etat du projet">
-                <div class="btn-requests-collabs" v-if=" (getCurrentProject.collabRequest)?.length > 0 " @click="requestPanelOpen = !requestPanelOpen"><i class="bi bi-exclamation"></i></div>
+                <div class="btn-requests-collabs" v-if=" getCurrentProject.stateUser=== 'Admin' && (getCurrentProject.collabRequest)?.length > 0 " @click="requestPanelOpen = !requestPanelOpen"><i class="bi bi-exclamation"></i></div>
                 <div class="requests-collabs" v-if="requestPanelOpen &&  (getCurrentProject.collabRequest)?.length > 0">
                     <div v-for="(req, index) in getCurrentProject.collabRequest" :key="index" class="requests-collabs__request">
                         <span>{{req.name}} veut se joindre au projet en tant que {{getTypeCollab(req.type).toLowerCase()}}.</span>
@@ -100,7 +100,7 @@ import HandlingNotif from "@/components/HandlingNotif.vue"
 
 //Files Import
 
-import AdminAPI from '../../services/projects.js'
+import ProjectsService from '../../services/projects.js'
 import {
   addTag,
   addLink,
@@ -212,7 +212,6 @@ export default {
          * Récupère le name associé à la clef dans le tableau links
          */
         getNameLink(val) {
-            console.log(val)
             return officialLinkTypes.find(({value}) => val === value)?.name
         },
         /**
@@ -280,7 +279,7 @@ export default {
          */
         async refuseCollabRequest(id, index) {
             let projectLocal = this.getCurrentProject
-            let res = await AdminAPI.removeFromCollabRequest(projectLocal._id, id)
+            let res = await ProjectsService.removeFromCollabRequest(projectLocal._id, id)
             const {modified} = res.data ?? ""
             if(modified === 1) {
                 projectLocal.collabRequest.splice(index, 1)
@@ -296,7 +295,7 @@ export default {
             let projectLocal = this.getCurrentProject
             let valueChange = projectLocal.stateProject === "En cours" ? "Terminé" : "En cours"
 
-            let res = await AdminAPI.setStateProject(projectLocal._id,valueChange)
+            let res = await ProjectsService.setStateProject(projectLocal._id,valueChange)
             const { modified } = res?.data ?? 0
             
             if(modified === 1) {
