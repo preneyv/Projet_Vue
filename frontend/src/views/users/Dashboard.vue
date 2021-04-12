@@ -25,7 +25,7 @@
 import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
 
-import ProjectsService from '../services/projects.js'
+import ProjectsService from '../../services/projects.js'
 
 export default {
     name:"Dashboard",

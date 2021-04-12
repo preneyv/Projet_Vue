@@ -60,9 +60,9 @@ import format from 'date-format'
 import {markRaw} from "vue";
 
 /*Files import*/
-import UserService from '../services/user.js'
-import ContactService from '../services/contact.js'
-import {officialLinkTypes} from "../constants/project"
+import UserService from '../../services/user.js'
+import ContactService from '../../services/contact.js'
+import {officialLinkTypes} from "../../constants/project"
 
 
 export default {
