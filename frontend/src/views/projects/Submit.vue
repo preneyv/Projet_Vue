@@ -92,7 +92,7 @@
 						:placeholder="type.example"
 						:prefix="type.name"
 						:label="i === 0 ? 'Liens officiels' : null"
-						@input="(e) => (formData.links[type.value] = e.target.value)"
+						@input="(e) => handleInputLinks(type, e)"
 					/>
 				</div>
 			</div>
@@ -208,7 +208,7 @@ export default {
 				licence: null,
 				tags: [],
 				contact: null,
-				links: {},
+				links: [],
 				jobs: [],
 			},
 			errors: {
@@ -222,11 +222,20 @@ export default {
 		};
 	},
 	methods: {
+    handleInputLinks(type,e) {
+      let link = this.formData.links.find((el) => el.title === type.value)
+      if(link) {
+        link.value = e.target.value
+      }else{
+        this.formData.links.push({title:type.value, value:e.target.value})
+      }
+    },
 		addProfil() {
 			this.formData.jobs.push({
 				type: "developer",
 				requiredNb: 1,
 				skills: [],
+        nameCollabPeople: []
 			});
 		},
 
@@ -269,19 +278,21 @@ export default {
 
 		hasErrors() {
 			const errors = Object.keys(this.errors).filter(
-				(key) => this.errors[key] !== 0
+				(key) => this.errors[key] !== null
 			);
 			return errors.length !== 0;
+
 		},
 
 		submitForm(e) {
 			e.preventDefault();
 			this.validateForm();
-
+      console.log(this.errors)
 			if (!this.hasErrors()) {
 				ProjectsService.createProject(this.formData).then((res) =>
 					this.$router.push({ path: `/project/${res._id}` })
 				);
+        console.log('pas derreur')
 			}
 		},
 	},

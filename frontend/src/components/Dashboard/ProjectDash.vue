@@ -173,7 +173,7 @@ export default {
             let tabCollabs = []
             if(projectLocal.jobs){
                 projectLocal.jobs.forEach(({type, nameCollabPeople}) => {
-                    nameCollabPeople.forEach(collab => {
+                    nameCollabPeople?.forEach(collab => {
                         let currentCollab = tabCollabs.find((obj) => obj.id===collab._collab)
                         if( currentCollab === undefined) {
                             tabCollabs.push({name:collab.name,type:[type],id:collab._collab})

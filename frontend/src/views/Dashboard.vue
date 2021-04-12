@@ -37,6 +37,7 @@ export default {
         //const { _id } = this.$store.state.auth.user
         ProjectsService.getAuthorProjects().then(res=>{
             this.listOfProject = res.data
+            console.log(this.listOfProject)
             this.currentProject = this.listOfProject[0]
 
         }).catch(() => {

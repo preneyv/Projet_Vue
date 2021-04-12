@@ -22,7 +22,7 @@
         <div class="project__main">
           <h1 class="project__title h-1">{{ project.title }}</h1>
           <div class="project__tags">
-            <span v-for="tag in project.tags" :key="tag">{{ tag }}</span>
+            <span v-for="tag in project.tags" :key="tag">{{ getNameTag(tag) }}</span>
           </div>
           <div class="project__global-infos">
             <h2 class="h-3">Informations globales du projet</h2>
@@ -34,25 +34,34 @@
                 })
               }}<span v-if="project.stateProject"> - {{ project.stateProject }}</span>
             </p>
-            <div>
+            <div v-if="!isFull()">
               <span>A la recherche de :</span>
               <ul>
-                <li v-for="job in project.jobs" :key="job.type">{{ job.requiredNb }} {{ getTypeCollab(job.type) }}</li>
+                <li v-for="job in project.jobs" :key="job.type">{{ (job.requiredNb - job.nameCollabPeople?.length) || job.requiredNb }} {{ getTypeCollab(job.type) }}</li>
               </ul>
             </div>
+            <div>
+              <span>Nous ne recherchons plus pour le moment.</span>
+            </div>
+
           </div>
           <h3 class="h-3">Description du projet</h3>
           <p>{{ project.description }}</p>
           <div class="project__subscribe">
             <h3 class="h-3">Collaborer sur le projet</h3>
             <div v-if="isConnected" class="add-to-project">
-              <span>Pour apporter son aide au projet, veuillez sélectionner le type de collaboration souhaitée dans la liste ci-dessous :</span>
-              <div class="select-collab"><Select v-bind="select" :onChange="handleChangeSelectCollab"/></div>
-              <div class="btn-div"><button href="#" class="btn btn-secondary" @click="sendRequestCollab">Participer au Projet</button></div>
-              <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
+              <div v-if="!isFull()" class="teamIsNotFull">
+                <span>Pour apporter son aide au projet, veuillez sélectionner le type de collaboration souhaitée dans la liste ci-dessous :</span>
+                <div class="select-collab"><Select v-bind="select" :onChange="handleChangeSelectCollab"/></div>
+                <div class="btn-div"><button href="#" class="btn btn-secondary" @click="sendRequestCollab">Participer au Projet</button></div>
+                <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
+              </div>
+              <div v-else class="teamIsFull">
+                <span>Toute l'équipe est au complet</span>
+              </div>
             </div>
             <div v-else>
-              <span>Vous souhaitez participer à ce projet ? <router-link to="/login">Connectez-vous.</router-link></span>
+              <span>Vous souhaitez participer à ce projet ? <router-link to="/login?RedirectTo=back">Connectez-vous.</router-link></span>
             </div>
           </div>
 
@@ -76,9 +85,11 @@
 <script>
 import ProjectsService from "@/services/projects.js";
 import {profilTypes} from "../constants/contributor";
+import {categories} from "../constants/project";
 
 import Select from '@/components/system/Select.vue'
 import HandlingNotif from "@/components/HandlingNotif.vue"
+
 
 
 export default {
@@ -117,9 +128,9 @@ export default {
   },
   computed: {
     isConnected() {
-      console.log(this.$store.state.auth.authenticated)
       return this.$store.state.auth.authenticated
-    }
+    },
+
   },
   methods: {
     /**
@@ -129,10 +140,22 @@ export default {
       return profilTypes[val].name
     },
     /**
+     * Récupère le name associé à la clef dans le tableau  categories
+     */
+    getNameTag(val) {
+      return categories.find(({value}) => val === value).name
+    },
+    /**
      * Permet de formater la date
      */
     getDate(el) {
       return new Date(el);
+    },
+    isFull() {
+      return  this.project.jobs?.every((el) => {
+        console.log(el.requiredNb === el.nameCollabPeople.length)
+        return el.requiredNb === el.nameCollabPeople.length
+      }) ?? false
     },
     /**
      * Permet de récupèrer le contenu du select
@@ -254,9 +277,8 @@ export default {
 
   &__subscribe {
     margin-top: 4rem;
-    .add-to-project {
+    .teamIsNotFull {
       @include flex(column, center, unset);
-
 
       .select-collab {
         width: 40%;

@@ -7,9 +7,7 @@ const projectSchema = new Schema({
 	author: Schema.ObjectId,
 	description: String,
 	sumup: String,
-	stateProject: String,
-	startedDate: Date,
-	lastUpdate: Date,
+	stateProject: { type: String, default: 'En cours' },
 	tags: [String],
 	licence: String,
 	contact: String,
@@ -17,7 +15,9 @@ const projectSchema = new Schema({
 	jobs: [Object],
 	collabRequest: [Object],
 	historic: [String]
-})
+},
+{ timestamps: { createdAt: "startedDate", updatedAt: "lastUpdate" } }
+)
 
 export default model("project", projectSchema)
 

@@ -36,6 +36,8 @@
 
 <script>
 import ProjectsService from "@/services/projects.js";
+
+
 export default {
 	name: "Projects",
 	data() {

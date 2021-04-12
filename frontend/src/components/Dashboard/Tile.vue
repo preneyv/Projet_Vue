@@ -1,5 +1,5 @@
 <template>
-    <div class="tile-ctn">
+    <div v-if="nameCollabPeople" class="tile-ctn">
         <span>{{nameCollabPeople.length}}/{{requiredNb}}</span>
         <span>{{getTypeCollab(type)}}</span>
     </div>

@@ -3,6 +3,7 @@ import api from "@/config/api"
 const ProjectsService = {
 
 	createProject: (data) => {
+        console.log(data)
 		return api.post(`/project`, data).then((res) => res)
 	},
     // Get all Projects

@@ -23,25 +23,25 @@ db.initDatabase()
 const port = process.env.PORT || 8800
 
 // CORS config
-// let corsOption = {
-// 	origin: " http://localhost:8080",
-// 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-// 	optionsSuccessStatus: 200,
-// }
+ let corsOption = {
+ 	origin: " http://localhost:8080",
+ 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+ 	optionsSuccessStatus: 200,
+ }
 
 // Global middlewares
 app.use(helmet())
 app.use(morgan("tiny"))
 app.use(json())
-app.use(cors())
+//app.use(cors())
 
 // Routes
-app.use("/api/v1/auth", authRoutes)
-app.use("/api/v1/project", projectRoutes)
-app.use("/api/v1/user", userRoutes)
-// app.use("/api/v1/auth", cors(corsOption), authRoutes)
-// app.use("/api/v1/project", cors(corsOption), projectRoutes)
-// app.use("/api/v1/user", cors(corsOption), userRoutes)
+//app.use("/api/v1/auth", authRoutes)
+//app.use("/api/v1/project", projectRoutes)
+//app.use("/api/v1/user", userRoutes)
+ app.use("/api/v1/auth", cors(corsOption), authRoutes)
+app.use("/api/v1/project", cors(corsOption), projectRoutes)
+ app.use("/api/v1/user", cors(corsOption), userRoutes)
 app.use("/api/v1", indexRoutes)
 app.all("*", (req, res, next) => {
 	res.status(404).json({ message: "Wrong route" })
