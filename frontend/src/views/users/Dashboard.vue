@@ -12,7 +12,7 @@
             </div>
             <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
         </div>
-      <section v-else class="errorDowloadAPI"><div>Aucun projet n'a été trouvé. <router-link to="/projects/submit">Créez en un !</router-link></div></section>
+      <section v-else class="errorDowloadAPI"><div>Aucun projet n'a été trouvé. <router-link to="/projects/create">Créez en un !</router-link></div></section>
         <!--<transition name="project-change" mode="out-in">-->
             <ProjectDash v-if="currentProject" :project="currentProject"/>
         <!--</transition>-->
@@ -25,7 +25,7 @@
 import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
 import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
 
-import ProjectsService from '../services/projects.js'
+import ProjectsService from '../../services/projects.js'
 
 export default {
     name:"Dashboard",

@@ -5,13 +5,6 @@
         <h3 class="footer__copyright h-4">
           Tous droits réservés © {{ new Date().getFullYear() }}
         </h3>
-        <ul class="footer__legals">
-          <li>
-            <router-link to="/contact">Contact</router-link>
-          </li>
-          <li><a href="#">Politique de confidentialité</a></li>
-          <li><a href="#">Mentions légales</a></li>
-        </ul>
       </div>
       <div class="footer__creators row">
         <h4>Made with love by</h4>
@@ -96,18 +89,6 @@ export default {
 
     & > * + * {
       margin-left: space(2);
-    }
-  }
-
-  &__legals {
-    a {
-      font-weight: lighter;
-    }
-
-    display: inline-flex;
-
-    & > * + * {
-      margin-left: space(3);
     }
   }
 }

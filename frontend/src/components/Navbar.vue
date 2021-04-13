@@ -6,14 +6,20 @@
 					<img src="../assets/logo.png" alt="Logo Vue" />
 				</router-link>
 			</div>
-			<div @click="toggleMenu" class="navbar__burger" ref="button"></div>
+			<div @click="toggleMenu" class="navbar__burger" ref="button">
+				<font-awesome-icon icon="times" class="navbar__burger__icon" v-if="menuOpened"/>
+				<font-awesome-icon icon="bars" class="navbar__burger__icon" v-if="!menuOpened"/>
+			</div>
 			<div class="navbar__items" ref="items">
 				<ul class="navbar__items-inner">
 					<li
 						v-for="item in items.filter(item => !item.hide)"
 						:key="item.url"
 						class="navbar__item"
-						@click="toggleMenu"
+						@click="() => {
+							if (item.type !== 'dropdown')
+								toggleMenu()
+						}"
 					>
 						<router-link
 							v-if="item.type === 'link' || item.type === 'callToAction'"
@@ -59,18 +65,23 @@ export default {
 					name: "Liste des projets",
 				},
 				{
+					type: "link",
+					url: "/contact",
+					name: "Contact",
+				},
+				{
 					type: "dropdown",
 					name: this.$store.state.auth.user?.name,
 					items: [
 						{ label: "Mon compte", url: "/account" },
 						{ label: "Dashboard", url: "/dashboard" },
-						{ label: "Déconnexion", action: () => this.signout() }
+						{ label: "Déconnexion", action: this.signout }
 					],
 					hide: !this.$store.state.auth.authenticated
 				},
 				{
 					type: "callToAction",
-					url: "/projects/submit",
+					url: "/projects/create",
 					name: "Créer un Projet",
 					hide: !this.$store.state.auth.authenticated
 				},
@@ -92,7 +103,7 @@ export default {
 
 		signout() {
 			AuthService.signout()
-			this.$router.replace({ name : 'Home' })
+			this.$router.replace({ name: "Home" })
 		}
 	},
 };
@@ -181,19 +192,9 @@ export default {
 		position: relative;
 		z-index: 900;
 		display: block;
-		width: space(8);
-		height: space(8);
-		background-color: var(--color-primary);
-		border-radius: 50%;
-		transition: border-radius 0.3s ease-in-out, transform 0.15s ease;
-		&:hover {
-			transform: scale(1.2);
-		}
+		
 		@include responsive("tablet") {
 			display: none;
-		}
-		&.open {
-			border-radius: 0;
 		}
 	}
 }

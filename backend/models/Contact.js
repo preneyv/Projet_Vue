@@ -7,7 +7,7 @@ const contactSchema = new Schema({
 	email: { type: String, required: true },
 	message: String,
 },
-{ timestamps: { createdAt: "date_message" } }
+{ timestamps: { createdAt: "date" } }
 )
 
 export default model("contact", contactSchema)

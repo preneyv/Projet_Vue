@@ -20,10 +20,35 @@
       <div v-if="project.error">{{ project.error }}</div>
       <section v-else class="project__inner">
         <div class="project__main">
+
           <h1 class="project__title h-1">{{ project.title }}</h1>
+
           <div class="project__tags">
-            <span v-for="tag in project.tags" :key="tag">{{ getNameTag(tag) }}</span>
+            <span v-for="tag in project.tags" :key="tag">
+              {{ categories.filter(category => category.value === tag)[0]?.name ?? tag }}
+            </span>
           </div>
+
+          <div class="project__main-infos">
+            <ul>
+              <li>
+                Depuis
+                {{
+                  getDate(project.startedDate).toLocaleDateString(lang, {
+                    year: "numeric",
+                    month: "long",
+                  })
+                }}
+              </li>
+              <li>
+                Sous licence {{ licenses.filter(license => license.value === project.licence)[0]?.name ?? "inconnue" }}
+              </li>
+              <li v-if="project.stateProject">
+                Statut : {{ project.stateProject }}
+              </li>
+            </ul>
+          </div>
+
           <div class="project__global-infos">
             <h2 class="h-3">Informations globales du projet</h2>
             <p>Projet lancé en
@@ -44,9 +69,29 @@
               <span>Nous ne recherchons plus pour le moment.</span>
             </div>
 
+            <p>{{ project.sumup ?? "" }}</p>
+            <p>{{ project.description ?? "" }}</p>
           </div>
-          <h3 class="h-3">Description du projet</h3>
-          <p>{{ project.description }}</p>
+
+          <div class="project__jobs">
+            <h3 class="h-3">Profils recherchés</h3>
+            <ul v-if="project.jobs?.length !== 0">
+              <li v-for="job in project.jobs" :key="job.type">
+                {{ job.requiredNb }} {{ getTypeCollab(job.type) }}
+                <ul class="project__jobs__skills">
+                  <li
+                    v-for="skill in job.skillsNeeded"
+                    :key="skill"
+                    class="project__jobs__skill"
+                    :style="{backgroundColor: `${getSkillData(job.type, skill).color}55`, borderColor: `${getSkillData(job.type, skill).color}AA`}">
+                    {{ getSkillData(job.type, skill).name }}
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <div v-else>Aucun</div>
+          </div>
+
           <div class="project__subscribe">
             <h3 class="h-3">Collaborer sur le projet</h3>
             <div v-if="isConnected" class="add-to-project">
@@ -71,8 +116,12 @@
           <h4 class="h-3">Liens externes</h4>
           <ul>
             <li v-for="link in project.links" :key="link.value">
-              <a :href="link.value" target="_blank" rel="noopener noreferrer">
-                {{ link.title }}
+              <font-awesome-icon
+                :icon="['fab', link.title === 'wiki' ? 'wikipedia-w' : link.title]"
+                :style="{ width: '2rem' }"
+              />
+              <a :href="link.value" target="_blank" rel="noopener noreferrer" class="project__link">
+                {{ link.value }}
               </a>
             </li>
           </ul>
@@ -84,17 +133,18 @@
 
 <script>
 import ProjectsService from "@/services/projects.js";
-import {profilTypes} from "../constants/contributor";
-import {categories} from "../constants/project";
+import { profilTypes } from "@/constants/contributor.js";
+import { categories, licenses } from "@/constants/project.js";
 
-import Select from '@/components/system/Select.vue'
+import BaseSelect from '@/components/system/Select.vue'
 import HandlingNotif from "@/components/HandlingNotif.vue"
 
 
 
 export default {
+  name: "ShowProject",
   components: {
-    Select,
+    BaseSelect,
     HandlingNotif
   },
   data() {
@@ -108,7 +158,9 @@ export default {
         items: [],
         required: true,
       },
-      notifs:null
+      notifs:null,
+      categories,
+      licenses
     };
   },
   async mounted() {
@@ -123,7 +175,12 @@ export default {
         (lang) => lang.includes(language) && lang.includes("-")
     )[0];
 
-    this.select.items = data.jobs.map( el => { return ({value: el.type, name: this.getTypeCollab(el.type)})})
+    this.select.items = data.jobs.map(el => {
+      return {
+        value: el.type,
+        name: this.getTypeCollab(el.type)
+      }
+    })
 
   },
   computed: {
@@ -137,7 +194,10 @@ export default {
      * Récupère le name associé à la clef dans profilTypes
      */
     getTypeCollab(val) {
-      return profilTypes[val].name
+      return profilTypes[val]?.name
+    },
+    getSkillData(profileType, skillType) {
+      return profilTypes[profileType]?.skills.filter(skill => skill.value === skillType)[0]
     },
     /**
      * Récupère le name associé à la clef dans le tableau  categories
@@ -229,6 +289,31 @@ export default {
     font-weight: 900;
   }
 
+  &__main-infos {
+    margin-top: 2rem;
+    margin-left: 1rem;
+
+    ul {
+      list-style-type: disc;
+    }
+  }
+
+  &__jobs {
+    &__skills {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &__skill {
+      font-size: 0.9rem;
+			background-color: lighten($color: #252525, $amount: 10);
+			border: 1px solid lighten($color: #252525, $amount: 20);
+      border-radius: 20px;
+      padding: 5px 12px;
+      margin-right: 0.5rem;
+    }
+  }
+
   &__global-infos {
     margin: space(8) 0;
 
@@ -243,7 +328,7 @@ export default {
     }
     display: grid;
     gap: space(3);
-    grid-template-columns: 1fr 10rem;
+    grid-template-columns: 1fr 15rem;
     grid-auto-rows: auto;
     grid-auto-flow: row;
   }
@@ -259,6 +344,15 @@ export default {
     }
 
     font-size: space(5);
+  }
+
+  &__link {
+    margin-left: 0.5rem;
+    font-size: 1rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__tags {

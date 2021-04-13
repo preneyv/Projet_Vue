@@ -1,22 +1,24 @@
 <template>
   <div class="user-info">
-     <BasicCtn headTitle="Mes infos">
-       <div class="user-info__basics">
-          <div>
-            <span>Nom : </span>
-            <span>{{userInfo.name}}</span>
-          </div>
-          <div>
-            <span>Email : </span>
-            <span>{{userInfo.email}}</span>
-          </div>
-          <div>
-            <span>Inscrit sur notre plateforme depuis le : </span>
-            <span>{{formatedDate(userInfo.created_at)}}</span>
-          </div>
-       </div>
-    </BasicCtn>
-    <div class="user-info__externals">
+    <div class="user-info__section-wrapper">
+      <BasicCtn headTitle="Mes infos">
+        <div class="user-info__basics">
+            <div class="user-info__basics__info">
+              <span>Nom</span>
+              <span>{{userInfo.name}}</span>
+            </div>
+            <div class="user-info__basics__info">
+              <span>Email</span>
+              <span>{{userInfo.email}}</span>
+            </div>
+            <div class="user-info__basics__info">
+              <span class="user-info__basics__info__created-at">Inscrit le {{formatedDate(userInfo.created_at)}}</span>
+            </div>
+        </div>
+      </BasicCtn>
+    </div>
+
+    <div class="user-info__section-wrapper user-info__externals">
       <BasicCtn headTitle="Mes liens">
 
         <template v-slot:btnHead>
@@ -29,17 +31,25 @@
                :key="index"
           >
             <span>{{getNameLink(link.title)}}</span>
-            <span><a :href="link.value">{{link.value}}</a></span>
+            <span><a :href="link.value" target="blank">{{link.value}}</a></span>
           </div>
         </div>
       </BasicCtn>
-
     </div>
-    <div v-if="userInfo.isSuperAdmin" class="user-info__messages">
 
+    <div class="user-info__section-wrapper">
+      <BasicCtn headTitle="Messages" v-if="userInfo.isSuperAdmin">
+        <div class="user-info__messages">
+          <div v-for="message in messages" :key="message._id" class="user-info__message-card">
+            <h1 class="user-info__message-title">{{ message.name }} <span class="user-info__message-email">- {{ message.email }}</span>
+            </h1>
+            <div class="user-info__message-body">{{ message.message }}</div>
+          </div>
+        </div>
+      </BasicCtn>
     </div>
   </div>
-  <FormHandlingAdd v-if="addLinksOpen" v-bind="formAddLinks"/>
+  <FormHandlingAdd v-if="addLinksOpen" v-bind="formAddLinks" :formProps="{ exclude: userInfo.externals.map(link => link.title)}"/>
 </template>
 
 <script>
@@ -54,8 +64,9 @@ import format from 'date-format'
 import {markRaw} from "vue";
 
 /*Files import*/
-import UserService from '../services/user.js'
-import {officialLinkTypes} from "../constants/project";
+import UserService from '../../services/user.js'
+import ContactService from '../../services/contact.js'
+import {officialLinkTypes} from "../../constants/project"
 
 
 export default {
@@ -67,10 +78,12 @@ export default {
   beforeMount() {
     const { _id } = this.$store.state.auth.user
     UserService.getUserInfoById(_id).then(res =>  this.userInfo = res.data)
+    ContactService.getAll().then(res => this.messages = res.data)
   },
   data(){
     return{
       userInfo:{},
+      messages: [],
       addLinksOpen: false,
       formAddLinks: {
         title: 'Ajouter un autre lien',
@@ -137,7 +150,14 @@ export default {
     width: 40%;
   }
 
+  @media screen and (max-width: 1000px) {
+    & > * {
+      width: 80%;
+    }
+  }
+
   &__basics {
+    width: 100%;
     @include flex(column, center, unset);
 
     div {
@@ -148,13 +168,34 @@ export default {
         font-size: 1rem;
       }
     }
+
+    &__info {
+      margin-top: 1rem;
+
+      span:first-child {
+        font-size: 1.25rem;
+      };
+
+      span:last-child {
+        font-size: 1rem;
+        opacity: 0.75;
+      }
+
+      &__created-at {
+        width: 100%;
+        text-align: right;
+      }
+    }
   }
 
   &__externals {
 
+    .add-btn {
+      color: rgba($color: #ffffff, $alpha: 0.6);
+    }
     .add-btn:hover{
       cursor: pointer;
-      color: #181818;
+      color: #ffffff;
     }
     /*links subpart*/
     .links-ctn {
@@ -169,6 +210,7 @@ export default {
       width: 100%;
 
       span:first-child {
+        font-size: 1rem;
         background-color: #4b4b4b;
         border-radius: 3px 0 0 3px;
         padding: 5px 10px;
@@ -176,16 +218,45 @@ export default {
       };
 
       span:last-child {
+        font-size: 1rem;
         border: 1px solid lighten($color: #252525, $amount: 15);
         border-radius:0 3px 3px 0;
         padding: 4px 10px;
         flex: 3;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }
 
   &__messages {
-
+    width: 100%;
   }
+
+  &__message-card {
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.25);
+    border : 1px solid lighten($color: #252525, $amount: 15);
+    border-radius: 3px;
+
+    &:not(:last-child) {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__message-title {
+    font-size: 1.15rem;
+  }
+
+  &__message-email {
+    font-size: 1rem;
+    opacity: 0.5;
+  }
+
+  &__message-body {
+    font-size: 0.9rem;
+  }
+
 }
 </style>

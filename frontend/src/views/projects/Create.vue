@@ -184,7 +184,7 @@ import { profilTypes } from "@/constants/contributor.js";
 import ProjectsService from "@/services/projects.js";
 
 export default {
-	name: "SubmitProject",
+	name: "CreateProject",
 	components: {
 		PageTitle,
 		BaseInput,
@@ -306,6 +306,9 @@ form {
 }
 
 .submit-project {
+	max-width: 85%;
+	margin: auto;
+
 	&__input-container {
 		margin-bottom: 1rem;
 

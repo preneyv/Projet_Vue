@@ -18,7 +18,7 @@
 				:class="`select-wrapper__current ${selected.length !== 0 ? '' : 'no-value'}`"
 				@click="handleClick"
 			>
-				<span v-if="selected.length === 0">Sélectionner...</span>
+				<span v-if="selected.length === 0">{{placeholder ?? "Sélectionner..."}}</span>
 
 				<span
 					v-for="item in selected"
@@ -35,7 +35,7 @@
 				:class="`select-wrapper__current ${selected ? '' : 'no-value'}`"
 				@click="handleClick"
 			>
-				{{ selected ? selected.name : 'Sélectionner...' }}
+				{{ selected ? selected.name : (placeholder ?? "Sélectionner...") }}
 			</div>
 			<!-- /Select -->
 
@@ -108,6 +108,7 @@ export default {
 		size: Number,
 		// Custom
 		label: String,
+		placeholder: String,
 		items: Array,
 		error: String,
 		allowSearch: Boolean,
@@ -167,10 +168,12 @@ export default {
 
 		handleItemSpanClick(e, item) {
 			const itemIndex = this.selected.indexOf(item)
-			if (itemIndex !== -1)
+			if (itemIndex !== -1) {
 				delete this.selected.splice(itemIndex, 1)
+				this.updateRealSelectValue()
+				this.select.dispatchEvent(new Event("change"))
+			}
 			
-			this.updateRealSelectValue()
 			e.stopPropagation()
 		},
 
@@ -327,6 +330,7 @@ export default {
 	}
 
 	&__option {
+		display: flex;
 		padding: 0.5rem 1.5em;
 		cursor: default;
 
