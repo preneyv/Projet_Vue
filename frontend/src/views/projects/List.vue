@@ -66,7 +66,7 @@
 				</ul>
 				<span v-else>Aucun</span>
 
-				<h3>Recherche</h3>
+				<h3>Jobs</h3>
 				<ul v-if="project.jobs > '0'">
 					<li v-for="(job, index) in project.jobs" :key="`job-${index}`">
 						<span :class="filters.profiles.includes(job.type) ? 'match-research': ''">

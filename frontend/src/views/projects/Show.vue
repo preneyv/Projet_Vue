@@ -59,16 +59,6 @@
                 })
               }}<span v-if="project.stateProject"> - {{ project.stateProject }}</span>
             </p>
-            <div v-if="!isFull()">
-              <span>A la recherche de :</span>
-              <ul>
-                <li v-for="job in project.jobs" :key="job.type">{{ (job.requiredNb - job.nameCollabPeople?.length) || job.requiredNb }} {{ getTypeCollab(job.type) }}</li>
-              </ul>
-            </div>
-            <div v-else>
-              <span>Nous ne recherchons plus pour le moment.</span>
-            </div>
-
             <p>{{ project.sumup ?? "" }}</p>
             <p>{{ project.description ?? "" }}</p>
           </div>
@@ -77,10 +67,10 @@
             <h3 class="h-3">Profils recherchés</h3>
             <ul v-if="project.jobs?.length !== 0">
               <li v-for="job in project.jobs" :key="job.type">
-                {{ job.requiredNb }} {{ getTypeCollab(job.type) }}
+                {{ (job.requiredNb - job.nameCollabPeople?.length) || job.requiredNb }} {{ getTypeCollab(job.type) }}
                 <ul class="project__jobs__skills">
                   <li
-                    v-for="skill in job.skillsNeeded"
+                    v-for="skill in job.skills"
                     :key="skill"
                     class="project__jobs__skill"
                     :style="{backgroundColor: `${getSkillData(job.type, skill).color}55`, borderColor: `${getSkillData(job.type, skill).color}AA`}">
@@ -97,7 +87,7 @@
             <div v-if="isConnected" class="add-to-project">
               <div v-if="!isFull()" class="teamIsNotFull">
                 <span>Pour apporter son aide au projet, veuillez sélectionner le type de collaboration souhaitée dans la liste ci-dessous :</span>
-                <div class="select-collab"><Select v-bind="select" :onChange="handleChangeSelectCollab"/></div>
+                <div class="select-collab"><BaseSelect v-bind="select" :onChange="handleChangeSelectCollab"/></div>
                 <div class="btn-div"><button href="#" class="btn btn-secondary" @click="sendRequestCollab">Participer au Projet</button></div>
                 <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
               </div>
@@ -174,6 +164,7 @@ export default {
     this.lang = languages.filter(
         (lang) => lang.includes(language) && lang.includes("-")
     )[0];
+    console.log(this.project)
 
     this.select.items = data.jobs.map(el => {
       return {
@@ -213,8 +204,7 @@ export default {
     },
     isFull() {
       return  this.project.jobs?.every((el) => {
-        console.log(el.requiredNb === el.nameCollabPeople.length)
-        return el.requiredNb === el.nameCollabPeople.length
+        return el.requiredNb === el.nameCollabPeople?.length
       }) ?? false
     },
     /**
