@@ -295,6 +295,9 @@ form {
 }
 
 .submit-project {
+	max-width: 85%;
+	margin: auto;
+
 	&__input-container {
 		margin-bottom: 1rem;
 
