@@ -16,12 +16,15 @@ export default {
         Select,
         Input
     },
+    props: {
+        exclude: Array
+    },
     data() {
         return {
             select: {
                 id: 'link',
                 name: 'selectTypeLink',
-                items: officialLinkTypes,
+                items: officialLinkTypes.filter(link => this.exclude ? !this.exclude.includes(link.value) : true),
                 required: true,
             },
             input: {

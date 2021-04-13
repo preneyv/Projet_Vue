@@ -3,8 +3,14 @@
 		<h1>Tous les projets</h1>
 		<p>
 			{{ projects.length }}
-			{{ projects.length > 1 ? "disponibles" : "disponible" }}
+			{{ projects.length !== 1 ? "disponibles" : "disponible" }}
 		</p>
+		<div class="heading__search-container">
+			<BaseInput
+				type="text"
+				placeholder="Rechercher..."
+			/>
+		</div>
 	</div>
 	<div class="projects">
 		<router-link
@@ -35,9 +41,13 @@
 </template>
 
 <script>
-import ProjectsService from "@/services/projects.js";
+import ProjectsService from "@/services/projects.js"
+import BaseInput from "@/components/system/Input"
 export default {
 	name: "ListProjects",
+	components: {
+		BaseInput
+	},
 	data() {
 		return {
 			projects: [],
@@ -62,6 +72,11 @@ export default {
 		opacity: 0.8;
 		text-transform: uppercase;
 		font-size: 1.5rem;
+	}
+	&__search-container {
+		margin: 1rem auto 0 auto;
+		width: 90%;
+		max-width: 450px;
 	}
 }
 .projects {

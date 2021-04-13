@@ -5,7 +5,7 @@
         <span class="btn-exit" @click="$parent.closeForm"><i class="bi bi-x"></i></span>
         {{ title }}
         <form>
-          <component v-bind:is="form" ref="child"></component>
+          <component v-bind:is="form" ref="child" v-bind="formProps"></component>
           <input type="submit" @click.prevent="submit" value="Valider"/>
         </form>
       </div>
@@ -25,7 +25,8 @@ export default {
   props: {
     title: String,
     method: Function,
-    form: Object
+    form: Object,
+    formProps: Object
   },
   data() {
     return {
