@@ -177,7 +177,7 @@ export default {
 		justify-content: space-between;
 
 		& > *:not(:last-child) {
-			max-width: 48%;
+			max-width: 49%;
 			margin-bottom: 0.5rem;
 		}
 	}
