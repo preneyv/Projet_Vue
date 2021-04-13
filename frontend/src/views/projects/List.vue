@@ -9,13 +9,40 @@
 			<BaseInput
 				type="text"
 				placeholder="Rechercher..."
+				@input="onResearch"
+			/>
+		</div>
+		<div class="heading__filters-container">
+			<BaseSelect
+				id="projects-licenses"
+				name="licenses"
+				placeholder="Types de licence"
+				:items="licenses"
+				multiple
+				@change="e => onFilterChange(e, 'licenses')"
+			/>
+			<BaseSelect
+				id="projects-categories"
+				name="categories"
+				placeholder="Catégories"
+				:items="categories"
+				multiple
+				@change="e => onFilterChange(e, 'tags')"
+			/>
+			<BaseSelect
+				id="projects-profiles"
+				name="profiles"
+				placeholder="Profils recherchés"
+				:items="profilTypes"
+				multiple
+				@change="e => onFilterChange(e, 'profiles')"
 			/>
 		</div>
 	</div>
-	<div class="projects">
+	<div v-if="projectsToDisplay.length !== 0" class="projects">
 		<router-link
 			class="projects__card"
-			v-for="project in projects"
+			v-for="project in projectsToDisplay"
 			:key="project._id"
 			:to="{
 				name: 'Project',
@@ -25,37 +52,102 @@
 			}"
 		>
 			<h2 class="projects__title">{{ project.title }}</h2>
-			<p v-if="project.description" class="projects__description">
-				{{ project.description.substring(0, 150) + "..." }}
+			<p class="projects__description">
+				{{ project.truncatedSumup }}
 			</p>
-			<div v-if="project.tags > '0'" class="projects__tags">
-				<h3>tags</h3>
-				<ul>
-					<li v-for="(tag, index) in project.tags" :key="`key-${index}`">
-						<span>{{ tag }}</span>
+			<div class="projects__tags">
+				<h3>Tags</h3>
+				<ul v-if="project.tags > '0'">
+					<li v-for="(tag, index) in project.tags" :key="`tag-${index}`">
+						<span :class="filters.tags.includes(tag) ? 'match-research': ''">
+							{{ categories.filter(category => category.value === tag)[0]?.name ?? tag }}
+						</span>
 					</li>
 				</ul>
+				<span v-else>Aucun</span>
+
+				<h3>Recherche</h3>
+				<ul v-if="project.jobs > '0'">
+					<li v-for="(job, index) in project.jobs" :key="`job-${index}`">
+						<span :class="filters.profiles.includes(job.type) ? 'match-research': ''">
+							{{ profilTypes.filter(profilType => profilType.value === job.type)[0]?.name ?? job.type }}
+						</span>
+					</li>
+				</ul>
+				<span v-else>Équipe au complet</span>
 			</div>
 		</router-link>
+	</div>
+	<div v-else class="projects-no-results">
+		{{ loading ? "Chargement..." : "Aucun résultat" }}
 	</div>
 </template>
 
 <script>
 import ProjectsService from "@/services/projects.js"
 import BaseInput from "@/components/system/Input"
+import BaseSelect from "@/components/system/Select"
+import { licenses, categories } from "@/constants/project.js";
+import { profilTypes } from "@/constants/contributor.js";
 export default {
 	name: "ListProjects",
 	components: {
-		BaseInput
+		BaseInput,
+		BaseSelect
 	},
 	data() {
 		return {
+			loading: true,
+			licenses,
+			categories,
+			profilTypes: Object.keys(profilTypes).map((key) => ({
+				value: key,
+				...profilTypes[key],
+			})),
+			research: null,
+			filters: {
+				tags: [],
+				licenses: [],
+				profiles: []
+			},
 			projects: [],
 		};
 	},
+	computed: {
+		projectsToDisplay() {
+			return this.projects.filter(project => (
+					(this.research !== "" ? project.title.toLowerCase().includes(this.research) : true)
+					&& (this.filters.tags.length === 0 || this.filters.tags.some(tag => project.tags?.includes(tag)))
+					&& (this.filters.licenses.length === 0 || this.filters.licenses.includes(project.licence))
+					&& (this.filters.profiles.length === 0 || this.filters.profiles.some(profile => project.jobs.filter(job => job.type === profile).length !== 0))
+				)
+			)
+		}
+	},
+	methods: {
+		onResearch(event) {
+			this.research = event.target.value.trim().toLowerCase()
+		},
+
+		onFilterChange(event, filterName) {
+			this.filters[filterName] = event.target.getValues()
+		}
+	},
 	async mounted() {
 		const { data } = await ProjectsService.getAllProjects();
-		this.projects = data;
+
+		data.forEach(project => {
+			const sumup = project.sumup ?? ""
+			let truncatedSumup = sumup.substring(0, 150)
+			if (sumup.length > 150)
+				truncatedSumup += "..."
+			
+			project.truncatedSumup = truncatedSumup
+		});
+
+		this.projects = data
+		this.research = ""
+		this.loading = false
 	},
 };
 </script>
@@ -73,16 +165,27 @@ export default {
 		text-transform: uppercase;
 		font-size: 1.5rem;
 	}
-	&__search-container {
+	&__search-container, &__filters-container {
 		margin: 1rem auto 0 auto;
 		width: 90%;
 		max-width: 450px;
+	}
+	&__filters-container {
+		display: flex;
+		flex-wrap: wrap;
+		flex-direction: row;
+		justify-content: space-between;
+
+		& > *:not(:last-child) {
+			max-width: 48%;
+			margin-bottom: 0.5rem;
+		}
 	}
 }
 .projects {
 	margin-top: space(8);
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(space(64), 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(space(80), 1fr));
 	gap: space(3);
 	padding: 0 8vw;
 	&__card {
@@ -128,11 +231,18 @@ export default {
 				background-color: var(--color-white);
 				color: var(--color-black);
 			}
+			span.match-research {
+				background-color: var(--color-success);
+			}
 		}
 	}
 	&__description {
 		margin: 0 space(3);
 		align-self: flex-start;
 	}
+}
+.projects-no-results {
+	text-align: center;
+	margin-top: 5rem;
 }
 </style>
