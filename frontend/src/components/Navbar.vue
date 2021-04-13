@@ -65,6 +65,11 @@ export default {
 					name: "Liste des projets",
 				},
 				{
+					type: "link",
+					url: "/contact",
+					name: "Contact",
+				},
+				{
 					type: "dropdown",
 					name: this.$store.state.auth.user?.name,
 					items: [
