@@ -161,12 +161,7 @@ export default {
     @include flex(column, center, unset);
 
     div {
-      @include flex(row, unset, center);
-      gap: 1rem;
-      span:first-child {
-        color: grey;
-        font-size: 1rem;
-      }
+      @include flex(column, unset, left);
     }
 
     &__info {
