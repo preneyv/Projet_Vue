@@ -154,7 +154,7 @@ export default {
 		}
 		&-inner {
 			@include flex(column, flex-start, flex-start);
-			margin-bottom: space(20);
+			margin-bottom: space(35);
 			margin-left: space(10);
 			@include responsive("tablet") {
 				background-color: transparent;
