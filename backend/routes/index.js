@@ -1,29 +1,12 @@
 import { Router } from "express"
-import Contact from "../models/Contact.js"
+import { createContactRequest, getAllContactRequests, sayHello } from "../controllers/index.js"
+import { adminGuard } from "../guards/admin.js"
+
 const router = Router()
 
 //  GET /api/v1/
-router.get("/", (req, res) => {
-	res.json({ message: "Hello Project 👋" })
-})
-router.post("/contact", async (req, res) => {
-	const { email, name, message } = req.body
-	const data = {
-		email,
-		name,
-		message,
-	}
-	if (data?.email && data?.name) {
-		const contact = new Contact({ email, name, message })
-		const result = await contact.save()
-		return res.json({ result: "Votre message a été envoyé" })
-	}
-	return res.json({ error: true, result: "Une erreur est survenue" })
-})
-
-router.get("/contact", async (req, res) => {
-	const data = await Contact.find({})
-	return res.json(data)
-})
+router.get("/", sayHello)
+router.post("/contact", createContactRequest)
+router.get("/contact", adminGuard, getAllContactRequests)
 
 export default router

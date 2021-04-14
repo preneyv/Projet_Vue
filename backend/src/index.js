@@ -13,21 +13,15 @@ import projectRoutes from "../routes/project.js"
 import authRoutes from "../routes/auth.js"
 
 //Import DB
-import db from "./DbManage.js"
+import database from "./database.js"
+
 const app = express()
 
 // Connect to MongoDB
-db.initDatabase()
+database.init()
 
 // Port Listening
 const port = process.env.PORT || 8800
-
-// CORS config
- /*let corsOption = {
- 	origin: " http://localhost:8080",
- 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
- 	optionsSuccessStatus: 200,
- }*/
 
 // Global middlewares
 app.use(helmet())

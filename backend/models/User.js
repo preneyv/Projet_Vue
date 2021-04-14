@@ -1,6 +1,5 @@
 import mongoose from "mongoose"
 import passwordHash from "password-hash"
-import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 
 const { Schema, model } = mongoose
@@ -11,13 +10,16 @@ const userSchema = new Schema(
 		email: String,
 		password: String,
 		externals: [Object],
+		isSuperAdmin: Boolean
 	},
-	{ timestamps: { createdAt: "created_at" } }
+	{
+		timestamps: { createdAt: "created_at" }
+	}
 )
 
 userSchema.methods = {
 	/**
-	 * Verify the password with the hash
+	 * Verify the password matches with the hash
 	 * @param {string} password
 	 * @returns
 	 */
@@ -26,15 +28,15 @@ userSchema.methods = {
 	},
 
 	/**
-	 * Create the JWT
+	 * Create the JWT for this user
 	 * @returns {string}
 	 */
 	generateAccessToken: function () {
-		// dotenv.config()
 		const payload = {
 			_id: this._id,
 			name: this.name,
 			email: this.email,
+			isSuperAdmin: this.isSuperAdmin
 		}
 
 		return jwt.sign(payload, process.env.TOKEN_SECRET)

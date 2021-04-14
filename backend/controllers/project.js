@@ -9,9 +9,9 @@ import mongoose from "mongoose"
 export async function getAll(req, res) {
 	try {
 		const projects = await Project.find({})
-		res.json(projects)
+		return res.json(projects)
 	} catch (e) {
-		res.json({ message: `Error: ${e}` })
+		return res.json({ message: `Error: ${e}` })
 	}
 }
 
@@ -23,16 +23,14 @@ export async function getAll(req, res) {
 export async function getAllByUserId(req, res) {
 	const { _id } = req.user
 	const { Types } = mongoose
-	console.log(req)
+
 	try {
 		const project = await Project.aggregate([
 			{
 				$match: {
 					$or: [
 						{ author: Types.ObjectId(_id) },
-						{
-							"jobs.nameCollabPeople._collab": Types.ObjectId(_id),
-						},
+						{ "jobs.nameCollabPeople._collab": Types.ObjectId(_id) }
 					],
 				},
 			},
@@ -46,9 +44,9 @@ export async function getAllByUserId(req, res) {
 			},
 		})
 
-		res.json(project)
+		return res.json(project)
 	} catch (e) {
-		res.json({ error: e.response })
+		return res.json({ error: e.response })
 	}
 }
 
@@ -61,9 +59,9 @@ export async function getOneById(req, res) {
 	const { id } = req.params
 	try {
 		const project = await Project.findOne({ _id: id })
-		res.json(project)
+		return res.json(project)
 	} catch (e) {
-		res.json({ error: "Le project n'existe pas" })
+		return res.json({ error: "Le project n'existe pas" })
 	}
 }
 
@@ -74,7 +72,7 @@ export async function getOneById(req, res) {
  */
 export async function insertOne(req, res) {
 	const user = req.user
-	console.log(req.body)
+
 	const {
 		title,
 		sumup,
@@ -99,11 +97,12 @@ export async function insertOne(req, res) {
 			jobs,
 		})
 		project.save((err) => {
-			if (err) return console.error(err)
-			res.json(project)
+			if (err)
+				return console.error(err)
+			return res.json(project)
 		})
 	} catch (e) {
-		res.json({ error: e })
+		return res.json({ error: e })
 	}
 }
 
@@ -113,23 +112,18 @@ export async function insertOne(req, res) {
  * @param {express.Response} res
  */
 export async function updateOne(req, res) {
-
-    //res.json(req.body)
-
-	
 	const { id } = req.params
-	const filter = req.body.filter ? { _id: id, ...req.body.filter} : {_id: id}
+	const filter = req.body.filter ? { _id: id, ...req.body.filter } : { _id: id }
 	const body = req.body.body ?? req.body
-	const tail = req.body.tail ? {...req.body.tail} : {}
+	const tail = req.body.tail ? { ...req.body.tail } : {}
 
-	
+	if(req.body.options?.changeToObjId)
+		changeToObjId(req.body.body)
 
-	if(req.body.options?.changeToObjId) changeToObjId(req.body.body)
     try {
 		const project = await Project.updateOne(filter, body, tail)
 		res.json({ found: project.n, modified: project.nModified })
 	} catch (e) {
-
 		res.json({ error: e.errmsg })
 	}
 }
@@ -154,7 +148,6 @@ export async function deleteOneById(req, res) {
  * @param {*} request La requête dont il faut modifier les identifiants en ObjectID
  */
 function changeToObjId(request) {
-
 	const { Types } = mongoose
 	const el = request['$pull'] ?? request['$push']
 
@@ -163,6 +156,5 @@ function changeToObjId(request) {
 		for (const line in el[item]) {
 			if(line.startsWith('_')) el[item][line] = Types.ObjectId(el[item][line])
 		}
-			 
 	}
 }

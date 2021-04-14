@@ -2,7 +2,7 @@ import User from "../models/User.js"
 import passwordHash from "password-hash"
 
 /**
- * Login user from the db and generate a JWT
+ * Login user from the database and generate a JWT
  * @param {express.Request} req
  * @param {express.Response} res
  * @returns
@@ -35,7 +35,6 @@ export async function signin(req, res) {
  */
 export async function signup(req, res) {
 	const { name, email, password, externals } = req.body
-	console.log(req.body)
 
 	if (!name || !email || !password) {
 		return res
@@ -44,7 +43,6 @@ export async function signup(req, res) {
 	}
 
 	const isEmailTaken = (await User.find({ email })).length !== 0
-
 
 	if (isEmailTaken) {
 		return res
