@@ -44,21 +44,12 @@
                 Sous licence {{ licenses.filter(license => license.value === project.licence)[0]?.name ?? "inconnue" }}
               </li>
               <li>
-                Statut : {{ project.active ? "En cours" : "Terminé" }}
+                Statut : <span class="project__status" :style="{ backgroundColor: project.active ? 'var(--color-success)' : 'var(--color-error)' }">{{ project.active ? "En cours" : "Terminé" }}</span>
               </li>
             </ul>
           </div>
 
           <div class="project__global-infos">
-            <h2 class="h-3">Informations globales du projet</h2>
-            <p>Projet lancé en
-              {{
-                getDate(project.startedDate).toLocaleDateString(lang, {
-                  year: "numeric",
-                  month: "long",
-                })
-              }}<span> - {{ project.active ? "En cours" : "Terminé" }}</span>
-            </p>
             <p>{{ project.sumup ?? "" }}</p>
             <p>{{ project.description ?? "" }}</p>
           </div>
@@ -76,6 +67,7 @@
                     :style="{backgroundColor: `${getSkillData(job.type, skill).color}55`, borderColor: `${getSkillData(job.type, skill).color}AA`}">
                     {{ getSkillData(job.type, skill).name }}
                   </li>
+                  <li class="project__jobs__skill" v-if="!job.skills?.length">Compétences non précisées</li>
                 </ul>
               </li>
             </ul>
@@ -102,19 +94,25 @@
 
 
         </div>
-        <div v-if="project.links" class="project__sidebar">
-          <h4 class="h-3">Liens externes</h4>
-          <ul>
-            <li v-for="link in project.links" :key="link.value">
-              <font-awesome-icon
-                :icon="officialLinkTypes.filter(type => type.value === link.title)[0]?.icon"
-                :style="{ width: '2rem' }"
-              />
-              <a :href="link.value" target="_blank" rel="noopener noreferrer" class="project__link">
-                {{ link.value }}
-              </a>
-            </li>
-          </ul>
+        <div class="project__sidebar">
+          <div class="project__contact" v-if="project.contact">
+            <h4 class="h-3">Contact</h4>
+            <p>{{ project.contact }}</p>
+          </div>
+          <div v-if="project.links?.length">
+            <h4 class="h-3">Liens externes</h4>
+            <ul>
+              <li v-for="link in project.links" :key="link.value">
+                <font-awesome-icon
+                  :icon="officialLinkTypes.filter(type => type.value === link.title)[0]?.icon"
+                  :style="{ width: '2rem' }"
+                />
+                <a :href="link.value" target="_blank" rel="noopener noreferrer" class="project__link">
+                  {{ link.value }}
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
     </div>
@@ -288,6 +286,12 @@ export default {
     }
   }
 
+  &__status {
+    color: black;
+    padding: 2px 8px;
+    border-radius: 15px;
+  }
+
   &__jobs {
     &__skills {
       display: flex;
@@ -336,6 +340,10 @@ export default {
     font-size: space(5);
   }
 
+  &__contact {
+    font-size: 1rem;
+  }
+
   &__link {
     margin-left: 0.5rem;
     font-size: 1rem;
@@ -377,7 +385,8 @@ export default {
   }
 
   .btn {
-    margin-top: space(12);
+    margin-top: space(8);
+    margin-bottom: space(4);
     font-size: space(6);
     font-weight: 700;
     display: inline-block;
