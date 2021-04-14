@@ -1,13 +1,15 @@
 import jwt from "jsonwebtoken"
-import api from "@/config/api"
+import api, { updateApiToken } from "@/config/api"
 import store from "@/store"
 
 const AuthService = {
     signin: (email, password) => {
         return api.post(`/auth/signin`, { email, password }).then(response => {
-            localStorage.setItem("token", response.data.token)
+            const token = response.data.token
+            localStorage.setItem("token", token)
             store.commit("setAuthenticated", true)
-            store.commit("setUser", jwt.decode(response.data.token))
+            store.commit("setUser", jwt.decode(token))
+            updateApiToken(token)
         })
     },
 
