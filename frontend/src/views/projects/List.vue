@@ -189,6 +189,7 @@ export default {
 	gap: space(3);
 	padding: 0 8vw;
 	&__card {
+		max-width: space(88);
 		overflow: hidden;
 		color: var(--color-black);
 		display: grid;
