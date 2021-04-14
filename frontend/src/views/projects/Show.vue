@@ -165,7 +165,6 @@ export default {
     this.lang = languages.filter(
         (lang) => lang.includes(language) && lang.includes("-")
     )[0];
-    console.log(this.project)
 
     this.select.items = data.jobs.map(el => {
       return {
