@@ -3,7 +3,7 @@
 		@click="switchProject(project._id)"
 		:class="[
 				{ 'selected': isSelected },
-				project.stateProject!=='En cours' ? 'close' : 'open',
+				project.active ? 'open' : 'close',
 				'item-project']"
 	>
 		<div class="item-project__header">

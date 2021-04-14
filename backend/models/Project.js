@@ -7,7 +7,7 @@ const projectSchema = new Schema({
 	author: Schema.ObjectId,
 	description: String,
 	sumup: String,
-	stateProject: { type: String, default: 'En cours' },
+	active: { type: Boolean, default: false },
 	tags: [String],
 	licence: String,
 	contact: String,

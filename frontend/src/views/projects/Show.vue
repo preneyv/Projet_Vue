@@ -43,8 +43,8 @@
               <li>
                 Sous licence {{ licenses.filter(license => license.value === project.licence)[0]?.name ?? "inconnue" }}
               </li>
-              <li v-if="project.stateProject">
-                Statut : {{ project.stateProject }}
+              <li>
+                Statut : {{ project.active ? "En cours" : "Terminé" }}
               </li>
             </ul>
           </div>
@@ -57,7 +57,7 @@
                   year: "numeric",
                   month: "long",
                 })
-              }}<span v-if="project.stateProject"> - {{ project.stateProject }}</span>
+              }}<span> - {{ project.active ? "En cours" : "Terminé" }}</span>
             </p>
             <p>{{ project.sumup ?? "" }}</p>
             <p>{{ project.description ?? "" }}</p>

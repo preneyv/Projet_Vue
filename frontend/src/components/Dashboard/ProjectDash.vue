@@ -1,5 +1,5 @@
 <template>
-    <div v-if="getCurrentProject" :class="[getCurrentProject.stateProject==='En cours' ? 'open' : 'close', 'project-ctn']">
+    <div v-if="getCurrentProject" :class="[getCurrentProject.active ? 'open' : 'close', 'project-ctn']">
         
         <transition  name="list-notif"  mode="out-in" appear>
             <div class="notif-section" v-if="notifs !== null"><HandlingNotif  :notifs="notifs" :removeNotif="removeNotif"/></div>
@@ -51,11 +51,11 @@
                 <div class="stateproject-ctn">
                     <div class="stateproject-ctn__firstline">
                         <span>{{getCurrentProject.stateUser === 'Admin' ? "Vous êtes administrateur sur le projet." : "Vous êtes collaborateur sur le projet"}}</span>
-                        <input v-if="getCurrentProject.stateUser === 'Admin'" class="btn-end-project" type="button" :value="getCurrentProject.stateProject === 'En cours' ? 'Déclarer terminé' : 'Reprendre' " @click="switchStateProject"/>
+                        <input v-if="getCurrentProject.stateUser === 'Admin'" class="btn-end-project" type="button" :value="getCurrentProject.active ? 'Déclarer terminé' : 'Reprendre' " @click="switchStateProject"/>
                     </div>
                     <div class="stateproject-ctn__lastline">
                         <span>{{getCurrentProject.licence}}</span>
-                        <span>{{getCurrentProject.stateProject}}</span>
+                        <span>{{getCurrentProject.active ? "En cours" : "Terminé"}}</span>
                         <span>Créé le {{formatedDate(getCurrentProject.startedDate)}}</span>
                     </div>
                 </div>
@@ -290,15 +290,15 @@ export default {
         async switchStateProject() {
 
             let projectLocal = this.getCurrentProject
-            let valueChange = projectLocal.stateProject === "En cours" ? "Terminé" : "En cours"
+            let valueChange = !projectLocal.active
 
             let res = await ProjectsService.setStateProject(projectLocal._id,valueChange)
             const { modified } = res?.data ?? 0
             
             if(modified === 1) {
 
-                projectLocal.stateProject = valueChange
-                this.notifs = {type: 'success', message:`Statut du projet : ${valueChange}.`}
+                projectLocal.active = valueChange
+                this.notifs = {type: 'success', message:`Statut du projet : ${valueChange ? "En cours" : "Terminé"}.`}
 
             }else{
               this.notifs =  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}

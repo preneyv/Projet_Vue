@@ -41,7 +41,7 @@ const ProjectsService = {
         return await api.put(`/project/${id}`,{$set:{description:value,lastUpdate:Date()}})
     },
     setStateProject: async function(id, value) {
-        return await api.put(`/project/${id}`,{$set:{stateProject:value,lastUpdate:Date()}})
+        return await api.put(`/project/${id}`,{$set:{active:value,lastUpdate:Date()}})
     },
 
     removeCollabFromProject: async function(idProject, id, typeValue) {
