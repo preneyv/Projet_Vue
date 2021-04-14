@@ -3,7 +3,6 @@ import api from "@/config/api"
 const ProjectsService = {
 
 	createProject: (data) => {
-        console.log(data)
 		return api.post(`/project`, data).then((res) => res)
 	},
     // Get all Projects
@@ -46,7 +45,6 @@ const ProjectsService = {
     },
 
     removeCollabFromProject: async function(idProject, id, typeValue) {
-        console.log(typeValue)
         let reqBody = typeValue === undefined ?
             {body:{$pull:{'jobs.$[].nameCollabPeople':{_collab:id}}}, tail:{multi:true}, options:{changeToObjId:true}}  :
             {filter : { 'jobs.type': typeValue}, body: {$pull:{'jobs.$.nameCollabPeople':{_collab:id}}}, options:{changeToObjId:true}} ;

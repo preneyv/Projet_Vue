@@ -95,7 +95,6 @@ export default {
 
     handleError(error) {
       this.error = { type: "error" }
-      console.log(error)
       this.error.message =
           error.response?.data?.message || "Erreur serveur"
     },

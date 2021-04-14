@@ -126,9 +126,6 @@ export default {
         FormHandlingAdd,
         HandlingNotif
     },
-    created() {
-        console.log(this.project)
-    },
     data() {
         return {
             requiredForm: null,

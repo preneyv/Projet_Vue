@@ -51,7 +51,6 @@ export default {
 		 * Retourne le name associé à la clef dans categories
 		 */
 		getNameTag(val) {
-			console.log(val)
             return categories.find(({value}) => val === value)?.name   
         },
 		/**

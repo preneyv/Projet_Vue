@@ -95,7 +95,6 @@ export async function setDescription(project, valueInput) {
     let projectLocal = project
 
     let res = await ProjectsService.setDescription(projectLocal._id,valueInput)
-    console.log(res)
     const { modified } = res?.data ?? 0
 
     if(modified === 1) {

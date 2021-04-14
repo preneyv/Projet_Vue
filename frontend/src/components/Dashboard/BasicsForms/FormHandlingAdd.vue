@@ -44,7 +44,6 @@ export default {
       this.checkValueToSendPromise().then(async () => {
 
         let backResult = await (this.method)(this.valueToSend)
-        console.log(backResult)
         if (backResult) throw backResult
 
       }).catch((error) => {
