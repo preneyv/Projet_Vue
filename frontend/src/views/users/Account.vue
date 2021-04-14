@@ -55,9 +55,9 @@
 <script>
 
 /*Components Import*/
-import BasicCtn from '@/components/Dashboard/BasicCtn.vue'
-import FormHandlingAdd from '@/components/Dashboard/BasicsForms/FormHandlingAdd.vue'
-import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
+import BasicCtn from '@/components/dashboard/BasicCtn.vue'
+import FormHandlingAdd from '@/components/dashboard/basics_forms/FormHandlingAdd.vue'
+import AddLinks from '@/components/dashboard/basics_forms/AddLinks.vue'
 
 /*Librairies import*/
 import format from 'date-format'

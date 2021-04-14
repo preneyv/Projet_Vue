@@ -22,8 +22,8 @@
 </template>
 
 <script>
-import ItemListProject from '@/components/Dashboard/ItemListProject.vue'
-import ProjectDash from '@/components/Dashboard/ProjectDash.vue'
+import ItemListProject from '@/components/dashboard/ItemListProject.vue'
+import ProjectDash from '@/components/dashboard/ProjectDash.vue'
 
 import ProjectsService from '../../services/projects.js'
 

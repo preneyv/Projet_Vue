@@ -88,14 +88,14 @@
 </template>
 <script>
 //Components Import
-import Tile from '@/components/Dashboard/Tile.vue'
-import BasicCtn from '@/components/Dashboard/BasicCtn.vue'
-import CollabsLine from '@/components/Dashboard/CollabsLine.vue'
-import FormHandlingAdd from '@/components/Dashboard/BasicsForms/FormHandlingAdd.vue'
-import AddTag from '@/components/Dashboard/BasicsForms/AddTag.vue'
-import AddLinks from '@/components/Dashboard/BasicsForms/AddLinks.vue'
-import AddCollabs from '@/components/Dashboard/BasicsForms/AddCollabs.vue'
-import SetDesc from '@/components/Dashboard/BasicsForms/SetDesc.vue'
+import Tile from '@/components/dashboard/Tile.vue'
+import BasicCtn from '@/components/dashboard/BasicCtn.vue'
+import CollabsLine from '@/components/dashboard/CollabsLine.vue'
+import FormHandlingAdd from '@/components/dashboard/basics_forms/FormHandlingAdd.vue'
+import AddTag from '@/components/dashboard/basics_forms/AddTag.vue'
+import AddLinks from '@/components/dashboard/basics_forms/AddLinks.vue'
+import AddCollabs from '@/components/dashboard/basics_forms/AddCollabs.vue'
+import SetDesc from '@/components/dashboard/basics_forms/SetDesc.vue'
 import HandlingNotif from "@/components/HandlingNotif.vue"
 
 //Files Import
