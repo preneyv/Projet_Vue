@@ -51,16 +51,22 @@ export default {
 
     &.dropdown-navbar {
         font-size: space(8);
-		font-weight: 700;
-		font-family: var(--typo-title);
-		text-transform: uppercase;
 		margin-top: space(4);
+
+        button {
+            font-weight: 700 !important;
+		    font-family: var(--typo-title) !important;
+            text-transform: uppercase;
+        }
         
 		@include responsive("tablet") {
 			margin-top: 0;
-			font-weight: 600;
 			font-size: space(4.5);
-			text-transform: initial;
+
+            button {
+                font-weight: 600;
+                text-transform: initial;
+            }
 		}
     }
 
