@@ -107,7 +107,7 @@
           <ul>
             <li v-for="link in project.links" :key="link.value">
               <font-awesome-icon
-                :icon="['fab', link.title === 'wiki' ? 'wikipedia-w' : link.title]"
+                :icon="officialLinkTypes.filter(type => type.value === link.title)[0]?.icon"
                 :style="{ width: '2rem' }"
               />
               <a :href="link.value" target="_blank" rel="noopener noreferrer" class="project__link">
@@ -124,7 +124,7 @@
 <script>
 import ProjectsService from "@/services/projects.js";
 import { profilTypes } from "@/constants/contributor.js";
-import { categories, licenses } from "@/constants/project.js";
+import { categories, licenses, officialLinkTypes } from "@/constants/project.js";
 
 import BaseSelect from '@/components/system/Select.vue'
 import HandlingNotif from "@/components/HandlingNotif.vue"
@@ -150,7 +150,8 @@ export default {
       },
       notifs:null,
       categories,
-      licenses
+      licenses,
+      officialLinkTypes
     };
   },
   async mounted() {

@@ -5,7 +5,7 @@ import store from './store'
 import AuthService from './services/auth'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheck, faTimes, faCaretUp, faCaretDown, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faTimes, faCaretUp, faCaretDown, faBars, faGlobe } from '@fortawesome/free-solid-svg-icons'
 import { faGithub, faNpm, faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -14,6 +14,7 @@ library.add(faTimes)
 library.add(faCaretUp)
 library.add(faCaretDown)
 library.add(faBars)
+library.add(faGlobe)
 library.add(faGithub)
 library.add(faNpm)
 library.add(faWikipediaW)

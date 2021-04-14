@@ -25,8 +25,24 @@ export const officialLinkTypes = [
 		value: "official",
 		name: "Site officiel",
 		example: "https://my-project.com",
+		icon: ["fas", "globe"]
 	},
-	{ value: "github", name: "GitHub", example: "https://github.com/" },
-	{ value: "wiki", name: "Wiki", example: "https://wiki.com/" },
-	{ value: "npm", name: "npm", example: "https://www.npmjs.com/package/" },
+	{
+		value: "github",
+		name: "GitHub",
+		example: "https://github.com/",
+		icon: ["fab", "github"]
+	},
+	{
+		value: "wiki",
+		name: "Wiki",
+		example: "https://wiki.com/",
+		icon: ["fab", "wikipedia-w"]
+	},
+	{
+		value: "npm",
+		name: "npm",
+		example: "https://www.npmjs.com/package/",
+		icon: ["fab", "npm"]
+	},
 ]
