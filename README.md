@@ -1,12 +1,10 @@
 
 <div style="display: flex">
-<img src="./frontend/src/assets/icon_title.png"/>
+<img src="./frontend/src/assets/icon_title.png" width="50" height="50"/>
 <h1 align="center">
    Le Marché de l'Open Source
 </h1>
 </div>
-
-![Projet Vue](./frontend/src/assets/icon_title.png "Projet Vue")
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
 
