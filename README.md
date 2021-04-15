@@ -1,12 +1,10 @@
 
 <div style="display: flex">
-<img src="./frontend/src/assets/icon_title.png"/>
+<img src="./frontend/src/assets/icon_title.png" width="50" height="50"/>
 <h1 align="center">
    Le Marché de l'Open Source
 </h1>
 </div>
-
-![Projet Vue](./frontend/src/assets/icon_title.png "Projet Vue")
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
 
@@ -110,7 +108,7 @@ Backend :
 * En cas d'extension du projet, une base de données relationnelles serait préférables pour l'utilisation de jointures.
   
 Frontend :
-* Un journal de bord dans le dashboard pour suivre les dates clés du projets (Un espace déstiné à ça a dailleurs été créé).
+* Un journal de bord dans le dashboard pour suivre les dates clés du projets (Un espace déstiné à ça a d'ailleurs été créé).
 * Possibilité de supprimer des catégories et des liens du projet.
 * Possibilité de modifier et ou de supprimer un type de collaboration.
 
@@ -118,7 +116,7 @@ Frontend :
 Ce projet a été développé par :
 * **Valère Preney** [@preneyv](https://github.com/preneyv)
 * **Aurélien Robineau** [@aurelien-robineau](https://github.com/aurelien-robineau)
-* **Hippolite Soulier** [@hsoulier](https://github.com/hsoulier)
+* **Hippolyte Soulier** [@hsoulier](https://github.com/hsoulier)
 
 # License
 Ce projet a été développé dans le cadre de l'UE de Javascript du professeur Gilles Chagnon.
