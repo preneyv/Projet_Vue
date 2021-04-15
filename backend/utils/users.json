@@ -1,0 +1,136 @@
+{
+	"pwds": [
+		{
+			"email": "Tommie44@gmail.com",
+			"password": "dW7oTUiJR1wQR0P9"
+		},
+		{
+			"email": "Ray_Balistreri98@hotmail.com",
+			"password": "fUCz_4giMteUMBzn"
+		},
+		{
+			"email": "Merritt_Gerhold@gmail.com",
+			"password": "lyoZeBIUFwsHmTMr"
+		},
+		{
+			"email": "Lavonne_Weissnat90@hotmail.com",
+			"password": "TEK50HkarWV8a5U5"
+		},
+		{
+			"email": "Brook_Shanahan@hotmail.com",
+			"password": "y7gz3D93VSEkJa8Z"
+		},
+		{
+			"email": "Malachi_Beier70@gmail.com",
+			"password": "wXiLoRbz_kuKbfUe"
+		},
+		{
+			"email": "Anjali_Bayer73@yahoo.com",
+			"password": "8rYMOTqfCiX8l0Hk"
+		},
+		{
+			"email": "Lily41@yahoo.com",
+			"password": "gV4TE9DI158Drf4M"
+		},
+		{
+			"email": "Keely.Reilly84@yahoo.com",
+			"password": "53ZyTTeli3j3Vwsg"
+		},
+		{
+			"email": "Antoinette_Hyatt65@yahoo.com",
+			"password": "Zn1widfvRKe6izJH"
+		}
+	],
+	"result": [
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606af",
+			"name": "Simon Bartell",
+			"email": "Tommie44@gmail.com",
+			"password": "sha1$999e7ba7$1$ad0518d5249686dc3dd6e34690f02b0d435fe588",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b0",
+			"name": "Bernadette Kiehn",
+			"email": "Ray_Balistreri98@hotmail.com",
+			"password": "sha1$1f9269cb$1$a70219078aa63b9026871009f636fe662136a892",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b1",
+			"name": "Albert Ondricka",
+			"email": "Merritt_Gerhold@gmail.com",
+			"password": "sha1$f77ba817$1$20cf5e750840cf60671006ff537334808a23bb3a",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b2",
+			"name": "Dr. Alfredo Harris",
+			"email": "Lavonne_Weissnat90@hotmail.com",
+			"password": "sha1$44e38911$1$d3e0c921f888fe125b542152094a703a27d0c17c",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b3",
+			"name": "Arlene Keeling",
+			"email": "Brook_Shanahan@hotmail.com",
+			"password": "sha1$9ca8b8f8$1$27ce9e678184af444091d3d80e2ce84f78fcac19",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b4",
+			"name": "Susan Brekke",
+			"email": "Malachi_Beier70@gmail.com",
+			"password": "sha1$e6054a36$1$5d6163bca95e99db7d28c2c0f12cf9b61f36e905",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b5",
+			"name": "Ernest Ferry",
+			"email": "Anjali_Bayer73@yahoo.com",
+			"password": "sha1$ff888a7e$1$bfeb3d96aa6648615f9d3b42ef70f5bde14b18f5",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b6",
+			"name": "Alex Turner",
+			"email": "Lily41@yahoo.com",
+			"password": "sha1$a020f3b4$1$3ee314452e32a26548d1f02e0b9e3d672cadfdbe",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b7",
+			"name": "Emmett Abshire",
+			"email": "Keely.Reilly84@yahoo.com",
+			"password": "sha1$01ad5d47$1$e59134f8c4d190c3a3eb38bd92716542dd3a2955",
+			"isSuperAdmin": false,
+			"__v": 0
+		},
+		{
+			"externals": [],
+			"_id": "607846dbc238422ac2d606b8",
+			"name": "Otis Waelchi",
+			"email": "Antoinette_Hyatt65@yahoo.com",
+			"password": "sha1$fdb40ef2$1$73e21283c29b0a7b6d4c3f7b04af040c9d79a9ce",
+			"isSuperAdmin": false,
+			"__v": 0
+		}
+	]
+}
