@@ -38,7 +38,7 @@
     </div>
 
     <div class="user-info__section-wrapper">
-      <BasicCtn headTitle="Messages" v-if="userInfo.isSuperAdmin">
+      <BasicCtn headTitle="Messages" v-if="userInfo.isSuperAdmin && messages.length !== 0">
         <div class="user-info__messages">
           <div v-for="message in messages" :key="message._id" class="user-info__message-card">
             <h1 class="user-info__message-title">{{ message.name }} <span class="user-info__message-email">- {{ message.email }}</span>

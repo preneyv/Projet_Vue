@@ -6,11 +6,6 @@
 </h1>
 </div>
 
-
-
-
-
-
 ![Projet Vue](./frontend/src/assets/icon_title.png "Projet Vue")
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
@@ -18,7 +13,6 @@
 Cette application a pour but d'aider les porteurs de projets. Cette plateforme les met alors en relation avec d'autres personnes qui souhaiteraient participer au projet.
 
 # ⚙ Installation
-
 
 Il faut installer différentes dépendances avant de démarrer le projet.
 
@@ -31,7 +25,6 @@ Coté Backend :
 - Puis saisissez la commande ```npm install``` ou ```yarn install``` pour installer toutes les dépendances.
 
 # 🚀  Démarrage
-
 
 Il faut démarrer les deux parties de l'application.
 
