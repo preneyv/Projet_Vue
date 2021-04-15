@@ -9,7 +9,6 @@
 Cette application a pour but d'aider les porteurs de projets. Cette plateforme les met alors en relation avec d'autres personnes qui souhaiteraient participer au projet.
 
 # ⚙ Installation
-***
 
 Il faut installer différentes dépendances avant de démarrer le projet.
 
@@ -22,7 +21,6 @@ Coté Backend :
 - Puis saisissez la commande ```npm install``` ou ```yarn install``` pour installer toutes les dépendances.
 
 # 🚀  Démarrage
-***
 
 Il faut démarrer les deux parties de l'application.
 
@@ -35,7 +33,6 @@ Coté Backend :
 - Puis saisissez la commande ```node index.js``` ou ```yarn serve```.
 
 #  Technos utilisées
-***
 
 Ce projet a été développé avec le framework VueJs en front. Le serveur en back a été développé avec l'aide la librairie expressjs ainsi que mongoose pour la gestion de la base de donnée.
 
@@ -52,7 +49,6 @@ Principales Librairies Backend :
 * [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken) - Librairie de générateur de tokens pour l'authentification.
 
 # 📖 Pages développées
-***
 
 ## L'accueil
 C'est une page d'accueil quoi ...
