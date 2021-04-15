@@ -78,7 +78,7 @@ export default {
   beforeMount() {
     const { _id } = this.$store.state.auth.user
     UserService.getUserInfoById(_id).then(res =>  this.userInfo = res.data)
-    ContactService.getAll().then(res => this.messages = res.data)
+    ContactService.getAll().then(res => this.messages = res.data).catch(console.log("Une erreur est survenue"))
   },
   data(){
     return{
