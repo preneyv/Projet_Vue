@@ -1,5 +1,5 @@
 
-![Projet Vue](./src/assets/logo.png "Projet Vue")
+![Projet Vue](./frontend/src/assets/logo.png "Projet Vue")
 <p align="center" style="font-size:80px">
    Le Marché de l'Open Source
 </p>
