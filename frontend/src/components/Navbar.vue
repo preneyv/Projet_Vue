@@ -74,7 +74,7 @@ export default {
 					name: this.$store.state.auth.user?.name,
 					items: [
 						{ label: "Mon compte", url: "/account" },
-						{ label: "Dashboard", url: "/dashboard" },
+						{ label: "dashboard", url: "/dashboard" },
 						{ label: "Déconnexion", action: this.signout }
 					],
 					hide: !this.$store.state.auth.authenticated

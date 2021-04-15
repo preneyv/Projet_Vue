@@ -102,7 +102,7 @@ export default {
     handleSuccess() {
       const queryString = window.location.search
       const params = new URLSearchParams(queryString)
-      const redirecTo = params.get("redirectTo") || "Dashboard"
+      const redirecTo = params.get("redirectTo") || "dashboard"
       if (redirecTo === "back")
         this.$router.go(-1)
       else

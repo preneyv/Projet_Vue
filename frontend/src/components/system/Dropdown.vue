@@ -55,7 +55,7 @@ export default {
 
         button {
             font-weight: 700 !important;
-		    font-family: var(--typo-title) !important;
+            font-family: var(--typo-title) !important;
             text-transform: uppercase;
         }
         
