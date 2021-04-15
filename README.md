@@ -1,28 +1,37 @@
 
-![Projet Vue](./frontend/src/assets/logo.png "Projet Vue")
-<p align="center" style="font-size:80px">
+<div style="display: flex">
+<img src="./frontend/src/assets/icon_title.png"/>
+<h1 align="center">
    Le Marché de l'Open Source
-</p>
+</h1>
+</div>
+
+
+
+
+
+
+![Projet Vue](./frontend/src/assets/icon_title.png "Projet Vue")
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
 
 Cette application a pour but d'aider les porteurs de projets. Cette plateforme les met alors en relation avec d'autres personnes qui souhaiteraient participer au projet.
 
 # ⚙ Installation
-***
+
 
 Il faut installer différentes dépendances avant de démarrer le projet.
 
 Côté Frontend :
 - Rendez-vous dans le dossier **frontend** avec la commande ```cd frontend```.
-- Puis saisissez la commande ```npm install``` òu ```yarn install```pour installer toutes les dépendances.
+- Puis saisissez la commande ```npm install``` ou ```yarn install```pour installer toutes les dépendances.
 
 Coté Backend : 
 - Rendez-vous dans le dossier **backend** avec la commande ```cd backend```.
 - Puis saisissez la commande ```npm install``` ou ```yarn install``` pour installer toutes les dépendances.
 
 # 🚀  Démarrage
-***
+
 
 Il faut démarrer les deux parties de l'application.
 
@@ -35,7 +44,6 @@ Coté Backend :
 - Puis saisissez la commande ```node index.js``` ou ```yarn serve```.
 
 #  Technos utilisées
-***
 
 Ce projet a été développé avec le framework VueJs en front. Le serveur en back a été développé avec l'aide la librairie expressjs ainsi que mongoose pour la gestion de la base de donnée.
 
@@ -51,17 +59,24 @@ Principales Librairies Backend :
 * [Mongoose](https://mongoosejs.com/) - Librairie de gestion de base de données NoSQL. 
 * [JsonWebToken](https://www.npmjs.com/package/jsonwebtoken) - Librairie de générateur de tokens pour l'authentification.
 
-# 📖 Pages développées
-***
+# Pages du site
+* **Accueil**
+* **Page de connexion**
+* **Page de création de compte**
+* **Liste des projets** (*voir "Fonctionnalités de la page Liste des projets"*)
+* **Page d'un projet** 
+* **Page de compte**
+* **Dashboard** (*voir "Fonctionnalités du Dashboard"*)
 
-## L'accueil
-C'est une page d'accueil quoi ...
+# 📖  Fonctionnalités de la page Liste des projets
+Cette page permet de visualiser tous les projets recensés sur l'application.
+Il est possible de rechercher un projet selon différents critères :
+* Par son nom.
+* Par l'une de ses catégories.
+* Par la licence à laquelle est lié le projet.
+* Par le type de collaboration parmis toutes celles requises par le projet.
 
-## La liste des projets
-
-## La création de projet
-
-## Le Dashboard
+# 📖  Fonctionnalités du Dashboard
 Cette page permet à l'utilisateur de visualiser tous les projets auxquels il participe. Que ce soit en tant qu'administrateur ou collaborateur.
 En choisissant un projet dans la liste il peut visualiser l'ensemble de la configuration du projet.
 Dans la partie de la page reservée au projet, l'utilisateur peut observer :
@@ -73,11 +88,11 @@ Dans la partie de la page reservée au projet, l'utilisateur peut observer :
 * Les collaborateurs présents sur le projet ainsi que leurs fonctions.
 * Les liens utiles du projet.
 
-#### Quand on est collaborateur :
+###### Quand on est collaborateur :
 Il est impossible à l'utilisateur de modifier quoique ce soit à la configuration du projet.
 La seule chose qu'il peut faire est de se retirer du projet (*Fonction non développée*).
 
-#### Quand on est administrateur :
+###### Quand on est administrateur :
 On peut effectuer divers modifications sur le projet.
 * Ajouter un nouveau besoin en collaboration.
 * Changer la description du projet.
@@ -97,14 +112,14 @@ Cette page affiche les informations de compte de l'utilisateur :
 Lorsque l'on est super-utilisateur (administrateur de l'application) on peut également y observer tous les messages 
 envoyés via le formulaire de contact.
 
-## Contact
-Cette page permet aux utilisateurs de rentrer en contact avec les administrateurs de l'application.
-
-# Le style
--   **SCSS scoped dans chaque composant et view**
--   Variables (SCSS converted to CSS) dans [variable file](./src/scss/abstracts/_variables.scss)
--   Functions dans [functions file](./src/scss/abstracts/_mixins.scss) [Comment l'utiliser ?](https://sass-lang.com/documentation/at-rules/function)
--   Mixins dans [mixins file](./src/scss/abstracts/_mixins.scss) [Comment l'utiliser ?](https://sass-lang.com/documentation/at-rules/mixin)
+## Points d'amélioration
+Backend :
+* En cas d'extension du projet, une base de données relationnelles serait préférables pour l'utilisation de jointures.
+  
+Frontend :
+* Un journal de bord dans le dashboard pour suivre les dates clés du projets (Un espace déstiné à ça a dailleurs été créé).
+* Possibilité de supprimer des catégories et des liens du projet.
+* Possibilité de modifier et ou de supprimer un type de collaboration.
 
 # 🧐 Auteurs
 Ce projet a été développé par :

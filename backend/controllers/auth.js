@@ -39,7 +39,7 @@ export async function signup(req, res) {
 	if (!name || !email || !password) {
 		return res
 			.status(403)
-			.json([{ message: `Formulaire invalide` }])
+			.json({ message: `Formulaire invalide` })
 	}
 
 	const isEmailTaken = (await User.find({ email })).length !== 0

@@ -84,16 +84,17 @@ export default {
 
       if (this.typeOfAuth === "signin") {
         AuthService.signin(data.email, data.password)
-            .then(this.handleSuccess)
+            .then(this.handleSuccess())
             .catch((error) => this.handleError(error))
       } else {
         AuthService.signup(data.name, data.email, data.password, [])
-            .then(this.handleSuccess)
+            .then(this.handleSuccess())
             .catch((error) => this.handleError(error))
       }
     },
 
     handleError(error) {
+      console.log(error)
       this.error = { type: "error" }
       this.error.message =
           error.response?.data?.message || "Erreur serveur"
@@ -102,7 +103,8 @@ export default {
     handleSuccess() {
       const queryString = window.location.search
       const params = new URLSearchParams(queryString)
-      const redirecTo = params.get("redirectTo") || "dashboard"
+
+      const redirecTo = params.get("redirectTo") || "Dashboard"
       if (redirecTo === "back")
         this.$router.go(-1)
       else
