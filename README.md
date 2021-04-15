@@ -1,8 +1,8 @@
 
 ![Projet Vue](./frontend/src/assets/logo.png "Projet Vue")
-<p align="center" style="font-size:80px">
+<h1 align="center" style="font-size:80px">
    Le Marché de l'Open Source
-</p>
+<h1>
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
 
