@@ -1,7 +1,7 @@
 {
     "scripts": {
-        "dev": "nodemon --experimental-modules  src/index.js",
-        "start": "node --experimental-modules src/index.js"
+        "dev": "nodemon src/index.js",
+        "start": "node src/index.js"
     },
     "type": "module",
     "dependencies": {
