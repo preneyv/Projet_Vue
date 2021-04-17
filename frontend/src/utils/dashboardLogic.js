@@ -179,6 +179,7 @@ export async function acceptNewCollab(project, collab, index) {
 
         obj.nameCollabPeople = [...obj.nameCollabPeople, {name: collab.name, _collab: collab._id}]
         projectLocal.collabRequest.splice(index, 1)
+        await ProjectsService.removeFromCollabRequest(projectLocal._id, collab._id)
         return {type: 'success', message:`Vous avez ajouté ${collab.name} au projet.`}
 
     }else {

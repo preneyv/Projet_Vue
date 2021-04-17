@@ -1,6 +1,7 @@
 <template>
   <div class="project">
-    <div class="project__container">
+    <div v-if="isLoading" class="loading"><div>Chargement ...</div></div>
+    <div v-else class="project__container">
       <a @click="$router.go(-1)" class="go-back">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -65,8 +66,8 @@
                       v-for="skill in job.skills"
                       :key="skill"
                       class="project__jobs__skill"
-                      :style="{backgroundColor: `${getSkillData(job.type, skill).color}55`, borderColor: `${getSkillData(job.type, skill).color}AA`}">
-                      {{ getSkillData(job.type, skill).name }}
+                      :style="{backgroundColor: `${getSkillData(job.type, skill)?.color}55`, borderColor: `${getSkillData(job.type, skill)?.color}AA`}">
+                      {{ getSkillData(job.type, skill)?.name ?? "Compétences non précisées" }}
                     </li>
                     <li class="project__jobs__skill" v-if="!job.skills?.length">Compétences non précisées</li>
                   </ul>
@@ -152,6 +153,7 @@ export default {
         required: true,
       },
       notifs:null,
+      isLoading: true,
       categories,
       licenses,
       officialLinkTypes
@@ -175,8 +177,7 @@ export default {
         name: this.getTypeCollab(el.type)
       }
     })
-    console.log(this.project)
-
+    this.isLoading = false
   },
   computed: {
     isConnected() {
@@ -189,7 +190,6 @@ export default {
      * Récupère le name associé à la clef dans profilTypes
      */
     getTypeCollab(val) {
-      console.log(profilTypes[val]?.name)
       return profilTypes[val]?.name
     },
     getSkillData(profileType, skillType) {
@@ -273,6 +273,22 @@ export default {
 <style lang="scss" scoped>
 .project {
   margin-top: 2rem;
+
+  .loading{
+    width: 100%;
+    height:100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 2rem;
+
+    div {
+      background-color: #252525;
+      border: 1px solid #4b4b4b;
+      padding: 0.5rem;
+    }
+  }
 
   &__container {
     width: 80%;
