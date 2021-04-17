@@ -136,9 +136,10 @@ const profilTypes = {
 
 export const populateProjects = async (req, res) => {
 	try {
+		const data = []
 		const users = await User.find()
 		const lengthProfiles = Object.getOwnPropertyNames(profilTypes).length
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 15; i++) {
 			const index = Math.floor(Math.random() * (users.length - 1))
 			const userId = users[index]._id
 			const jobs = []
@@ -173,16 +174,14 @@ export const populateProjects = async (req, res) => {
 								Math.round(Math.random() * 0.8)
 									? {
 											name: user.name,
-											// TODO Add Object ID
-											_collab: Types.ObjectId(
-												user["_id"]
-											),
+											_collab: user._id,
 									  }
 									: false
 							)
 							.filter((x) => x),
 					})
 			}
+
 			const tags = categories
 				.map((a) => (Math.round(Math.random() * 0.8) ? a.value : false))
 				.filter((x) => x)
@@ -221,20 +220,17 @@ export const populateProjects = async (req, res) => {
 					type: jobs[0].type,
 				},
 			})
+			data.push(el)
 			await el.save()
-			return res.json({
-				success: "Successufully populate project document",
-			})
-			// data.push(el)
 		}
 
-		return res.json({ data })
+		return res.json(data)
 	} catch (e) {
 		res.json({ error: e })
 	}
 }
 
-export const populateUsers = (req, res) => {
+export const populateUsers = async (req, res) => {
 	try {
 		const users = []
 		const pwds = []
@@ -251,13 +247,12 @@ export const populateUsers = (req, res) => {
 				password: passwordHash.generate(password),
 				isSuperAdmin: false,
 			}
-			users.push(user)
-		}
 
-		User.insertMany(users, (error, docs) => {
-			if (error) return res.json(error)
-			return res.json({ pwds, result: docs })
-		})
+			const el = new User(user)
+			users.push(user)
+			await el.save()
+		}
+		return res.json({ pwds, users })
 	} catch (error) {
 		return res.json(error)
 	}
