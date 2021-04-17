@@ -11,7 +11,7 @@ export async function createContactRequest(req, res) {
 		name,
 		message
 	}
-	if (data?.email && data?.name) {
+	if (data.email && data.name) {
 		const contact = new Contact({ email, name, message })
 		await contact.save()
 		return res.json({ result: "Votre message a été envoyé" })

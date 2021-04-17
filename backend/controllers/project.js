@@ -117,7 +117,9 @@ export async function updateOne(req, res) {
 	const body = req.body.body ?? req.body
 	const tail = req.body.tail ? { ...req.body.tail } : {}
 
-	if(req.body.options?.changeToObjId)
+	const { options } = req.body
+
+	if(options && options.changeToObjId)
 		changeToObjId(req.body.body)
 
     try {
