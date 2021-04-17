@@ -187,7 +187,7 @@ export const populateProjects = async (req, res) => {
 				.filter((x) => x)
 
 			const el = new Project({
-				author: Types.ObjectId(userId),
+				author: userId,
 				title: faker.name.title(),
 				sumup: faker.lorem.sentences(Math.floor(Math.random() * 2 + 1)),
 				description: faker.lorem.paragraphs(

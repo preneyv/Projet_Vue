@@ -4,8 +4,8 @@ import { populateUsers } from "../utils/populate.js"
 
 const router = Router()
 
-//  GET /api/v1/user
-router.get("/populate", populateUsers)
+//  ROUTES /api/v1/user
+// router.get("/populate", populateUsers)
 router.get("/:id", getOneById)
 router.put("/:id", updateUser)
 

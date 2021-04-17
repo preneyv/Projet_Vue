@@ -13,10 +13,10 @@ import { populateProjects } from "../utils/populate.js"
 
 const router = Router()
 
-//  GET /api/v1/project
+//  ROUTES /api/v1/project
 router.get("/", getAll)
 router.get("/user", authGuard, getAllByUserId)
-router.get("/populate", populateProjects)
+// router.get("/populate", populateProjects)
 router.get("/:id", getOneById)
 router.delete("/:id", authGuard, deleteOneById)
 router.post("/", authGuard, insertOne)
