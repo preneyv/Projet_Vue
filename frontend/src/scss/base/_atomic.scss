@@ -1,0 +1,21 @@
+.mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.reset-position {
+	position: static;
+	top: initial;
+	left: initial;
+	width: auto;
+	height: auto;
+}
+
+.container {
+	width: 80%;
+	@extend %mx-auto;
+}
+%mx-auto {
+	margin-left: auto;
+	margin-right: auto;
+}

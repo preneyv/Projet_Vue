@@ -1,0 +1,29 @@
+%btn {
+  @include flex(row, center, center);
+  border-radius: space(1);
+  padding: space(2) space(2);
+  color: inherit;
+}
+
+%btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+}
+
+%btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-black);
+}
+
+.btn {
+  @extend %btn;
+
+  &-primary {
+    @extend %btn-primary;
+    color: map-get($colors, "black");
+  }
+
+  &-secondary {
+    @extend %btn-secondary;
+  }
+}
