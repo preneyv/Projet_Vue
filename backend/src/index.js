@@ -1,6 +1,6 @@
 // Node modules
 import dotenv from "dotenv"
-dotenv.config()
+dotenv.config({path:"../.env"})
 import express, { json } from "express"
 import morgan from "morgan"
 import helmet from "helmet"
