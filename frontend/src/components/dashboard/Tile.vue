@@ -21,7 +21,7 @@ export default {
          * Récupère le name associé à la clef dans l'objet 'profilTypes
          */
          getTypeCollab(val) {
-            return profilTypes[val].name
+            return profilTypes[val]?.name ?? "inconnu"
         },
     }
 }

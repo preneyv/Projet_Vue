@@ -38,7 +38,7 @@ export default {
 		 * Récupère le name associé à la clef dans profilTypes
 		 */
 		getTypeCollab(val) {
-			return profilTypes[val].name
+			return profilTypes[val]?.name ?? "inconnu"
 		},
 		/**
 		 * Permet de gérer le clique sur le bouton de modification (le symbole du crayon)

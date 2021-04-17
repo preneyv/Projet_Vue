@@ -1,24 +1,22 @@
 <template>
-    <section class="dashboard__container" v-if="dowloadError === false">
-        <div :class="[{'isOpen' : isListOpened } ,'list-ctn']" v-if="listOfProject.length > 0">
-            <div  class="list-ctn__main" >
-                <ItemListProject 
-                    v-for="pr in listOfProject"
-                    :key="pr._id"
-                    :project="pr"
-                    :nbSelectedProject="currentProject._id"
-                    :switchProject="changeProject"
-                />
-            </div>
-            <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
-        </div>
-      <section v-else class="errorDowloadAPI"><div>Aucun projet n'a été trouvé. <router-link to="/projects/create">Créez en un !</router-link></div></section>
-        <!--<transition name="project-change" mode="out-in">-->
-            <ProjectDash v-if="currentProject" :project="currentProject"/>
-        <!--</transition>-->
-    </section>
-    <section v-else class="errorDowloadAPI"><div>Une erreur réseau est survenue lors du chargement du Dashboard. Veuillez réessayez plus tard.</div></section>
-  <span v-if="isLoading">Chargement</span>
+  <span v-if="isLoading" class="loadingDash"><div>Chargement...</div></span>
+  <section class="dashboard__container" v-else-if="dowloadError === false">
+      <div :class="[{'isOpen' : isListOpened } ,'list-ctn']" v-if="listOfProject.length > 0">
+          <div  class="list-ctn__main" >
+              <ItemListProject
+                  v-for="pr in listOfProject"
+                  :key="pr._id"
+                  :project="pr"
+                  :nbSelectedProject="currentProject._id"
+                  :switchProject="changeProject"
+              />
+          </div>
+          <div class="btn-open" @click="isListOpened = !isListOpened"><i  :class="[{'isOpen':isListOpened },'bi-arrow-right-square', 'bi']"></i></div>
+      </div>
+    <section v-else class="errorDowloadAPI"><div>Aucun projet n'a été trouvé. <router-link to="/projects/create">Créez en un !</router-link></div></section>
+    <ProjectDash v-if="currentProject" :project="currentProject"/>
+  </section>
+  <section v-else class="errorDowloadAPI"><div>Une erreur réseau est survenue lors du chargement du Dashboard. Veuillez réessayez plus tard.</div></section>
 </template>
 
 <script>
@@ -36,11 +34,13 @@ export default {
     beforeMount(){
         //const { _id } = this.$store.state.auth.user
         ProjectsService.getAuthorProjects().then(res=>{
-            this.listOfProject = res.data
-            this.currentProject = this.listOfProject[0]
+          this.listOfProject = res.data
+          this.currentProject = this.listOfProject[0]
+          this.isLoading = false
 
         }).catch(() => {
-            this.dowloadError = true
+          this.isLoading = false
+          this.dowloadError = true
         })  
 
     },
@@ -50,7 +50,7 @@ export default {
             currentProject:null,
             isListOpened: false,
             dowloadError: false,
-            isLoading: false
+            isLoading: true
         }
     },
     methods:{
@@ -62,7 +62,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.errorDowloadAPI {
+.errorDowloadAPI, .loadingDash{
     width: 100%;
     height:100vh;
     display: flex;

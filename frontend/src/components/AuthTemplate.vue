@@ -102,13 +102,21 @@ export default {
 
     handleSuccess() {
       const queryString = window.location.search
+      console.log(window.location)
       const params = new URLSearchParams(queryString)
 
-      const redirecTo = params.get("redirectTo") || "Dashboard"
-      if (redirecTo === "back")
+
+      const redirectTo = params.get("redirectTo") || "Dashboard"
+
+      if (redirectTo === "back")
+      {
         this.$router.go(-1)
+      }
       else
-        this.$router.replace({ name: redirecTo })
+      {
+        this.$router.push( redirectTo )
+      }
+
     },
   },
 }

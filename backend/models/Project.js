@@ -15,7 +15,7 @@ const projectSchema = new Schema(
 		jobs: [Object],
 		collabRequest: [Object],
 		historic: [String],
-		active: { type: Boolean, default: false },
+		active: { type: Boolean, default: true },
 	},
 	{
 		timestamps: { createdAt: "startedDate", updatedAt: "lastUpdate" }

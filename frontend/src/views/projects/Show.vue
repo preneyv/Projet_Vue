@@ -58,17 +58,19 @@
             <h3 class="h-3">Profils recherchés</h3>
             <ul v-if="project.jobs?.length !== 0">
               <li v-for="job in project.jobs" :key="job.type">
-                {{ (job.requiredNb - job.nameCollabPeople?.length) || job.requiredNb }} {{ getTypeCollab(job.type) }}
-                <ul class="project__jobs__skills">
-                  <li
-                    v-for="skill in job.skills"
-                    :key="skill"
-                    class="project__jobs__skill"
-                    :style="{backgroundColor: `${getSkillData(job.type, skill).color}55`, borderColor: `${getSkillData(job.type, skill).color}AA`}">
-                    {{ getSkillData(job.type, skill).name }}
-                  </li>
-                  <li class="project__jobs__skill" v-if="!job.skills?.length">Compétences non précisées</li>
-                </ul>
+                <div v-if="getTypeCollab(job.type) !== undefined">
+                  {{ (job.requiredNb - job.nameCollabPeople?.length) || job.requiredNb }} {{ getTypeCollab(job.type) }}
+                  <ul class="project__jobs__skills">
+                    <li
+                      v-for="skill in job.skills"
+                      :key="skill"
+                      class="project__jobs__skill"
+                      :style="{backgroundColor: `${getSkillData(job.type, skill).color}55`, borderColor: `${getSkillData(job.type, skill).color}AA`}">
+                      {{ getSkillData(job.type, skill).name }}
+                    </li>
+                    <li class="project__jobs__skill" v-if="!job.skills?.length">Compétences non précisées</li>
+                  </ul>
+                </div>
               </li>
             </ul>
             <div v-else>Aucun</div>
@@ -77,7 +79,10 @@
           <div class="project__subscribe">
             <h3 class="h-3">Collaborer sur le projet</h3>
             <div v-if="isConnected" class="add-to-project">
-              <div v-if="!isFull()" class="teamIsNotFull">
+              <div v-if="project.active === false" class="teamIsFull">
+                <span>Le projet est terminé.</span>
+              </div>
+              <div v-else-if="!isFull()" class="teamIsNotFull">
                 <span>Pour apporter son aide au projet, veuillez sélectionner le type de collaboration souhaitée dans la liste ci-dessous :</span>
                 <div class="select-collab"><BaseSelect v-bind="select" :onChange="handleChangeSelectCollab"/></div>
                 <div class="btn-div"><button href="#" class="btn btn-secondary" @click="sendRequestCollab">Participer au Projet</button></div>
@@ -88,7 +93,7 @@
               </div>
             </div>
             <div v-else>
-              <span>Vous souhaitez participer à ce projet ? <router-link to="/login?RedirectTo=back">Connectez-vous.</router-link></span>
+              <span>Vous souhaitez participer à ce projet ? <router-link to="/login?redirectTo=back">Connectez-vous.</router-link></span>
             </div>
           </div>
 
@@ -170,6 +175,7 @@ export default {
         name: this.getTypeCollab(el.type)
       }
     })
+    console.log(this.project)
 
   },
   computed: {
@@ -183,6 +189,7 @@ export default {
      * Récupère le name associé à la clef dans profilTypes
      */
     getTypeCollab(val) {
+      console.log(profilTypes[val]?.name)
       return profilTypes[val]?.name
     },
     getSkillData(profileType, skillType) {
@@ -247,7 +254,7 @@ export default {
 
       if(modified === 1) {
 
-        this.$router.push({path: '/dashboard'})
+        this.notifs =  {type: 'success', message:`Votre demande de participation a bien été transmise à l'administrateur du projet.`}
 
       }else{
         this.notifs =  {type: 'error', message:`Un problème s'est produit. Réessayez plus tard.`}

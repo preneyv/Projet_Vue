@@ -3,7 +3,7 @@
 	<main>
 		<router-view />
 	</main>
-	<Footer v-if="$route.name !== 'dashboard'" />
+	<Footer v-if="$route.name !== 'Dashboard'" />
 </template>
 
 <script>
