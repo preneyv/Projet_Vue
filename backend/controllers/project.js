@@ -114,7 +114,7 @@ export async function insertOne(req, res) {
 export async function updateOne(req, res) {
 	const { id } = req.params
 	const filter = req.body.filter ? { _id: id, ...req.body.filter } : { _id: id }
-	const body = req.body.body ?? req.body
+	const body = req.body.body ?  req.body.body :  req.body
 	const tail = req.body.tail ? { ...req.body.tail } : {}
 
 	const { options } = req.body
@@ -151,7 +151,7 @@ export async function deleteOneById(req, res) {
  */
 function changeToObjId(request) {
 	const { Types } = mongoose
-	const el = request['$pull'] ?? request['$push']
+	const el = request['$pull'] ? request['$pull'] : request['$push']
 
 	for (const item in el) {
 
