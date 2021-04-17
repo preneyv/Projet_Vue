@@ -3,4 +3,4 @@ backend/env/.env.dev
 backend/env/.env.prod
 backend/controllers/.gitkeep
 .idea/*
-backend/.env
+
