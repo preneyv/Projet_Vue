@@ -6,7 +6,6 @@
 </h1>
 </div>
 
-[![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](http://forthebadge.com) 
 
 Cette application a pour but d'aider les porteurs de projets. Cette plateforme les met alors en relation avec d'autres personnes qui souhaiteraient participer au projet.
 
